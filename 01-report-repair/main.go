@@ -3,11 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/jyggen/advent-of-go-utils/solver"
+	"github.com/jyggen/advent-of-go-utils/utils"
 	"os"
 	"strconv"
 )
-import "github.com/jyggen/advent-of-go-utils/solver"
-import "github.com/jyggen/advent-of-go-utils/utils"
 
 const expectedSum = 2020
 
