@@ -23,7 +23,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	intSlice, err := utils.ToIntegerSlice(input)
+	intSlice, err := utils.ToIntegerSlice(input, "\n")
 
 	if err != nil {
 		return "", err
@@ -35,7 +35,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	intSlice, err := utils.ToIntegerSlice(input)
+	intSlice, err := utils.ToIntegerSlice(input, "\n")
 
 	if err != nil {
 		return "", err
