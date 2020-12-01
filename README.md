@@ -10,5 +10,5 @@ Yes, I know there are multiple definitions of `func main()` in `package main`. F
 [build]: https://travis-ci.org/jyggen/advent-of-go-2020
 [license]: https://github.com/jyggen/advent-of-go-2020/blob/master/LICENSE
 
-[badge-build]: https://img.shields.io/travis/jyggen/advent-of-go-2020/master.svg?style=flat-square
+[badge-build]: https://img.shields.io/github/workflow/status/jyggen/advent-of-go-2020/Go/main.svg?style=flat-square
 [badge-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
