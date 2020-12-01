@@ -5,8 +5,6 @@
 
 My solutions for Advent of Code (2020) - Go Edition!
 
-Yes, I know there are multiple definitions of `func main()` in `package main`. Fight me.
-
 [build]: https://github.com/jyggen/advent-of-go-2020/actions
 [license]: https://github.com/jyggen/advent-of-go-2020/blob/main/LICENSE
 
