@@ -2,8 +2,6 @@ github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/jyggen/advent-of-go-utils v0.0.0-20201201113023-54c3ccc8c3f2 h1:+MgUX00JHOuV+Dl3DU+bNeiNwXJiMHISIikwJ0hL4iQ=
-github.com/jyggen/advent-of-go-utils v0.0.0-20201201113023-54c3ccc8c3f2/go.mod h1:QvbY+zQMK/3ZBIp1BZJVmVnmuDE03ExZeF2pwUQ8us8=
 github.com/jyggen/advent-of-go-utils v0.0.0-20201201132650-d94df89f52a2 h1:Si80P4BfwJ+Al8OBpf3zAhAjG8eg2cXKHSzzy7wJeN4=
 github.com/jyggen/advent-of-go-utils v0.0.0-20201201132650-d94df89f52a2/go.mod h1:QvbY+zQMK/3ZBIp1BZJVmVnmuDE03ExZeF2pwUQ8us8=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
