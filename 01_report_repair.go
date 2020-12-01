@@ -14,7 +14,7 @@ func solve(input []int, expected int, iterations int, attempt []int) (int, error
 		newAttempt := append(attempt, val)
 
 		if iterations > 1 {
-			returnVal, err := solve(input[i + 1:], expected, iterations - 1, newAttempt)
+			returnVal, err := solve(input[i+1:], expected, iterations-1, newAttempt)
 
 			if err == nil {
 				return returnVal, nil
