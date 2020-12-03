@@ -49,6 +49,15 @@ func SolvePart2(input string) (string, error) {
 func resolve(input []int, expected int, iterations int, attempt []int) (int, error) {
 	for i, val := range input {
 		newAttempt := append(attempt, val)
+		attemptSum := 0
+
+		for _, val := range newAttempt {
+			attemptSum += val
+		}
+
+		if attemptSum > expected {
+			continue
+		}
 
 		if iterations > 1 {
 			returnVal, err := resolve(input[i+1:], expected, iterations-1, newAttempt)
@@ -57,16 +66,10 @@ func resolve(input []int, expected int, iterations int, attempt []int) (int, err
 				return returnVal, nil
 			}
 		} else {
-			result := 0
+			if attemptSum == expected {
+				result := 1
 
-			for _, val := range newAttempt {
-				result += val
-			}
-
-			if result == expected {
-				result = newAttempt[0]
-
-				for _, val := range newAttempt[1:] {
+				for _, val := range newAttempt {
 					result = result * val
 				}
 
