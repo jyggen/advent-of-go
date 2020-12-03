@@ -1,9 +1,9 @@
 package main
 
 import (
-"fmt"
-"github.com/jyggen/advent-of-go/solver"
-"testing"
+	"fmt"
+	"github.com/jyggen/advent-of-go/solver"
+	"testing"
 )
 
 var testCases = []*solver.TestCase{
@@ -32,7 +32,7 @@ func BenchmarkSolvers(b *testing.B) {
 
 func TestSolvers(t *testing.T) {
 	for i, testCase := range testCases {
-		t.Run(fmt.Sprint(i), func (subtest *testing.T) {
+		t.Run(fmt.Sprint(i), func(subtest *testing.T) {
 			testCase.Test(subtest)
 		})
 	}

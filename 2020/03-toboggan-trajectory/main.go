@@ -6,7 +6,6 @@ import (
 	"github.com/jyggen/advent-of-go/utils"
 	"os"
 	"strconv"
-	"strings"
 )
 
 var tree rune
@@ -42,7 +41,6 @@ func SolvePart2(input string) (string, error) {
 		travel(rows, 1, 5),
 		travel(rows, 1, 7),
 		travel(rows, 2, 1),
-
 	} {
 		total = total * trees
 	}
@@ -55,12 +53,7 @@ func parseInput(input string) [][]rune {
 	rows := make([][]rune, len(data))
 
 	for i, row := range data {
-		cols := strings.Split(row, "")
-		rows[i] = make([]rune, len(cols))
-
-		for j, col := range cols {
-			rows[i][j] = []rune(col)[0]
-		}
+		rows[i] = []rune(row)
 	}
 
 	return rows

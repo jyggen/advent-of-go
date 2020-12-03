@@ -22,7 +22,7 @@ type TestCase struct {
 
 func (tc *TestCase) Benchmark(b *testing.B) {
 	for j, solver := range tc.Solvers {
-		b.Run(fmt.Sprint(j), func (subtest *testing.B) {
+		b.Run(fmt.Sprint(j), func(subtest *testing.B) {
 			for i := 0; i < subtest.N; i++ {
 				_, err := solver.Solver(tc.Input)
 
@@ -36,7 +36,7 @@ func (tc *TestCase) Benchmark(b *testing.B) {
 
 func (tc *TestCase) Test(t *testing.T) {
 	for j, solver := range tc.Solvers {
-		t.Run(fmt.Sprint(j), func (subtest *testing.T) {
+		t.Run(fmt.Sprint(j), func(subtest *testing.T) {
 			actualOutput, err := solver.Solver(tc.Input)
 
 			assert.NoError(subtest, err)
