@@ -15,33 +15,33 @@ My solutions for Advent of Code - Go Edition!
 
 ### 2018
 
-| Day | Name                                 | Status      | Performance             |
-|---- | ------------------------------------ | ----------- | ----------------------- |
-| 01  | Chronal Calibration                  | Done        | 0.04ms / 26.14ms        |
-| 02  | Inventory Management System          | Done        | 0.95ms / 70.51ms        |
-| 03  | No Matter How You Slice It           | Done        | 306.45ms / 7.96ms       |
-| 04  | Repose Record                        | Done        | 1.09ms / 1.13ms         |
-| 05  | Alchemical Reduction                 | Done        | 17.22ms / 336.96ms      |
-| 06  | Chronal Coordinates                  | Done        | 24.49ms / 25.36ms       |
-| 07  | The Sum of Its Parts                 | Done        | 0.29ms / 0.27ms         |
-| 08  | Memory Maneuver                      | Done        | 1.02ms / 0.95ms         |
-| 09  | Marble Mania                         | Done        | 10.15ms / 1345.21ms     |
-| 10  | The Stars Align                      | Done        | 390.70ms / 23.56ms      |
-| 11  | Chronal Charge                       | Done        | 7.41ms / 1436.90ms      |
-| 12  | Subterranean Sustainability          | Done        | 0.29ms / 3.24ms         |
-| 13  | Mine Cart Madness                    | Done        | 1.10ms / 7.38ms         |
-| 14  | Chocolate Charts                     | Done        | 8.56ms / 3647.77ms      |
-| 15  | Beverage Bandits                     | Done        | 0.005ms / 0.008ms       |
-| 16  | Chronal Classification               | Done        | 11140.31s / 126852.57ms |
-| 17  | Reservoir Research                   | In Progress | n/a                     |
-| 18  | Settlers of The North Pole           | Unsolved    | n/a                     |
-| 19  | Go With The Flow                     | Unsolved    | n/a                     |
-| 20  | A Regular Map                        | Unsolved    | n/a                     |
-| 21  | Chronal Conversion                   | Unsolved    | n/a                     |
-| 22  | Mode Maze                            | Unsolved    | n/a                     |
-| 23  | Experimental Emergency Teleportation | Unsolved    | n/a                     |
-| 24  | Immune System Simulator 20XX         | Unsolved    | n/a                     |
-| 25  | Four-Dimensional Adventure           | Unsolved    | n/a                     |
+| Day | Name                                 | Status      | Performance              |
+|---- | ------------------------------------ | ----------- | ------------------------ |
+| 01  | Chronal Calibration                  | Done        | 0.04ms / 26.14ms         |
+| 02  | Inventory Management System          | Done        | 0.95ms / 70.51ms         |
+| 03  | No Matter How You Slice It           | Done        | 306.45ms / 7.96ms        |
+| 04  | Repose Record                        | Done        | 1.09ms / 1.13ms          |
+| 05  | Alchemical Reduction                 | Done        | 17.22ms / 336.96ms       |
+| 06  | Chronal Coordinates                  | Done        | 24.49ms / 25.36ms        |
+| 07  | The Sum of Its Parts                 | Done        | 0.29ms / 0.27ms          |
+| 08  | Memory Maneuver                      | Done        | 1.02ms / 0.95ms          |
+| 09  | Marble Mania                         | Done        | 10.15ms / 1345.21ms      |
+| 10  | The Stars Align                      | Done        | 390.70ms / 23.56ms       |
+| 11  | Chronal Charge                       | Done        | 7.41ms / 1436.90ms       |
+| 12  | Subterranean Sustainability          | Done        | 0.29ms / 3.24ms          |
+| 13  | Mine Cart Madness                    | Done        | 1.10ms / 7.38ms          |
+| 14  | Chocolate Charts                     | Done        | 8.56ms / 3647.77ms       |
+| 15  | Beverage Bandits                     | Done        | 0.005ms / 0.008ms        |
+| 16  | Chronal Classification               | Done        | 11140.31ms / 126852.57ms |
+| 17  | Reservoir Research                   | In Progress | n/a                      |
+| 18  | Settlers of The North Pole           | Unsolved    | n/a                      |
+| 19  | Go With The Flow                     | Unsolved    | n/a                      |
+| 20  | A Regular Map                        | Unsolved    | n/a                      |
+| 21  | Chronal Conversion                   | Unsolved    | n/a                      |
+| 22  | Mode Maze                            | Unsolved    | n/a                      |
+| 23  | Experimental Emergency Teleportation | Unsolved    | n/a                      |
+| 24  | Immune System Simulator 20XX         | Unsolved    | n/a                      |
+| 25  | Four-Dimensional Adventure           | Unsolved    | n/a                      |
 
 ### 2019
 
