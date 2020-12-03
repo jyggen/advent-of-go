@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
 	"testing"
+
+	"github.com/jyggen/advent-of-go/solver"
 )
 
 var testCases = []*solver.TestCase{
@@ -60,11 +61,11 @@ var testCases = []*solver.TestCase{
 		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
-				Output: "7,3",
+				Output: "28944",
 			},
 			{
 				Solver: SolvePart2,
-				Output: "7,3",
+				Output: "6474",
 			},
 		},
 	},
@@ -73,11 +74,11 @@ var testCases = []*solver.TestCase{
 		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
-				Output: "28944",
+				Output: "18740",
 			},
 			{
 				Solver: SolvePart2,
-				Output: "6474",
+				Output: "1140",
 			},
 		},
 	},
