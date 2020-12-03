@@ -9,6 +9,10 @@ My solutions for Advent of Code - Go Edition!
 
 ### 2015
 
+| Day | Name                                 | Status      | Performance              |
+|---- | ------------------------------------ | ----------- | ------------------------ |
+| 04  | The Ideal Stocking Stuffer           | Done        | 94.12ms / 2623.24ms      |
+
 ### 2016
 
 ### 2017
