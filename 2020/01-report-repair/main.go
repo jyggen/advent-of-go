@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/jyggen/advent-of-go-utils/solver"
-	"github.com/jyggen/advent-of-go-utils/utils"
+	"github.com/jyggen/advent-of-go/solver"
+	"github.com/jyggen/advent-of-go/utils"
 	"os"
 	"strconv"
 )
