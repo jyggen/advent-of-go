@@ -35,8 +35,8 @@ My solutions for Advent of Code - Go Edition!
 | 12  | Subterranean Sustainability          | Done        | 0.29ms / 3.24ms          |
 | 13  | Mine Cart Madness                    | Done        | 1.10ms / 7.38ms          |
 | 14  | Chocolate Charts                     | Done        | 8.56ms / 3647.77ms       |
-| 15  | Beverage Bandits                     | Done        | 0.005ms / 0.008ms        |
-| 16  | Chronal Classification               | Done        | 11140.31ms / 126852.57ms |
+| 15  | Beverage Bandits                     | Done        | 11140.31ms / 126852.57ms |
+| 16  | Chronal Classification               | Broken      | n/a                      |
 | 17  | Reservoir Research                   | In Progress | n/a                      |
 | 18  | Settlers of The North Pole           | Unsolved    | n/a                      |
 | 19  | Go With The Flow                     | Unsolved    | n/a                      |
