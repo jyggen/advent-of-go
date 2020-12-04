@@ -7,6 +7,8 @@ My solutions for Advent of Code - Go Edition!
 
 ## Solutions
 
+The execution times in the performance column are based on `go test -bench .` running on a 13-inch MacBook Pro from Late 2013. Mileage may vary.
+
 ### 2015
 
 | Day | Name                                 | Status      | Performance              |
