@@ -45,10 +45,8 @@ HashLoop:
 			}
 		}
 
-		if zeroes%2 != 0 {
-			if hash[numBytes] > 16 {
-				continue HashLoop
-			}
+		if zeroes%2 != 0 && hash[numBytes] > 15 {
+			continue HashLoop
 		}
 
 		return iteration

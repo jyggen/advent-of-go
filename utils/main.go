@@ -13,6 +13,10 @@ func AbsInt(n int) int {
 	return n
 }
 
+func ManhattanDistance(x int, y int) int {
+	return AbsInt(x) + AbsInt(y)
+}
+
 func ToIntegerSlice(input string, separator string) ([]int, error) {
 	stringSlice := ToStringSlice(input, separator)
 	integerSlice := make([]int, len(stringSlice))
@@ -28,6 +32,17 @@ func ToIntegerSlice(input string, separator string) ([]int, error) {
 	}
 
 	return integerSlice, nil
+}
+
+func ToRuneSlice(input string, separator string) [][]rune {
+	stringSlice := ToStringSlice(input, separator)
+	runeSlice := make([][]rune, len(stringSlice))
+
+	for i, val := range stringSlice {
+		runeSlice[i] = []rune(val)
+	}
+
+	return runeSlice
 }
 
 func ToStringSlice(input string, separator string) []string {
