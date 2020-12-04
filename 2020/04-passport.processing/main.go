@@ -95,6 +95,10 @@ PassportLoop:
 			}
 		}
 
+		if !hcl.MatchString(data["hcl"]) || !ecl.MatchString(data["ecl"]) || !pid.MatchString(data["pid"]) {
+			continue
+		}
+
 		if byr, err := strconv.Atoi(data["byr"]); err != nil || byr < 1920 || byr > 2002 {
 			continue
 		}
@@ -114,18 +118,6 @@ PassportLoop:
 		}
 
 		if height, err := strconv.Atoi(match[1]); err != nil || (match[2] == "cm" && (height < 150 || height > 193)) || (match[2] == "in" && (height < 59 || height > 76)) {
-			continue
-		}
-
-		if !hcl.MatchString(data["hcl"]) {
-			continue
-		}
-
-		if !ecl.MatchString(data["ecl"]) {
-			continue
-		}
-
-		if !pid.MatchString(data["pid"]) {
 			continue
 		}
 
