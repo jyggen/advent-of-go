@@ -10,15 +10,18 @@ import (
 	"strconv"
 )
 
-var ecl, field, hcl, hgt, pid *regexp.Regexp
+var byr, ecl, eyr, field, hcl, hgt, iyr, pid *regexp.Regexp
 var required []string
 
 func init() {
-	ecl = regexp.MustCompile(`^amb|blu|brn|gry|grn|hzl|oth$`)
-	field = regexp.MustCompile(`\b([a-z]{3}):([a-z\d#]+)\b`)
-	hcl = regexp.MustCompile(`^#[\da-f]{6}$`)
-	hgt = regexp.MustCompile(`^(\d+)(cm|in)$`)
-	pid = regexp.MustCompile(`^\d{9}$`)
+	byr = regexp.MustCompile(`\bbyr:(?:19[2-9]\d|200[0-2])\b`)
+	ecl = regexp.MustCompile(`\becl:(?:amb|blu|brn|gry|grn|hzl|oth)\b`)
+	eyr = regexp.MustCompile(`\beyr:20(?:2\d|30)\b`)
+	field = regexp.MustCompile(`\b([a-z]{3}):[a-z\d#]+\b`)
+	hcl = regexp.MustCompile(`\bhcl:#[\da-f]{6}\b`)
+	hgt = regexp.MustCompile(`\bhgt:(?:1(?:[5-8]\d|9[0-3])cm|(?:59|6\d|7[0-6])in)\b`)
+	iyr = regexp.MustCompile(`\biyr:20(?:1\d|20)\b`)
+	pid = regexp.MustCompile(`\bpid:\d{9}\b`)
 	required = []string{
 		"byr",
 		"iyr",
@@ -53,10 +56,10 @@ PassportLoop:
 			return "", errors.New("unable to parse input")
 		}
 
-		data := make(map[string]string, len(matches)-1)
+		data := make(map[string]bool, len(matches)-1)
 
 		for _, m := range matches {
-			data[m[1]] = m[2]
+			data[m[1]] = true
 		}
 
 		for _, r := range required {
@@ -77,48 +80,12 @@ func SolvePart2(input string) (string, error) {
 
 PassportLoop:
 	for _, p := range passports {
-		matches := field.FindAllStringSubmatch(p, -1)
-
-		if matches == nil {
-			return "", errors.New("unable to parse input")
-		}
-
-		data := make(map[string]string, len(matches)-1)
-
-		for _, m := range matches {
-			data[m[1]] = m[2]
-		}
-
-		for _, r := range required {
-			if _, ok := data[r]; !ok {
+		for _, r := range []*regexp.Regexp{
+			byr, ecl, eyr, hcl, hgt, iyr, pid,
+		} {
+			if !r.MatchString(p) {
 				continue PassportLoop
 			}
-		}
-
-		if !hcl.MatchString(data["hcl"]) || !ecl.MatchString(data["ecl"]) || !pid.MatchString(data["pid"]) {
-			continue
-		}
-
-		if byr, err := strconv.Atoi(data["byr"]); err != nil || byr < 1920 || byr > 2002 {
-			continue
-		}
-
-		if byr, err := strconv.Atoi(data["iyr"]); err != nil || byr < 2010 || byr > 2020 {
-			continue
-		}
-
-		if byr, err := strconv.Atoi(data["eyr"]); err != nil || byr < 2020 || byr > 2030 {
-			continue
-		}
-
-		match := hgt.FindStringSubmatch(data["hgt"])
-
-		if match == nil {
-			continue
-		}
-
-		if height, err := strconv.Atoi(match[1]); err != nil || (match[2] == "cm" && (height < 150 || height > 193)) || (match[2] == "in" && (height < 59 || height > 76)) {
-			continue
 		}
 
 		valid++
