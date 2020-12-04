@@ -54,7 +54,7 @@ My solutions for Advent of Code - Go Edition!
 | 01  | The Tyranny of the Rocket Equation | Done     | 0.005ms / 0.008ms |
 | 02  | 1202 Program Alarm                 | Done     | 0.005ms / 0.02ms  |
 | 03  | Crossed Wires                      | Done     | 4.20ms / 4.51ms   |
-| 04  | Secure Container                   | Unsolved | n/a               |
+| 04  | Secure Container                   | Done     | 34.24ms / 29.10ms |
 | 05  | Sunny with a Chance of Asteroids   | Unsolved | n/a               |
 | 06  | Universal Orbit Map                | Unsolved | n/a               |
 | 07  | Amplification Circuit              | Unsolved | n/a               |
