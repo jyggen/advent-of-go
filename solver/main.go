@@ -27,7 +27,7 @@ func (tc *TestCase) Benchmark(b *testing.B) {
 				_, err := solver.Solver(tc.Input)
 
 				if err != nil {
-					b.Error(err)
+					subtest.Error(err)
 				}
 			}
 		})

@@ -134,14 +134,18 @@ func SolvePart1(input string) (string, error) {
 			partOne++
 		}
 
+		possibilities := make([][]opcode, len(opcodePossibilities))
+
+		copy(possibilities, opcodePossibilities)
+
 		// Narrow down this specific opcode number.
-		for j := 0; j < len(opcodePossibilities[instructions[0]]); j++ {
+		for j := 0; j < len(possibilities[instructions[0]]); j++ {
 			registers := []int{before[0], before[1], before[2], before[3]}
 
-			opcodePossibilities[instructions[0]][j](registers, instructions[1], instructions[2], instructions[3])
+			possibilities[instructions[0]][j](registers, instructions[1], instructions[2], instructions[3])
 
 			if registers[0] != after[0] || registers[1] != after[1] || registers[2] != after[2] || registers[3] != after[3] {
-				opcodePossibilities[instructions[0]] = append(opcodePossibilities[instructions[0]][:j], opcodePossibilities[instructions[0]][j+1:]...)
+				possibilities[instructions[0]] = append(possibilities[instructions[0]][:j], possibilities[instructions[0]][j+1:]...)
 				j--
 			}
 		}
@@ -235,14 +239,18 @@ func SolvePart2(input string) (string, error) {
 			partOne++
 		}
 
+		possibilities := make([][]opcode, len(opcodePossibilities))
+
+		copy(possibilities, opcodePossibilities)
+
 		// Narrow down this specific opcode number.
-		for j := 0; j < len(opcodePossibilities[instructions[0]]); j++ {
+		for j := 0; j < len(possibilities[instructions[0]]); j++ {
 			registers := []int{before[0], before[1], before[2], before[3]}
 
-			opcodePossibilities[instructions[0]][j](registers, instructions[1], instructions[2], instructions[3])
+			possibilities[instructions[0]][j](registers, instructions[1], instructions[2], instructions[3])
 
 			if registers[0] != after[0] || registers[1] != after[1] || registers[2] != after[2] || registers[3] != after[3] {
-				opcodePossibilities[instructions[0]] = append(opcodePossibilities[instructions[0]][:j], opcodePossibilities[instructions[0]][j+1:]...)
+				possibilities[instructions[0]] = append(possibilities[instructions[0]][:j], possibilities[instructions[0]][j+1:]...)
 				j--
 			}
 		}
