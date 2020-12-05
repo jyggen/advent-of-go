@@ -30,7 +30,6 @@ func SolvePart1(input string) (string, error) {
 		return "", err
 	}
 
-
 	return strconv.Itoa(ids[len(ids)-1]), nil
 }
 
@@ -54,15 +53,11 @@ func SolvePart2(input string) (string, error) {
 }
 
 func decodeTickets(tickets []string) ([]int, error) {
-	numTickets := len(tickets)
-	ids := make([]int, numTickets)
+	ids := make([]int, len(tickets))
+	replacer := strings.NewReplacer("F", "0", "B", "1", "L", "0", "R", "1")
 
 	for i, ticket := range tickets {
-		ticket = strings.ReplaceAll(ticket, "F", "0")
-		ticket = strings.ReplaceAll(ticket, "B", "1")
-		ticket = strings.ReplaceAll(ticket, "L", "0")
-		ticket = strings.ReplaceAll(ticket, "R", "1")
-		id, err := strconv.ParseInt(ticket, 2, 64)
+		id, err := strconv.ParseInt(replacer.Replace(ticket), 2, 64)
 
 		if err != nil {
 			return ids, err

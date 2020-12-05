@@ -87,7 +87,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 02  | Password Philosophy | Done       | 1.12ms / 1.11ms |
 | 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms |
 | 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
-| 05  | Binary Boarding     | Dine       | 0.89ms / 0.88ms |
+| 05  | Binary Boarding     | Done       | 0.31ms / 0.32ms |
 | 06  | TBA                 | Unsolved   | n/a             |
 | 07  | TBA                 | Unsolved   | n/a             |
 | 08  | TBA                 | Unsolved   | n/a             |
