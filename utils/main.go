@@ -13,6 +13,16 @@ func AbsInt(n int) int {
 	return n
 }
 
+func IntRange(min int, max int) []int {
+	a := make([]int, max-min+1)
+
+	for i := range a {
+		a[i] = min + i
+	}
+
+	return a
+}
+
 func ManhattanDistance(x int, y int) int {
 	return AbsInt(x) + AbsInt(y)
 }
