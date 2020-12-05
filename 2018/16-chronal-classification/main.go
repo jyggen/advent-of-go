@@ -13,8 +13,6 @@ import (
 
 type opcode func(registers []int, a int, b int, c int)
 
-var opcodePossibilities [][]opcode
-
 var opcodeList = []opcode{
 	addi,
 	addr,
@@ -32,15 +30,6 @@ var opcodeList = []opcode{
 	mulr,
 	seti,
 	setr,
-}
-
-func init() {
-	opcodePossibilities = make([][]opcode, len(opcodeList))
-
-	for i := range opcodePossibilities {
-		opcodePossibilities[i] = make([]opcode, len(opcodeList))
-		copy(opcodePossibilities[i], opcodeList)
-	}
 }
 
 func main() {
@@ -62,9 +51,6 @@ func SolvePart1(input string) (string, error) {
 	instructions := make([]int, 4)
 	after := make([]int, 4)
 	i := 0
-	possibilities := make([][]opcode, len(opcodePossibilities))
-
-	copy(possibilities, opcodePossibilities)
 
 	for _, s := range strings.Split(samples, "\n") {
 		if s == "" {
@@ -148,15 +134,17 @@ func SolvePart1(input string) (string, error) {
 func SolvePart2(input string) (string, error) {
 	data := utils.ToStringSlice(input, "\n\n\n")
 	samples := data[0]
-	partOne := 0
 	before := make([]int, 4)
 	instructions := make([]int, 4)
 	after := make([]int, 4)
 	i := 0
 	testProgram := strings.TrimSpace(data[1])
-	possibilities := make([][]opcode, len(opcodePossibilities))
+	possibilities := make([][]opcode, len(opcodeList))
 
-	copy(possibilities, opcodePossibilities)
+	for i := range possibilities {
+		possibilities[i] = make([]opcode, len(opcodeList))
+		copy(possibilities[i], opcodeList)
+	}
 
 	for _, s := range strings.Split(samples, "\n") {
 		if s == "" {
@@ -208,27 +196,6 @@ func SolvePart2(input string) (string, error) {
 		if i < 2 {
 			i++
 			continue
-		}
-
-		matches := 0
-
-		// Test against all opcodes for part one.
-		for _, o := range opcodeList {
-			registers := []int{before[0], before[1], before[2], before[3]}
-
-			o(registers, instructions[1], instructions[2], instructions[3])
-
-			if registers[0] == after[0] && registers[1] == after[1] && registers[2] == after[2] && registers[3] == after[3] {
-				matches++
-
-				if matches == 3 {
-					break
-				}
-			}
-		}
-
-		if matches == 3 {
-			partOne++
 		}
 
 		// Narrow down this specific opcode number.

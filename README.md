@@ -38,7 +38,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 13  | Mine Cart Madness                    | Done        | 1.10ms / 7.38ms          |
 | 14  | Chocolate Charts                     | Done        | 8.56ms / 3647.77ms       |
 | 15  | Beverage Bandits                     | Done        | 11140.31ms / 126852.57ms |
-| 16  | Chronal Classification               | Broken      | n/a                      |
+| 16  | Chronal Classification               | Done        | 7.62ms / 8.44ms          |
 | 17  | Reservoir Research                   | In Progress | n/a                      |
 | 18  | Settlers of The North Pole           | Unsolved    | n/a                      |
 | 19  | Go With The Flow                     | Unsolved    | n/a                      |
