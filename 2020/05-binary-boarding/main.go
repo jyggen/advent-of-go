@@ -8,6 +8,7 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 )
 
 func main() {
@@ -23,14 +24,24 @@ func main() {
 
 func SolvePart1(input string) (string, error) {
 	tickets := utils.ToStringSlice(input, "\n")
-	ids := decodeTickets(tickets)
+	ids, err := decodeTickets(tickets)
+
+	if err != nil {
+		return "", err
+	}
+
 
 	return strconv.Itoa(ids[len(ids)-1]), nil
 }
 
 func SolvePart2(input string) (string, error) {
 	tickets := utils.ToStringSlice(input, "\n")
-	ids := decodeTickets(tickets)
+	ids, err := decodeTickets(tickets)
+
+	if err != nil {
+		return "", err
+	}
+
 	numIds := len(ids)
 
 	for i := 1; i < numIds; i++ {
@@ -42,36 +53,25 @@ func SolvePart2(input string) (string, error) {
 	return "", errors.New("unable to find ticket number")
 }
 
-func decodeTickets(tickets []string) []int {
+func decodeTickets(tickets []string) ([]int, error) {
 	numTickets := len(tickets)
 	ids := make([]int, numTickets)
 
 	for i, ticket := range tickets {
-		rows := utils.IntRange(0, 128)
-		cols := utils.IntRange(0, 7)
+		ticket = strings.ReplaceAll(ticket, "F", "0")
+		ticket = strings.ReplaceAll(ticket, "B", "1")
+		ticket = strings.ReplaceAll(ticket, "L", "0")
+		ticket = strings.ReplaceAll(ticket, "R", "1")
+		id, err := strconv.ParseInt(ticket, 2, 64)
 
-		for _, v := range ticket[0:7] {
-			switch v {
-			case 'F':
-				rows = rows[0 : len(rows)/2]
-			case 'B':
-				rows = rows[len(rows)/2:]
-			}
+		if err != nil {
+			return ids, err
 		}
 
-		for _, v := range ticket[7:] {
-			switch v {
-			case 'L':
-				cols = cols[0 : len(cols)/2]
-			case 'R':
-				cols = cols[len(cols)/2:]
-			}
-		}
-
-		ids[i] = (rows[0] * 8) + cols[0]
+		ids[i] = int(id)
 	}
 
 	sort.Ints(ids)
 
-	return ids
+	return ids, nil
 }
