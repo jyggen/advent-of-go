@@ -13,7 +13,7 @@ import (
 
 type opcode func(registers []int, a int, b int, c int)
 
-var opcodePossibilities = make([][]opcode, 16)
+var opcodePossibilities [][]opcode
 
 var opcodeList = []opcode{
 	addi,
@@ -35,6 +35,8 @@ var opcodeList = []opcode{
 }
 
 func init() {
+	opcodePossibilities = make([][]opcode, len(opcodeList))
+
 	for i := range opcodePossibilities {
 		opcodePossibilities[i] = make([]opcode, len(opcodeList))
 		copy(opcodePossibilities[i], opcodeList)
@@ -60,6 +62,9 @@ func SolvePart1(input string) (string, error) {
 	instructions := make([]int, 4)
 	after := make([]int, 4)
 	i := 0
+	possibilities := make([][]opcode, len(opcodePossibilities))
+
+	copy(possibilities, opcodePossibilities)
 
 	for _, s := range strings.Split(samples, "\n") {
 		if s == "" {
@@ -132,22 +137,6 @@ func SolvePart1(input string) (string, error) {
 
 		if matches == 3 {
 			partOne++
-		}
-
-		possibilities := make([][]opcode, len(opcodePossibilities))
-
-		copy(possibilities, opcodePossibilities)
-
-		// Narrow down this specific opcode number.
-		for j := 0; j < len(possibilities[instructions[0]]); j++ {
-			registers := []int{before[0], before[1], before[2], before[3]}
-
-			possibilities[instructions[0]][j](registers, instructions[1], instructions[2], instructions[3])
-
-			if registers[0] != after[0] || registers[1] != after[1] || registers[2] != after[2] || registers[3] != after[3] {
-				possibilities[instructions[0]] = append(possibilities[instructions[0]][:j], possibilities[instructions[0]][j+1:]...)
-				j--
-			}
 		}
 
 		i = 0
@@ -164,7 +153,10 @@ func SolvePart2(input string) (string, error) {
 	instructions := make([]int, 4)
 	after := make([]int, 4)
 	i := 0
-	testProgram := data[1]
+	testProgram := strings.TrimSpace(data[1])
+	possibilities := make([][]opcode, len(opcodePossibilities))
+
+	copy(possibilities, opcodePossibilities)
 
 	for _, s := range strings.Split(samples, "\n") {
 		if s == "" {
@@ -238,10 +230,6 @@ func SolvePart2(input string) (string, error) {
 		if matches == 3 {
 			partOne++
 		}
-
-		possibilities := make([][]opcode, len(opcodePossibilities))
-
-		copy(possibilities, opcodePossibilities)
 
 		// Narrow down this specific opcode number.
 		for j := 0; j < len(possibilities[instructions[0]]); j++ {
@@ -260,19 +248,19 @@ func SolvePart2(input string) (string, error) {
 
 	assignments := make([]opcode, 16)
 
-	for i := 0; i < len(opcodePossibilities); i++ {
-		if len(opcodePossibilities[i]) != 1 {
+	for i := 0; i < len(possibilities); i++ {
+		if len(possibilities[i]) != 1 {
 			continue
 		}
 
-		assignments[i] = opcodePossibilities[i][0]
+		assignments[i] = possibilities[i][0]
 		opcodeName := getFunctionName(assignments[i])
-		opcodePossibilities[i] = make([]opcode, 0)
+		possibilities[i] = make([]opcode, 0)
 
-		for j, available := range opcodePossibilities {
+		for j, available := range possibilities {
 			for k := 0; k < len(available); k++ {
 				if getFunctionName(available[k]) == opcodeName {
-					opcodePossibilities[j] = append(available[:k], available[k+1:]...)
+					possibilities[j] = append(available[:k], available[k+1:]...)
 					break
 				}
 			}
