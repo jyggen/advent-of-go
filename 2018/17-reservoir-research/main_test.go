@@ -29,7 +29,7 @@ var testCases = []*solver.TestCase{
 			},
 			{
 				Solver: SolvePart2,
-				Output: "",
+				Output: "25018",
 			},
 		},
 	},

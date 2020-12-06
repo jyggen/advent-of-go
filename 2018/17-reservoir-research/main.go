@@ -312,6 +312,32 @@ func SolvePart2(input string) (string, error) {
 		}
 	}
 
+	for y := 0; y < maxY; y++ {
+		for x := 0; x < maxX; x++ {
+			if x == 0 {
+				continue
+			}
+
+			if layout[y][x] == water && (layout[y][x-1] == sand || layout[y][x-1] == endless) {
+				layout[y][x] = endless
+				atRest--
+			}
+		}
+	}
+
+	for y := maxY - 1; y >= 0; y-- {
+		for x := maxX - 1; x >= 0; x-- {
+			if x == maxX-1 {
+				continue
+			}
+
+			if layout[y][x] == water && (layout[y][x+1] == sand || layout[y][x+1] == endless) {
+				layout[y][x] = endless
+				atRest--
+			}
+		}
+	}
+
 	return strconv.Itoa(atRest), nil
 }
 

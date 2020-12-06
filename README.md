@@ -39,7 +39,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 14  | Chocolate Charts                     | Done        | 8.56ms / 3647.77ms       |
 | 15  | Beverage Bandits                     | Done        | 11140.31ms / 126852.57ms |
 | 16  | Chronal Classification               | Done        | 7.62ms / 8.44ms          |
-| 17  | Reservoir Research                   | In Progress | n/a                      |
+| 17  | Reservoir Research                   | Done        | 27.05ms / 29.28ms        |
 | 18  | Settlers of The North Pole           | Unsolved    | n/a                      |
 | 19  | Go With The Flow                     | Unsolved    | n/a                      |
 | 20  | A Regular Map                        | Unsolved    | n/a                      |
