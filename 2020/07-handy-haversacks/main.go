@@ -57,7 +57,7 @@ func SolvePart2(input string) (string, error) {
 
 	shinyBag := bagByColor(bags, "shiny gold")
 
-	return strconv.Itoa(childrenCount(shinyBag)), nil
+	return strconv.Itoa(childrenCount(shinyBag, make(map[string]int, 0))), nil
 }
 
 func bagByColor(bags map[string]*Bag, color string) *Bag {
@@ -71,9 +71,13 @@ func bagByColor(bags map[string]*Bag, color string) *Bag {
 	return bags[color]
 }
 
-func childrenCount(bag *Bag) (count int) {
+func childrenCount(bag *Bag, colors map[string]int) (count int) {
 	for _, c := range bag.children {
-		count += childrenCount(c) + 1
+		if _, ok := colors[c.color]; !ok {
+			colors[c.color] = childrenCount(c, colors) + 1
+		}
+
+		count += colors[c.color]
 	}
 
 	return count
