@@ -169,7 +169,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
 | 05  | Binary Boarding     | Done       | 0.18ms / 0.18ms |
 | 06  | Custom Customs      | Done       | 0.34ms / 0.30ms |
-| 07  | Handy Haversacks    | Done       | 4.01ms / 3.95ms |
+| 07  | Handy Haversacks    | Done       | 3.00ms / 2.89ms |
 | 08  | TBA                 | Unsolved   | n/a             |
 | 09  | TBA                 | Unsolved   | n/a             |
 | 10  | TBA                 | Unsolved   | n/a             |

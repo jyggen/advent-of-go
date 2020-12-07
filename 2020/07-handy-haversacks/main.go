@@ -7,6 +7,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"strings"
 )
 
 type Bag struct {
@@ -19,8 +20,8 @@ var parentBagRegex *regexp.Regexp
 var childBagRegex *regexp.Regexp
 
 func init() {
-	parentBagRegex = regexp.MustCompile(`^([a-z ]+) bags contain`)
-	childBagRegex = regexp.MustCompile(`([\d]+) ([a-z ]+) bags?`)
+	parentBagRegex = regexp.MustCompile(`(.+?) bags`)
+	childBagRegex = regexp.MustCompile(`(\d+) (.+?) bags?`)
 }
 
 func main() {
@@ -35,8 +36,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	rules := utils.ToStringSlice(input, "\n")
-	bags, err := parseBags(rules)
+	bags, err := parseBags(input)
 
 	if err != nil {
 		return "", err
@@ -48,8 +48,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	rules := utils.ToStringSlice(input, "\n")
-	bags, err := parseBags(rules)
+	bags, err := parseBags(input)
 
 	if err != nil {
 		return "", err
@@ -96,12 +95,14 @@ func parentCount(bag *Bag, colors map[string]bool) (count int) {
 	return count
 }
 
-func parseBags(rules []string) (map[string]*Bag, error) {
-	bags := make(map[string]*Bag, 0)
+func parseBags(input string) (map[string]*Bag, error) {
+	rules := utils.ToStringSlice(input, "\n")
+	bags := make(map[string]*Bag, len(rules))
 
 	for _, r := range rules {
-		parentMatch := parentBagRegex.FindStringSubmatch(r)
-		childMatches := childBagRegex.FindAllStringSubmatch(r, -1)
+		parts := strings.SplitN(r, " contain ", 2)
+		parentMatch := parentBagRegex.FindStringSubmatch(parts[0])
+		childMatches := childBagRegex.FindAllStringSubmatch(parts[1], -1)
 		parentBag := bagByColor(bags, parentMatch[1])
 
 		for _, child := range childMatches {
