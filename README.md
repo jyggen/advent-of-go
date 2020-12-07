@@ -168,7 +168,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms |
 | 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
 | 05  | Binary Boarding     | Done       | 0.18ms / 0.18ms |
-| 06  | Custom Customs      | Done       | 0.46ms / 0.47ms |
+| 06  | Custom Customs      | Done       | 0.37ms / 0.38ms |
 | 07  | Handy Haversacks    | Done       | 4.01ms / 3.95ms |
 | 08  | TBA                 | Unsolved   | n/a             |
 | 09  | TBA                 | Unsolved   | n/a             |

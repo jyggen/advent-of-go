@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
 	"os"
 	"strconv"
 	"strings"
@@ -12,7 +11,7 @@ import (
 var eolReplacer *strings.Replacer
 
 func init() {
-	eolReplacer = strings.NewReplacer("\n", "")
+	eolReplacer = strings.NewReplacer("\n\n", ";", "\n", ",")
 }
 
 func main() {
@@ -27,12 +26,10 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	groups := utils.ToStringSlice(input, "\n\n")
+	groups := strings.Split(eolReplacer.Replace(strings.TrimSpace(input)), ";")
 	sum := 0
 
 	for _, g := range groups {
-		g = eolReplacer.Replace(g)
-
 		for i := 'a'; i <= 'z'; i++ {
 			if strings.Count(g, string(i)) > 0 {
 				sum++
@@ -44,12 +41,11 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	groups := utils.ToStringSlice(input, "\n\n")
+	groups := strings.Split(eolReplacer.Replace(strings.TrimSpace(input)), ";")
 	sum := 0
 
 	for _, g := range groups {
-		size := strings.Count(g, "\n") + 1
-		g = eolReplacer.Replace(g)
+		size := strings.Count(g, ",") + 1
 
 		for i := 'a'; i <= 'z'; i++ {
 			if c := strings.Count(g, string(i)); c == size {
