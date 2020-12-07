@@ -11,13 +11,93 @@ The execution times in the performance column are based on `go test -bench .` ru
 
 ### 2015
 
-| Day | Name                                 | Status      | Performance              |
-|---- | ------------------------------------ | ----------- | ------------------------ |
-| 04  | The Ideal Stocking Stuffer           | Done        | 94.12ms / 2623.24ms      |
+| Day | Name                                   | Status     | Performance         |
+|---- | -------------------------------------- | ---------- | ------------------- |
+| 01  | Not Quite Lisp                         | Unsolved   | n/a                 |
+| 02  | I Was Told There Would Be No Math      | Unsolved   | n/a                 |
+| 03  | Perfectly Spherical Houses in a Vacuum | Unsolved   | n/a                 |
+| 04  | The Ideal Stocking Stuffer             | Done       | 94.12ms / 2623.24ms |
+| 05  | Doesn't He Have Intern-Elves For This? | Unsolved   | n/a                 |
+| 06  | Probably a Fire Hazard                 | Unsolved   | n/a                 |
+| 07  | Some Assembly Required                 | Unsolved   | n/a                 |
+| 08  | Matchsticks                            | Unsolved   | n/a                 |
+| 09  | All in a Single Night                  | Unsolved   | n/a                 |
+| 10  | Elves Look, Elves Say                  | Unsolved   | n/a                 |
+| 11  | Corporate Policy                       | Unsolved   | n/a                 |
+| 12  | JSAbacusFramework.io                   | Unsolved   | n/a                 |
+| 13  | Knights of the Dinner Table            | Unsolved   | n/a                 |
+| 14  | Reindeer Olympics                      | Unsolved   | n/a                 |
+| 15  | Science for Hungry People              | Unsolved   | n/a                 |
+| 16  | Aunt Sue                               | Unsolved   | n/a                 |
+| 17  | No Such Thing as Too Much              | Unsolved   | n/a                 |
+| 18  | Like a GIF For Your Yard               | Unsolved   | n/a                 |
+| 19  | Medicine for Rudolph                   | Unsolved   | n/a                 |
+| 20  | Infinite Elves and Infinite Houses     | Unsolved   | n/a                 |
+| 21  | RPG Simulator 20XX                     | Unsolved   | n/a                 |
+| 22  | Wizard Simulator 20XX                  | Unsolved   | n/a                 |
+| 23  | Opening the Turing Lock                | Unsolved   | n/a                 |
+| 24  | It Hangs in the Balance                | Unsolved   | n/a                 |
+| 25  | Let It Snow                            | Unsolved   | n/a                 |
 
 ### 2016
 
+| Day | Name                | Status     | Performance     |
+|---- | ------------------- | ---------- | --------------- |
+| 01  | Report Repair       | Done       | 0.59ms / 0.39ms |
+| 02  | Password Philosophy | Done       | 1.12ms / 1.11ms |
+| 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms |
+| 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
+| 05  | Binary Boarding     | Done       | 0.31ms / 0.32ms |
+| 06  | Custom Customs      | Done       | 0.46ms / 0.47ms |
+| 07  | TBA                 | Unsolved   | n/a             |
+| 08  | TBA                 | Unsolved   | n/a             |
+| 09  | TBA                 | Unsolved   | n/a             |
+| 10  | TBA                 | Unsolved   | n/a             |
+| 11  | TBA                 | Unsolved   | n/a             |
+| 12  | TBA                 | Unsolved   | n/a             |
+| 13  | TBA                 | Unsolved   | n/a             |
+| 14  | TBA                 | Unsolved   | n/a             |
+| 15  | TBA                 | Unsolved   | n/a             |
+| 16  | TBA                 | Unsolved   | n/a             |
+| 17  | TBA                 | Unsolved   | n/a             |
+| 18  | TBA                 | Unsolved   | n/a             |
+| 19  | TBA                 | Unsolved   | n/a             |
+| 20  | TBA                 | Unsolved   | n/a             |
+| 21  | TBA                 | Unsolved   | n/a             |
+| 22  | TBA                 | Unsolved   | n/a             |
+| 23  | TBA                 | Unsolved   | n/a             |
+| 24  | TBA                 | Unsolved   | n/a             |
+| 25  | TBA                 | Unsolved   | n/a             |
+
 ### 2017
+
+| Day | Name                | Status     | Performance     |
+|---- | ------------------- | ---------- | --------------- |
+| 01  | Report Repair       | Done       | 0.59ms / 0.39ms |
+| 02  | Password Philosophy | Done       | 1.12ms / 1.11ms |
+| 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms |
+| 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
+| 05  | Binary Boarding     | Done       | 0.31ms / 0.32ms |
+| 06  | Custom Customs      | Done       | 0.46ms / 0.47ms |
+| 07  | TBA                 | Unsolved   | n/a             |
+| 08  | TBA                 | Unsolved   | n/a             |
+| 09  | TBA                 | Unsolved   | n/a             |
+| 10  | TBA                 | Unsolved   | n/a             |
+| 11  | TBA                 | Unsolved   | n/a             |
+| 12  | TBA                 | Unsolved   | n/a             |
+| 13  | TBA                 | Unsolved   | n/a             |
+| 14  | TBA                 | Unsolved   | n/a             |
+| 15  | TBA                 | Unsolved   | n/a             |
+| 16  | TBA                 | Unsolved   | n/a             |
+| 17  | TBA                 | Unsolved   | n/a             |
+| 18  | TBA                 | Unsolved   | n/a             |
+| 19  | TBA                 | Unsolved   | n/a             |
+| 20  | TBA                 | Unsolved   | n/a             |
+| 21  | TBA                 | Unsolved   | n/a             |
+| 22  | TBA                 | Unsolved   | n/a             |
+| 23  | TBA                 | Unsolved   | n/a             |
+| 24  | TBA                 | Unsolved   | n/a             |
+| 25  | TBA                 | Unsolved   | n/a             |
 
 ### 2018
 
@@ -89,7 +169,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
 | 05  | Binary Boarding     | Done       | 0.31ms / 0.32ms |
 | 06  | Custom Customs      | Done       | 0.46ms / 0.47ms |
-| 07  | TBA                 | Unsolved   | n/a             |
+| 07  | Handy Haversacks    | Done       | 4.04ms / 4.46ms |
 | 08  | TBA                 | Unsolved   | n/a             |
 | 09  | TBA                 | Unsolved   | n/a             |
 | 10  | TBA                 | Unsolved   | n/a             |
