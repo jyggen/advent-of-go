@@ -31,7 +31,7 @@ func SolvePart1(input string) (string, error) {
 
 	for _, g := range groups {
 		for i := 'a'; i <= 'z'; i++ {
-			if strings.Count(g, string(i)) > 0 {
+			if strings.ContainsRune(g, i) {
 				sum++
 			}
 		}
@@ -45,10 +45,16 @@ func SolvePart2(input string) (string, error) {
 	sum := 0
 
 	for _, g := range groups {
-		size := strings.Count(g, ",") + 1
+		size := strings.Count(g, ",")
+		parts := strings.SplitN(g, ",", 2)
 
-		for i := 'a'; i <= 'z'; i++ {
-			if c := strings.Count(g, string(i)); c == size {
+		if len(parts) == 1 {
+			sum += len(parts[0])
+			continue
+		}
+
+		for _, r := range parts[0] {
+			if c := strings.Count(parts[1], string(r)); c == size {
 				sum++
 			}
 		}
