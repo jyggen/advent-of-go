@@ -19,7 +19,7 @@ jobs:
                   go-version: ^1.13
 
             - name: Install Tesseract
-              run: sudo apt install libtesseract-dev
+              run: sudo apt install libtesseract-dev tesseract-ocr-eng
 
             - name: Check out code into the Go module directory
               uses: actions/checkout@v2
