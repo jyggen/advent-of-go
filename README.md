@@ -41,63 +41,63 @@ The execution times in the performance column are based on `go test -bench .` ru
 
 ### 2016
 
-| Day | Name                | Status     | Performance     |
-|---- | ------------------- | ---------- | --------------- |
-| 01  | Report Repair       | Done       | 0.59ms / 0.39ms |
-| 02  | Password Philosophy | Done       | 1.12ms / 1.11ms |
-| 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms |
-| 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
-| 05  | Binary Boarding     | Done       | 0.31ms / 0.32ms |
-| 06  | Custom Customs      | Done       | 0.46ms / 0.47ms |
-| 07  | TBA                 | Unsolved   | n/a             |
-| 08  | TBA                 | Unsolved   | n/a             |
-| 09  | TBA                 | Unsolved   | n/a             |
-| 10  | TBA                 | Unsolved   | n/a             |
-| 11  | TBA                 | Unsolved   | n/a             |
-| 12  | TBA                 | Unsolved   | n/a             |
-| 13  | TBA                 | Unsolved   | n/a             |
-| 14  | TBA                 | Unsolved   | n/a             |
-| 15  | TBA                 | Unsolved   | n/a             |
-| 16  | TBA                 | Unsolved   | n/a             |
-| 17  | TBA                 | Unsolved   | n/a             |
-| 18  | TBA                 | Unsolved   | n/a             |
-| 19  | TBA                 | Unsolved   | n/a             |
-| 20  | TBA                 | Unsolved   | n/a             |
-| 21  | TBA                 | Unsolved   | n/a             |
-| 22  | TBA                 | Unsolved   | n/a             |
-| 23  | TBA                 | Unsolved   | n/a             |
-| 24  | TBA                 | Unsolved   | n/a             |
-| 25  | TBA                 | Unsolved   | n/a             |
+| Day | Name                                   | Status     | Performance     |
+|---- | -------------------------------------- | ---------- | --------------- |
+| 01  | No Time for a Taxicab                  | Unsolved   | n/a             |
+| 02  | Bathroom Security                      | Unsolved   | n/a             |
+| 03  | Squares With Three Sides               | Unsolved   | n/a             |
+| 04  | Security Through Obscurity             | Unsolved   | n/a             |
+| 05  | How About a Nice Game of Chess?        | Unsolved   | n/a             |
+| 06  | Signals and Noise                      | Unsolved   | n/a             |
+| 07  | Internet Protocol Version 7            | Unsolved   | n/a             |
+| 08  | Two-Factor Authentication              | Unsolved   | n/a             |
+| 09  | Explosives in Cyberspace               | Unsolved   | n/a             |
+| 10  | Balance Bots                           | Unsolved   | n/a             |
+| 11  | Radioisotope Thermoelectric Generators | Unsolved   | n/a             |
+| 12  | Leonardo's Monorail                    | Unsolved   | n/a             |
+| 13  | A Maze of Twisty Little Cubicles       | Unsolved   | n/a             |
+| 14  | One-Time Pad                           | Unsolved   | n/a             |
+| 15  | Timing is Everything                   | Unsolved   | n/a             |
+| 16  | Dragon Checksum                        | Unsolved   | n/a             |
+| 17  | Two Steps Forward                      | Unsolved   | n/a             |
+| 18  | Like a Rogue                           | Unsolved   | n/a             |
+| 19  | An Elephant Named Joseph               | Unsolved   | n/a             |
+| 20  | Firewall Rules                         | Unsolved   | n/a             |
+| 21  | Scrambled Letters and Hash             | Unsolved   | n/a             |
+| 22  | Grid Computing                         | Unsolved   | n/a             |
+| 23  | Safe Cracking                          | Unsolved   | n/a             |
+| 24  | Air Duct Spelunking                    | Unsolved   | n/a             |
+| 25  | Clock Signal                           | Unsolved   | n/a             |
 
 ### 2017
 
-| Day | Name                | Status     | Performance     |
-|---- | ------------------- | ---------- | --------------- |
-| 01  | Report Repair       | Done       | 0.59ms / 0.39ms |
-| 02  | Password Philosophy | Done       | 1.12ms / 1.11ms |
-| 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms |
-| 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
-| 05  | Binary Boarding     | Done       | 0.31ms / 0.32ms |
-| 06  | Custom Customs      | Done       | 0.46ms / 0.47ms |
-| 07  | TBA                 | Unsolved   | n/a             |
-| 08  | TBA                 | Unsolved   | n/a             |
-| 09  | TBA                 | Unsolved   | n/a             |
-| 10  | TBA                 | Unsolved   | n/a             |
-| 11  | TBA                 | Unsolved   | n/a             |
-| 12  | TBA                 | Unsolved   | n/a             |
-| 13  | TBA                 | Unsolved   | n/a             |
-| 14  | TBA                 | Unsolved   | n/a             |
-| 15  | TBA                 | Unsolved   | n/a             |
-| 16  | TBA                 | Unsolved   | n/a             |
-| 17  | TBA                 | Unsolved   | n/a             |
-| 18  | TBA                 | Unsolved   | n/a             |
-| 19  | TBA                 | Unsolved   | n/a             |
-| 20  | TBA                 | Unsolved   | n/a             |
-| 21  | TBA                 | Unsolved   | n/a             |
-| 22  | TBA                 | Unsolved   | n/a             |
-| 23  | TBA                 | Unsolved   | n/a             |
-| 24  | TBA                 | Unsolved   | n/a             |
-| 25  | TBA                 | Unsolved   | n/a             |
+| Day | Name                                    | Status     | Performance     |
+|---- | --------------------------------------- | ---------- | --------------- |
+| 01  | Inverse Captcha                         | Unsolved   | n/a             |
+| 02  | Corruption Checksum                     | Unsolved   | n/a             |
+| 03  | Spiral Memory                           | Unsolved   | n/a             |
+| 04  | High-Entropy Passphrases                | Unsolved   | n/a             |
+| 05  | A Maze of Twisty Trampolines, All Alike | Unsolved   | n/a             |
+| 06  | Memory Reallocation                     | Unsolved   | n/a             |
+| 07  | Recursive Circus                        | Unsolved   | n/a             |
+| 08  | I Heard You Like Registers              | Unsolved   | n/a             |
+| 09  | Stream Processing                       | Unsolved   | n/a             |
+| 10  | Knot Hash                               | Unsolved   | n/a             |
+| 11  | Hex Ed                                  | Unsolved   | n/a             |
+| 12  | Digital Plumber                         | Unsolved   | n/a             |
+| 13  | Packet Scanners                         | Unsolved   | n/a             |
+| 14  | Disk Defragmentation                    | Unsolved   | n/a             |
+| 15  | Dueling Generators                      | Unsolved   | n/a             |
+| 16  | Permutation Promenade                   | Unsolved   | n/a             |
+| 17  | Spinlock                                | Unsolved   | n/a             |
+| 18  | Duet                                    | Unsolved   | n/a             |
+| 19  | A Series of Tubes                       | Unsolved   | n/a             |
+| 20  | Particle Swarm                          | Unsolved   | n/a             |
+| 21  | Fractal Art                             | Unsolved   | n/a             |
+| 22  | Sporifica Virus                         | Unsolved   | n/a             |
+| 23  | Coprocessor Conflagration               | Unsolved   | n/a             |
+| 24  | Electromagnetic Moat                    | Unsolved   | n/a             |
+| 25  | The Halting Problem                     | Unsolved   | n/a             |
 
 ### 2018
 
