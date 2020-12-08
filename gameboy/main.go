@@ -73,6 +73,10 @@ func (gb *Gameboy) Lookahead() *opcode {
 	return gb.opcodes[gb.next]
 }
 
+func (gb *Gameboy) Position() int {
+	return gb.current
+}
+
 func (gb *Gameboy) Reset() {
 	gb.accumulator = 0
 	gb.current = -1

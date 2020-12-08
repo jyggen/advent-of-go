@@ -170,7 +170,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 05  | Binary Boarding     | Done       | 0.18ms / 0.18ms |
 | 06  | Custom Customs      | Done       | 0.34ms / 0.30ms |
 | 07  | Handy Haversacks    | Done       | 2.89ms / 2.88ms |
-| 08  | Handheld Halting    | Done       | 0.45ms / 0.64ms |
+| 08  | Handheld Halting    | Done       | 0.46ms / 0.96ms |
 | 09  | TBA                 | Unreleased | n/a             |
 | 10  | TBA                 | Unreleased | n/a             |
 | 11  | TBA                 | Unreleased | n/a             |

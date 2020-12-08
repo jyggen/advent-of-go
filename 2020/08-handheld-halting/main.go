@@ -31,93 +31,43 @@ func SolvePart1(input string) (string, error) {
 	}
 }
 
-// Shamelessly refactored to be based on https://github.com/smmalis37/aoc2020/blob/main/src/days/day8.rs
 func SolvePart2(input string) (string, error) {
 	gb := gameboy.New(input)
-
-	for {
-		gb.Step()
-
-		if gb.Lookahead().Visits() == 1 {
-			break
-		}
-	}
-
 	opcodes := gb.Opcodes()
-	potential := make(map[int]bool, 0)
-	i := len(opcodes)
+	opLen := len(opcodes)
+	i := 0
 
+BruteLoop:
 	for {
-		potential[i] = true
-		i--
+		i++
+		op := opcodes[i]
 
-		if opcodes[i].Kind() == gameboy.Jmp && opcodes[i].Value() < 0 {
-			break
+		if op.Kind() == gameboy.Jmp {
+			op.SetKind(gameboy.Nop)
+		} else if op.Kind() == gameboy.Nop {
+			op.SetKind(gameboy.Jmp)
 		}
-	}
 
-	start := i
+		gb.Reset()
 
-	var swap int
-
-	if opcodes[i].Visits() > 0 {
-		swap = i
-	} else {
 		for {
-			i -= 1
+			gb.Step()
 
-			if potential[i] {
-				continue
+			if gb.Position() + 1 >= opLen {
+				break BruteLoop
 			}
 
-			if opcodes[i].Kind() == gameboy.Nop && opcodes[i].Visits() > 0 {
-				if _, ok := potential[i+opcodes[i].Value()]; ok {
-					swap = i
-					break
-				}
-			} else if opcodes[i].Kind() == gameboy.Jmp && opcodes[i].Visits() == 0 {
-				if _, ok := potential[i+opcodes[i].Value()]; !ok {
-					continue
-				}
-
-				if _, ok := potential[i]; ok {
-					continue
-				}
-
-				j := i - 1
-
-				for {
-					if opcodes[j].Kind() == gameboy.Jmp {
-						break
-					}
-
-					j--
-				}
-
-				if opcodes[j].Visits() > 0 {
-					swap = j
-					break
-				}
-
-				for j = j + 1; j <= i; j++ {
-					potential[j] = true
-				}
-
-				i = start
+			if gb.Lookahead().Visits() == i {
+				break
 			}
 		}
+
+		if op.Kind() == gameboy.Jmp {
+			op.SetKind(gameboy.Nop)
+		} else if op.Kind() == gameboy.Nop {
+			op.SetKind(gameboy.Jmp)
+		}
 	}
-
-	op := opcodes[swap]
-
-	if op.Kind() == gameboy.Nop {
-		op.SetKind(gameboy.Jmp)
-	} else {
-		op.SetKind(gameboy.Nop)
-	}
-
-	gb.Reset()
-	gb.Run()
 
 	return strconv.Itoa(gb.Accumulator()), nil
 }
