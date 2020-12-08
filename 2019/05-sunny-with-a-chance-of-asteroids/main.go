@@ -9,8 +9,6 @@ import (
 	"strconv"
 )
 
-const target = 19690720
-
 func main() {
 	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
@@ -31,12 +29,10 @@ func SolvePart1(input string) (string, error) {
 
 	pc := intcode.NewComputer(instructions)
 
-	pc.SetValue(1, 12)
-	pc.SetValue(2, 2)
+	err = pc.Execute(1)
+	output := pc.Output()
 
-	err = pc.Execute(0)
-
-	return strconv.Itoa(pc.Value(0)), err
+	return strconv.Itoa(output[len(output)-1]), err
 }
 
 func SolvePart2(input string) (string, error) {
@@ -47,40 +43,9 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	pc := intcode.NewComputer(instructions)
-	noun := 0
-	verb := 0
 
-	for result := 0; result <= target; noun++ {
-		pc.Reset()
-		pc.SetValue(1, noun)
-		pc.SetValue(2, verb)
+	err = pc.Execute(5)
+	output := pc.Output()
 
-		err = pc.Execute(0)
-
-		if err != nil {
-			return "", err
-		}
-
-		result = pc.Value(0)
-	}
-
-	noun -= 2
-
-	for result := 0; result <= target; verb++ {
-		pc.Reset()
-		pc.SetValue(1, noun)
-		pc.SetValue(2, verb)
-
-		err = pc.Execute(0)
-
-		if err != nil {
-			return "", err
-		}
-
-		result = pc.Value(0)
-	}
-
-	verb -= 2
-
-	return strconv.Itoa(100*noun + verb), nil
+	return strconv.Itoa(output[len(output)-1]), err
 }
