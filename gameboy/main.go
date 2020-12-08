@@ -1,7 +1,7 @@
 package gameboy
 
 import (
-	"regexp"
+	"github.com/jyggen/advent-of-go/utils"
 	"strconv"
 	"strings"
 )
@@ -11,8 +11,6 @@ const (
 	Jmp = iota
 	Nop = iota
 )
-
-var inputParser *regexp.Regexp
 
 type Gameboy struct {
 	accumulator int
@@ -28,19 +26,16 @@ type opcode struct {
 	visits int
 }
 
-func init() {
-	inputParser = regexp.MustCompile(`(?m)^([a-z]{3}) ([+-]\d+)$`)
-}
-
 func New(input string) *Gameboy {
-	input = strings.TrimSpace(input)
-	opcodes := make([]*opcode, strings.Count(input, "\n")+1)
+	lines := utils.ToStringSlice(input, "\n")
+	opcodes := make([]*opcode, len(lines))
 
-	for i, m := range inputParser.FindAllStringSubmatch(input, -1) {
-		value, _ := strconv.Atoi(m[2])
+	for i, line := range lines {
+		parts := strings.Split(line, " ")
+		value, _ := strconv.Atoi(parts[1])
 		kind := Nop
 
-		switch m[1] {
+		switch parts[0] {
 		case "acc":
 			kind = Acc
 		case "jmp":
