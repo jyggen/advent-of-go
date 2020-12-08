@@ -31,7 +31,7 @@ func SolvePart1(input string) (string, error) {
 	}
 }
 
-// non-bruteforce solution based on /u/smmalis37.
+// Shamelessly refactored to be based on https://github.com/smmalis37/aoc2020/blob/main/src/days/day8.rs
 func SolvePart2(input string) (string, error) {
 	gb := gameboy.New(input)
 
