@@ -21,14 +21,18 @@ func main() {
 
 func SolvePart1(input string) (string, error) {
 	gb := gameboy.New(input)
+	visited := make(map[int]bool)
 
 	for {
-		gb.Step()
-
-		if gb.Lookahead().Visits() == 1 {
-			return strconv.Itoa(gb.Accumulator()), nil
+		if _, ok := visited[gb.Lookahead()]; ok {
+			break
 		}
+
+		gb.Step()
+		visited[gb.Position()] = true
 	}
+
+	return strconv.Itoa(gb.Accumulator()), nil
 }
 
 func SolvePart2(input string) (string, error) {
@@ -40,6 +44,7 @@ func SolvePart2(input string) (string, error) {
 BruteLoop:
 	for {
 		i++
+		visited := make(map[int]bool)
 		op := opcodes[i]
 
 		if op.Kind() == gameboy.Jmp {
@@ -51,15 +56,17 @@ BruteLoop:
 		gb.Reset()
 
 		for {
-			gb.Step()
-
-			if gb.Position() + 1 >= opLen {
+			if gb.Lookahead() >= opLen {
 				break BruteLoop
 			}
 
-			if gb.Lookahead().Visits() == i {
+			if _, ok := visited[gb.Lookahead()]; ok {
 				break
 			}
+
+			gb.Step()
+
+			visited[gb.Position()] = true
 		}
 
 		if op.Kind() == gameboy.Jmp {

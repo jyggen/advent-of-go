@@ -23,9 +23,8 @@ type Gameboy struct {
 }
 
 type opcode struct {
-	kind   int
-	value  int
-	visits int
+	kind  int
+	value int
 }
 
 func init() {
@@ -69,8 +68,8 @@ func (gb *Gameboy) Opcodes() []*opcode {
 	return gb.opcodes
 }
 
-func (gb *Gameboy) Lookahead() *opcode {
-	return gb.opcodes[gb.next]
+func (gb *Gameboy) Lookahead() int {
+	return gb.next
 }
 
 func (gb *Gameboy) Position() int {
@@ -101,8 +100,6 @@ func (gb *Gameboy) Step() {
 	case Nop:
 		gb.next++
 	}
-
-	gb.opcodes[gb.current].visits++
 }
 
 func (op *opcode) Kind() int {
@@ -115,8 +112,4 @@ func (op *opcode) SetKind(kind int) {
 
 func (op *opcode) Value() int {
 	return op.value
-}
-
-func (op *opcode) Visits() int {
-	return op.visits
 }
