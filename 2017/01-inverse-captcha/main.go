@@ -9,8 +9,6 @@ import (
 	"strconv"
 )
 
-const expectedSum = 2020
-
 func main() {
 	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
@@ -24,6 +22,11 @@ func main() {
 
 func SolvePart1(input string) (string, error) {
 	r, err := makeRing(input)
+
+	if err != nil {
+		return "", err
+	}
+
 	rLen := r.Len()
 	sum := 0
 
@@ -40,8 +43,13 @@ func SolvePart1(input string) (string, error) {
 
 func SolvePart2(input string) (string, error) {
 	r, err := makeRing(input)
+
+	if err != nil {
+		return "", err
+	}
+
 	rLen := r.Len()
-	steps := rLen/2
+	steps := rLen / 2
 	sum := 0
 
 	for i := 0; i < rLen; i++ {

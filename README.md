@@ -11,93 +11,93 @@ The execution times in the performance column are based on `go test -bench .` ru
 
 ### 2015
 
-| Day | Name                                   | Status     | Performance         |
-|---- | -------------------------------------- | ---------- | ------------------- |
-| 01  | Not Quite Lisp                         | Unsolved   | n/a                 |
-| 02  | I Was Told There Would Be No Math      | Unsolved   | n/a                 |
-| 03  | Perfectly Spherical Houses in a Vacuum | Unsolved   | n/a                 |
-| 04  | The Ideal Stocking Stuffer             | Done       | 94.12ms / 2623.24ms |
-| 05  | Doesn't He Have Intern-Elves For This? | Unsolved   | n/a                 |
-| 06  | Probably a Fire Hazard                 | Unsolved   | n/a                 |
-| 07  | Some Assembly Required                 | Unsolved   | n/a                 |
-| 08  | Matchsticks                            | Unsolved   | n/a                 |
-| 09  | All in a Single Night                  | Unsolved   | n/a                 |
-| 10  | Elves Look, Elves Say                  | Unsolved   | n/a                 |
-| 11  | Corporate Policy                       | Unsolved   | n/a                 |
-| 12  | JSAbacusFramework.io                   | Unsolved   | n/a                 |
-| 13  | Knights of the Dinner Table            | Unsolved   | n/a                 |
-| 14  | Reindeer Olympics                      | Unsolved   | n/a                 |
-| 15  | Science for Hungry People              | Unsolved   | n/a                 |
-| 16  | Aunt Sue                               | Unsolved   | n/a                 |
-| 17  | No Such Thing as Too Much              | Unsolved   | n/a                 |
-| 18  | Like a GIF For Your Yard               | Unsolved   | n/a                 |
-| 19  | Medicine for Rudolph                   | Unsolved   | n/a                 |
-| 20  | Infinite Elves and Infinite Houses     | Unsolved   | n/a                 |
-| 21  | RPG Simulator 20XX                     | Unsolved   | n/a                 |
-| 22  | Wizard Simulator 20XX                  | Unsolved   | n/a                 |
-| 23  | Opening the Turing Lock                | Unsolved   | n/a                 |
-| 24  | It Hangs in the Balance                | Unsolved   | n/a                 |
-| 25  | Let It Snow                            | Unsolved   | n/a                 |
+| Day | Name                                   | Status        | Performance         |
+|---- | -------------------------------------- | ------------- | ------------------- |
+| 01  | Not Quite Lisp                         | Unimplemented | n/a                 |
+| 02  | I Was Told There Would Be No Math      | Unimplemented | n/a                 |
+| 03  | Perfectly Spherical Houses in a Vacuum | Unimplemented | n/a                 |
+| 04  | The Ideal Stocking Stuffer             | Done          | 94.12ms / 2623.24ms |
+| 05  | Doesn't He Have Intern-Elves For This? | Unimplemented | n/a                 |
+| 06  | Probably a Fire Hazard                 | Unimplemented | n/a                 |
+| 07  | Some Assembly Required                 | Unimplemented | n/a                 |
+| 08  | Matchsticks                            | Unimplemented | n/a                 |
+| 09  | All in a Single Night                  | Unimplemented | n/a                 |
+| 10  | Elves Look, Elves Say                  | Unimplemented | n/a                 |
+| 11  | Corporate Policy                       | Unimplemented | n/a                 |
+| 12  | JSAbacusFramework.io                   | Unimplemented | n/a                 |
+| 13  | Knights of the Dinner Table            | Unimplemented | n/a                 |
+| 14  | Reindeer Olympics                      | Unimplemented | n/a                 |
+| 15  | Science for Hungry People              | Unimplemented | n/a                 |
+| 16  | Aunt Sue                               | Unimplemented | n/a                 |
+| 17  | No Such Thing as Too Much              | Unimplemented | n/a                 |
+| 18  | Like a GIF For Your Yard               | Unimplemented | n/a                 |
+| 19  | Medicine for Rudolph                   | Unimplemented | n/a                 |
+| 20  | Infinite Elves and Infinite Houses     | Unimplemented | n/a                 |
+| 21  | RPG Simulator 20XX                     | Unimplemented | n/a                 |
+| 22  | Wizard Simulator 20XX                  | Unimplemented | n/a                 |
+| 23  | Opening the Turing Lock                | Unimplemented | n/a                 |
+| 24  | It Hangs in the Balance                | Unimplemented | n/a                 |
+| 25  | Let It Snow                            | Unimplemented | n/a                 |
 
 ### 2016
 
-| Day | Name                                   | Status     | Performance     |
-|---- | -------------------------------------- | ---------- | --------------- |
-| 01  | No Time for a Taxicab                  | Unsolved   | n/a             |
-| 02  | Bathroom Security                      | Unsolved   | n/a             |
-| 03  | Squares With Three Sides               | Unsolved   | n/a             |
-| 04  | Security Through Obscurity             | Unsolved   | n/a             |
-| 05  | How About a Nice Game of Chess?        | Unsolved   | n/a             |
-| 06  | Signals and Noise                      | Unsolved   | n/a             |
-| 07  | Internet Protocol Version 7            | Unsolved   | n/a             |
-| 08  | Two-Factor Authentication              | Unsolved   | n/a             |
-| 09  | Explosives in Cyberspace               | Unsolved   | n/a             |
-| 10  | Balance Bots                           | Unsolved   | n/a             |
-| 11  | Radioisotope Thermoelectric Generators | Unsolved   | n/a             |
-| 12  | Leonardo's Monorail                    | Unsolved   | n/a             |
-| 13  | A Maze of Twisty Little Cubicles       | Unsolved   | n/a             |
-| 14  | One-Time Pad                           | Unsolved   | n/a             |
-| 15  | Timing is Everything                   | Unsolved   | n/a             |
-| 16  | Dragon Checksum                        | Unsolved   | n/a             |
-| 17  | Two Steps Forward                      | Unsolved   | n/a             |
-| 18  | Like a Rogue                           | Unsolved   | n/a             |
-| 19  | An Elephant Named Joseph               | Unsolved   | n/a             |
-| 20  | Firewall Rules                         | Unsolved   | n/a             |
-| 21  | Scrambled Letters and Hash             | Unsolved   | n/a             |
-| 22  | Grid Computing                         | Unsolved   | n/a             |
-| 23  | Safe Cracking                          | Unsolved   | n/a             |
-| 24  | Air Duct Spelunking                    | Unsolved   | n/a             |
-| 25  | Clock Signal                           | Unsolved   | n/a             |
+| Day | Name                                   | Status        | Performance     |
+|---- | -------------------------------------- | ------------- | --------------- |
+| 01  | No Time for a Taxicab                  | Unimplemented | n/a             |
+| 02  | Bathroom Security                      | Unimplemented | n/a             |
+| 03  | Squares With Three Sides               | Unimplemented | n/a             |
+| 04  | Security Through Obscurity             | Unimplemented | n/a             |
+| 05  | How About a Nice Game of Chess?        | Unimplemented | n/a             |
+| 06  | Signals and Noise                      | Unimplemented | n/a             |
+| 07  | Internet Protocol Version 7            | Unimplemented | n/a             |
+| 08  | Two-Factor Authentication              | Unimplemented | n/a             |
+| 09  | Explosives in Cyberspace               | Unimplemented | n/a             |
+| 10  | Balance Bots                           | Unimplemented | n/a             |
+| 11  | Radioisotope Thermoelectric Generators | Unimplemented | n/a             |
+| 12  | Leonardo's Monorail                    | Unimplemented | n/a             |
+| 13  | A Maze of Twisty Little Cubicles       | Unimplemented | n/a             |
+| 14  | One-Time Pad                           | Unimplemented | n/a             |
+| 15  | Timing is Everything                   | Unimplemented | n/a             |
+| 16  | Dragon Checksum                        | Unimplemented | n/a             |
+| 17  | Two Steps Forward                      | Unimplemented | n/a             |
+| 18  | Like a Rogue                           | Unimplemented | n/a             |
+| 19  | An Elephant Named Joseph               | Unimplemented | n/a             |
+| 20  | Firewall Rules                         | Unimplemented | n/a             |
+| 21  | Scrambled Letters and Hash             | Unimplemented | n/a             |
+| 22  | Grid Computing                         | Unimplemented | n/a             |
+| 23  | Safe Cracking                          | Unimplemented | n/a             |
+| 24  | Air Duct Spelunking                    | Unimplemented | n/a             |
+| 25  | Clock Signal                           | Unimplemented | n/a             |
 
 ### 2017
 
-| Day | Name                                    | Status     | Performance     |
-|---- | --------------------------------------- | ---------- | --------------- |
-| 01  | Inverse Captcha                         | Unsolved   | n/a             |
-| 02  | Corruption Checksum                     | Unsolved   | n/a             |
-| 03  | Spiral Memory                           | Unsolved   | n/a             |
-| 04  | High-Entropy Passphrases                | Unsolved   | n/a             |
-| 05  | A Maze of Twisty Trampolines, All Alike | Unsolved   | n/a             |
-| 06  | Memory Reallocation                     | Unsolved   | n/a             |
-| 07  | Recursive Circus                        | Unsolved   | n/a             |
-| 08  | I Heard You Like Registers              | Unsolved   | n/a             |
-| 09  | Stream Processing                       | Unsolved   | n/a             |
-| 10  | Knot Hash                               | Unsolved   | n/a             |
-| 11  | Hex Ed                                  | Unsolved   | n/a             |
-| 12  | Digital Plumber                         | Unsolved   | n/a             |
-| 13  | Packet Scanners                         | Unsolved   | n/a             |
-| 14  | Disk Defragmentation                    | Unsolved   | n/a             |
-| 15  | Dueling Generators                      | Unsolved   | n/a             |
-| 16  | Permutation Promenade                   | Unsolved   | n/a             |
-| 17  | Spinlock                                | Unsolved   | n/a             |
-| 18  | Duet                                    | Unsolved   | n/a             |
-| 19  | A Series of Tubes                       | Unsolved   | n/a             |
-| 20  | Particle Swarm                          | Unsolved   | n/a             |
-| 21  | Fractal Art                             | Unsolved   | n/a             |
-| 22  | Sporifica Virus                         | Unsolved   | n/a             |
-| 23  | Coprocessor Conflagration               | Unsolved   | n/a             |
-| 24  | Electromagnetic Moat                    | Unsolved   | n/a             |
-| 25  | The Halting Problem                     | Unsolved   | n/a             |
+| Day | Name                                    | Status        | Performance     |
+|---- | --------------------------------------- | ------------- | --------------- |
+| 01  | Inverse Captcha                         | Done          | 0.19ms / 4.13ms |
+| 02  | Corruption Checksum                     | Unimplemented | n/a             |
+| 03  | Spiral Memory                           | Unimplemented | n/a             |
+| 04  | High-Entropy Passphrases                | Unimplemented | n/a             |
+| 05  | A Maze of Twisty Trampolines, All Alike | Unimplemented | n/a             |
+| 06  | Memory Reallocation                     | Unimplemented | n/a             |
+| 07  | Recursive Circus                        | Unimplemented | n/a             |
+| 08  | I Heard You Like Registers              | Unimplemented | n/a             |
+| 09  | Stream Processing                       | Unimplemented | n/a             |
+| 10  | Knot Hash                               | Unimplemented | n/a             |
+| 11  | Hex Ed                                  | Unimplemented | n/a             |
+| 12  | Digital Plumber                         | Unimplemented | n/a             |
+| 13  | Packet Scanners                         | Unimplemented | n/a             |
+| 14  | Disk Defragmentation                    | Unimplemented | n/a             |
+| 15  | Dueling Generators                      | Unimplemented | n/a             |
+| 16  | Permutation Promenade                   | Unimplemented | n/a             |
+| 17  | Spinlock                                | Unimplemented | n/a             |
+| 18  | Duet                                    | Unimplemented | n/a             |
+| 19  | A Series of Tubes                       | Unimplemented | n/a             |
+| 20  | Particle Swarm                          | Unimplemented | n/a             |
+| 21  | Fractal Art                             | Unimplemented | n/a             |
+| 22  | Sporifica Virus                         | Unimplemented | n/a             |
+| 23  | Coprocessor Conflagration               | Unimplemented | n/a             |
+| 24  | Electromagnetic Moat                    | Unimplemented | n/a             |
+| 25  | The Halting Problem                     | Unimplemented | n/a             |
 
 ### 2018
 
@@ -171,23 +171,23 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 06  | Custom Customs      | Done       | 0.34ms / 0.30ms |
 | 07  | Handy Haversacks    | Done       | 2.89ms / 2.88ms |
 | 08  | Handheld Halting    | Done       | 0.45ms / 0.64ms |
-| 09  | TBA                 | Unsolved   | n/a             |
-| 10  | TBA                 | Unsolved   | n/a             |
-| 11  | TBA                 | Unsolved   | n/a             |
-| 12  | TBA                 | Unsolved   | n/a             |
-| 13  | TBA                 | Unsolved   | n/a             |
-| 14  | TBA                 | Unsolved   | n/a             |
-| 15  | TBA                 | Unsolved   | n/a             |
-| 16  | TBA                 | Unsolved   | n/a             |
-| 17  | TBA                 | Unsolved   | n/a             |
-| 18  | TBA                 | Unsolved   | n/a             |
-| 19  | TBA                 | Unsolved   | n/a             |
-| 20  | TBA                 | Unsolved   | n/a             |
-| 21  | TBA                 | Unsolved   | n/a             |
-| 22  | TBA                 | Unsolved   | n/a             |
-| 23  | TBA                 | Unsolved   | n/a             |
-| 24  | TBA                 | Unsolved   | n/a             |
-| 25  | TBA                 | Unsolved   | n/a             |
+| 09  | TBA                 | Unreleased | n/a             |
+| 10  | TBA                 | Unreleased | n/a             |
+| 11  | TBA                 | Unreleased | n/a             |
+| 12  | TBA                 | Unreleased | n/a             |
+| 13  | TBA                 | Unreleased | n/a             |
+| 14  | TBA                 | Unreleased | n/a             |
+| 15  | TBA                 | Unreleased | n/a             |
+| 16  | TBA                 | Unreleased | n/a             |
+| 17  | TBA                 | Unreleased | n/a             |
+| 18  | TBA                 | Unreleased | n/a             |
+| 19  | TBA                 | Unreleased | n/a             |
+| 20  | TBA                 | Unreleased | n/a             |
+| 21  | TBA                 | Unreleased | n/a             |
+| 22  | TBA                 | Unreleased | n/a             |
+| 23  | TBA                 | Unreleased | n/a             |
+| 24  | TBA                 | Unreleased | n/a             |
+| 25  | TBA                 | Unreleased | n/a             |
 
 
 [build]: https://github.com/jyggen/advent-of-go/actions
