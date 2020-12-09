@@ -171,7 +171,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 06  | Custom Customs      | Done       | 0.34ms / 0.30ms |
 | 07  | Handy Haversacks    | Done       | 2.89ms / 2.88ms |
 | 08  | Handheld Halting    | Done       | 0.12ms / 0.29ms |
-| 09  | TBA                 | Unreleased | n/a             |
+| 09  | Encoding Error      | Done       | 0.06ms / 0.07ms |
 | 10  | TBA                 | Unreleased | n/a             |
 | 11  | TBA                 | Unreleased | n/a             |
 | 12  | TBA                 | Unreleased | n/a             |
