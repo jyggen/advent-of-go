@@ -1,20 +1,13 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"github.com/jyggen/advent-of-go/solver"
 	"github.com/jyggen/advent-of-go/utils"
 	"os"
-	"regexp"
 	"strconv"
+	"strings"
 )
-
-var inputRegex *regexp.Regexp
-
-func init() {
-	inputRegex = regexp.MustCompile(`^(\d+)-(\d+) ([a-z]): ([a-z]+)$`)
-}
 
 func main() {
 	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
@@ -32,11 +25,7 @@ func SolvePart1(input string) (string, error) {
 	valid := 0
 
 	for _, rule := range rules {
-		password, letter, lowerLimit, upperLimit, err := parseRule(rule)
-
-		if err != nil {
-			return "", err
-		}
+		password, letter, lowerLimit, upperLimit := parseRule(rule)
 
 		found := 0
 
@@ -59,11 +48,7 @@ func SolvePart2(input string) (string, error) {
 	valid := 0
 
 	for _, rule := range rules {
-		password, letter, i1, i2, err := parseRule(rule)
-
-		if err != nil {
-			return "", err
-		}
+		password, letter, i1, i2 := parseRule(rule)
 
 		i1--
 		i2--
@@ -76,27 +61,13 @@ func SolvePart2(input string) (string, error) {
 	return strconv.Itoa(valid), nil
 }
 
-func parseRule(rule string) ([]rune, rune, int, int, error) {
-	match := inputRegex.FindStringSubmatch(rule)
+func parseRule(rule string) ([]rune, rune, int, int) {
+	parts := strings.Split(rule, " ")
+	limits := strings.Split(parts[0], "-")
+	lowerLimit, _ := strconv.Atoi(limits[0])
+	upperLimit, _ := strconv.Atoi(limits[1])
+	letter := []rune(parts[1])[0]
+	password := []rune(parts[2])
 
-	if match == nil {
-		return nil, 0, 0, 0, errors.New("unable to parse input")
-	}
-
-	lowerLimit, err := strconv.Atoi(match[1])
-
-	if err != nil {
-		return nil, 0, 0, 0, err
-	}
-
-	upperLimit, err := strconv.Atoi(match[2])
-
-	if err != nil {
-		return nil, 0, 0, 0, err
-	}
-
-	letter := []rune(match[3])[0]
-	password := []rune(match[4])
-
-	return password, letter, lowerLimit, upperLimit, nil
+	return password, letter, lowerLimit, upperLimit
 }

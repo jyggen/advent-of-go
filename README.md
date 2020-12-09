@@ -164,7 +164,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | Day | Name                | Status     | Performance     |
 |---- | ------------------- | ---------- | --------------- |
 | 01  | Report Repair       | Done       | 0.59ms / 0.39ms |
-| 02  | Password Philosophy | Done       | 1.12ms / 1.11ms |
+| 02  | Password Philosophy | Done       | 0.41ms / 0.42ms |
 | 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms |
 | 04  | Passport Processing | Done       | 2.38ms / 2.70ms |
 | 05  | Binary Boarding     | Done       | 0.18ms / 0.18ms |
