@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -52,23 +53,24 @@ func InputFromFile(name string) string {
 		panic(err)
 	}
 
-	return string(input)
+	return strings.Replace(string(input), "\r", "", -1)
 }
 
 func SolveFromFile(f *os.File, s1 Solver, s2 Solver) (string, string, error) {
 	input, err := ioutil.ReadAll(f)
+	inputStr := strings.Replace(string(input), "\r", "", -1)
 
 	if err != nil {
 		return "", "", err
 	}
 
-	part1, err := s1(string(input))
+	part1, err := s1(inputStr)
 
 	if err != nil {
 		return part1, "", err
 	}
 
-	part2, err := s2(string(input))
+	part2, err := s2(inputStr)
 
 	return part1, part2, err
 }
