@@ -29,24 +29,19 @@ func main() {
 
 func SolvePart1(input string) (string, error) {
 	adapters, _ := utils.ToIntegerSlice(input, "\n")
-	gaps := map[int]int{
-		1: 0,
-		2: 0,
-		3: 1,
-	}
+	gaps := []int{0, 0, 1}
 
 	sort.Ints(adapters)
 
 	for k, v := range adapters {
-
-		if k == 0 {
-			gaps[v]++
-		} else {
-			gaps[v-adapters[k-1]]++
+		if k != 0 {
+			v -= adapters[k-1]
 		}
+
+		gaps[v-1]++
 	}
 
-	return strconv.Itoa(gaps[1] * gaps[3]), nil
+	return strconv.Itoa(gaps[0] * gaps[2]), nil
 }
 
 func SolvePart2(input string) (string, error) {
