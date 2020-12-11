@@ -120,7 +120,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 15  | Beverage Bandits                     | Done        | 11140.31ms / 126852.57ms |
 | 16  | Chronal Classification               | Done        | 7.62ms / 8.44ms          |
 | 17  | Reservoir Research                   | Done        | 27.05ms / 29.28ms        |
-| 18  | Settlers of The North Pole           | Unsolved    | n/a                      |
+| 18  | Settlers of The North Pole           | Done        | 15.52ms / 903ms          |
 | 19  | Go With The Flow                     | Unsolved    | n/a                      |
 | 20  | A Regular Map                        | Unsolved    | n/a                      |
 | 21  | Chronal Conversion                   | Unsolved    | n/a                      |
