@@ -13,6 +13,7 @@ import (
 type branch struct {
 	branches []*branch
 	cache    int
+	value    int
 }
 
 func main() {
@@ -55,37 +56,25 @@ func SolvePart2(input string) (string, error) {
 
 	adaptersLen := len(adapters)
 	adapters = append(adapters, adapters[adaptersLen-1]+3)
-	numbers := make(map[int]*branch, adaptersLen+1)
+	branches := make([]*branch, adaptersLen+1)
 
-	for _, x := range adapters {
-		numbers[x] = &branch{
+	for k, v := range adapters {
+		b := &branch{
 			branches: make([]*branch, 0),
 			cache:    -1,
-		}
-	}
-
-	for i := adaptersLen; i > -1; i-- {
-		number := numbers[adapters[i]]
-
-		if len(number.branches) == 1 {
-			number.branches = number.branches[0].branches
+			value:    v,
 		}
 
-		j := i - 1
-
-		for {
-			if j < 0 || adapters[i]-adapters[j] > 3 {
-				break
+		for i := k - 1; i >= k-3 && i >= 0; i-- {
+			if branches[i].value >= v-3 {
+				branches[i].branches = append(branches[i].branches, b)
 			}
-
-			lookahead := numbers[adapters[j]]
-			lookahead.branches = append(lookahead.branches, number)
-
-			j--
 		}
+
+		branches[k] = b
 	}
 
-	return strconv.Itoa(getBranchCount(numbers[0])), nil
+	return strconv.Itoa(getBranchCount(branches[0])), nil
 }
 
 func getBranchCount(n *branch) int {

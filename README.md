@@ -172,7 +172,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 07  | Handy Haversacks    | Done       | 2.89ms / 2.88ms |
 | 08  | Handheld Halting    | Done       | 0.12ms / 0.29ms |
 | 09  | Encoding Error      | Done       | 0.06ms / 0.07ms |
-| 10  | Adapter Array       | Unreleased | 0.01ms / 0.05ms |
+| 10  | Adapter Array       | Unreleased | 0.01ms / 0.03ms |
 | 11  | TBA                 | Unreleased | n/a             |
 | 12  | TBA                 | Unreleased | n/a             |
 | 13  | TBA                 | Unreleased | n/a             |
