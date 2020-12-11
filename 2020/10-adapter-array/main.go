@@ -64,17 +64,24 @@ func SolvePart2(input string) (string, error) {
 		}
 	}
 
-	for i := 0; i <= adaptersLen; i++ {
-		lookahead := i + 1
+	for i := adaptersLen; i > -1; i-- {
+		number := numbers[adapters[i]]
+
+		if len(number.branches) == 1 {
+			number.branches = number.branches[0].branches
+		}
+
+		j := i - 1
 
 		for {
-			if lookahead > adaptersLen || adapters[lookahead]-adapters[i] > 3 {
+			if j < 0 || adapters[i]-adapters[j] > 3 {
 				break
 			}
 
-			numbers[adapters[i]].branches = append(numbers[adapters[i]].branches, numbers[adapters[lookahead]])
+			lookahead := numbers[adapters[j]]
+			lookahead.branches = append(lookahead.branches, number)
 
-			lookahead++
+			j--
 		}
 	}
 
