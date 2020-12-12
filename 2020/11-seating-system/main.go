@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jyggen/advent-of-go/solver"
 	"github.com/jyggen/advent-of-go/utils"
-	"github.com/mitchellh/hashstructure/v2"
 	"math"
 	"os"
 	"strconv"
@@ -24,6 +23,20 @@ const (
 	west      = iota
 	northWest = iota
 )
+
+type change struct {
+	cell *cell
+	kind rune
+}
+
+type cell struct {
+	id    int
+	kind  rune
+	north *cell
+	east  *cell
+	south *cell
+	west  *cell
+}
 
 var directions [8]int
 
@@ -50,16 +63,6 @@ func SolvePart2(input string) (string, error) {
 	return strconv.Itoa(simulate(input, math.MaxUint8, 5)), nil
 }
 
-type cell struct {
-	Kind    rune // exported to make it hashable
-	pending rune
-	coords  string
-	north   *cell
-	east    *cell
-	south   *cell
-	west    *cell
-}
-
 func NewGrid(input [][]rune) []*cell {
 	rowLen := len(input)
 	colLen := len(input[0])
@@ -73,8 +76,8 @@ func NewGrid(input [][]rune) []*cell {
 			pos := offset + x
 			n, w := pos-colLen, pos-1
 			grid[pos] = &cell{
-				coords: fmt.Sprint(x, "x", y),
-				Kind:   row,
+				id:   pos,
+				kind: row,
 			}
 
 			if y != 0 {
@@ -143,19 +146,15 @@ func simulate(input string, los int, tolerance int) int {
 	rows := utils.ToRuneSlice(input, "\n")
 	grid := NewGrid(rows)
 
-	var last uint64
-
 	for {
+		pending := make([]*change, 0)
+
 		for _, g := range grid {
-			if g.Kind == floor {
+			if g.kind == floor {
 				continue
 			}
 
-			counts := map[rune]int{
-				empty:    0,
-				floor:    0,
-				occupied: 0,
-			}
+			count := 0
 
 			for _, d := range directions {
 				n := g
@@ -167,62 +166,46 @@ func simulate(input string, los int, tolerance int) int {
 						break
 					}
 
-					if n.Kind == floor {
+					if n.kind == floor {
 						continue
 					}
 
-					counts[n.Kind]++
+					if n.kind == occupied {
+						count++
+					}
+
 					break
 				}
 			}
 
-			switch g.Kind {
+			switch g.kind {
 			case empty:
-				if counts[occupied] == 0 {
-					g.pending = occupied
+				if count == 0 {
+					pending = append(pending, &change{cell: g, kind: occupied})
 				}
 			case occupied:
-				if counts[occupied] >= tolerance {
-					g.pending = empty
+				if count >= tolerance {
+					pending = append(pending, &change{cell: g, kind: empty})
 				}
 			}
 		}
 
-		for _, g := range grid {
-			if g.pending != 0 {
-				g.Kind = g.pending
-				g.pending = 0
-			}
-		}
-
-		hash, _ := hashstructure.Hash(grid, hashstructure.FormatV2, nil)
-
-		if hash == last {
+		if len(pending) == 0 {
 			break
 		}
 
-		last = hash
+		for _, p := range pending {
+			p.cell.kind = p.kind
+		}
 	}
 
 	result := 0
 
 	for _, v := range grid {
-		if v.Kind == occupied {
+		if v.kind == occupied {
 			result++
 		}
 	}
 
 	return result
-}
-
-func printGrid(grid []*cell) {
-	for _, g := range grid {
-		fmt.Print(string(g.Kind))
-
-		if g.neighbour(east) == nil {
-			fmt.Println()
-		}
-	}
-
-	fmt.Println()
 }
