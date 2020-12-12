@@ -13,35 +13,20 @@ const empty = 'L'
 const floor = '.'
 const occupied = '#'
 
-const (
-	north     = iota
-	northEast = iota
-	east      = iota
-	southEast = iota
-	south     = iota
-	southWest = iota
-	west      = iota
-	northWest = iota
-)
-
 type change struct {
-	cell *cell
+	cell int
 	kind rune
 }
 
-type cell struct {
-	id    int
-	kind  rune
-	north *cell
-	east  *cell
-	south *cell
-	west  *cell
-}
-
-var directions [8]int
-
-func init() {
-	directions = [8]int{north, northEast, east, southEast, south, southWest, west, northWest}
+var directions = [8]int{
+	utils.North,
+	utils.NorthEast,
+	utils.East,
+	utils.SouthEast,
+	utils.South,
+	utils.SouthWest,
+	utils.West,
+	utils.NorthWest,
 }
 
 func main() {
@@ -63,114 +48,52 @@ func SolvePart2(input string) (string, error) {
 	return strconv.Itoa(simulate(input, math.MaxUint8, 5)), nil
 }
 
-func NewGrid(input [][]rune) []*cell {
-	rowLen := len(input)
-	colLen := len(input[0])
+func simulate(input string, los int, tolerance int) int {
+	rows := utils.ToRuneSlice(input, "\n")
+	rowLen := len(rows)
+	colLen := len(rows[0])
 	gridSize := rowLen * colLen
-	grid := make([]*cell, gridSize)
+	grid := make([]rune, gridSize)
+	neighbours := make([][8]int, gridSize)
 
-	for y, cols := range input {
+	for y, cols := range rows {
 		offset := colLen * y
 
 		for x, row := range cols {
 			pos := offset + x
-			n, w := pos-colLen, pos-1
-			grid[pos] = &cell{
-				id:   pos,
-				kind: row,
-			}
+			grid[pos] = row
 
-			if y != 0 {
-				grid[pos].north = grid[n]
-				grid[n].south = grid[pos]
-			}
-
-			if x != 0 {
-				grid[pos].west = grid[w]
-				grid[w].east = grid[pos]
+			for _, d := range directions {
+				neighbours[pos][d] = utils.Neighbour(pos, d, rowLen, colLen)
 			}
 		}
 	}
-
-	return grid
-}
-
-func (c *cell) neighbour(direction int) *cell {
-	switch direction {
-	case north:
-		return c.north
-	case northEast:
-		n := c.north
-
-		if n == nil {
-			return nil
-		}
-
-		return n.east
-	case east:
-		return c.east
-	case southEast:
-		s := c.south
-
-		if s == nil {
-			return nil
-		}
-
-		return s.east
-	case south:
-		return c.south
-	case southWest:
-		s := c.south
-
-		if s == nil {
-			return nil
-		}
-
-		return s.west
-	case west:
-		return c.west
-	case northWest:
-		n := c.north
-
-		if n == nil {
-			return nil
-		}
-
-		return n.west
-	default:
-		return nil
-	}
-}
-
-func simulate(input string, los int, tolerance int) int {
-	rows := utils.ToRuneSlice(input, "\n")
-	grid := NewGrid(rows)
 
 	for {
 		pending := make([]*change, 0)
 
-		for _, g := range grid {
-			if g.kind == floor {
+		for i, g := range grid {
+			if g == floor {
 				continue
 			}
 
 			count := 0
 
 			for _, d := range directions {
-				n := g
+				j := i
 
-				for i := 0; i < los; i++ {
-					n = n.neighbour(d)
+				for k := 0; k < los; k++ {
+					j = neighbours[j][d]
 
-					if n == nil {
+					if j == -1 {
 						break
 					}
 
-					if n.kind == floor {
+					if grid[j] == floor {
 						continue
 					}
 
-					if n.kind == occupied {
+					if grid[j] == occupied {
 						count++
 					}
 
@@ -178,14 +101,14 @@ func simulate(input string, los int, tolerance int) int {
 				}
 			}
 
-			switch g.kind {
+			switch g {
 			case empty:
 				if count == 0 {
-					pending = append(pending, &change{cell: g, kind: occupied})
+					pending = append(pending, &change{cell: i, kind: occupied})
 				}
 			case occupied:
 				if count >= tolerance {
-					pending = append(pending, &change{cell: g, kind: empty})
+					pending = append(pending, &change{cell: i, kind: empty})
 				}
 			}
 		}
@@ -195,14 +118,14 @@ func simulate(input string, los int, tolerance int) int {
 		}
 
 		for _, p := range pending {
-			p.cell.kind = p.kind
+			grid[p.cell] = p.kind
 		}
 	}
 
 	result := 0
 
 	for _, v := range grid {
-		if v.kind == occupied {
+		if v == occupied {
 			result++
 		}
 	}
