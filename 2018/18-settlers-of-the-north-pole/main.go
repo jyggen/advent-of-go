@@ -33,13 +33,14 @@ func SolvePart2(input string) (string, error) {
 
 func simulate(input string, times int) int {
 	rows := utils.ToRuneSlice(input, "\n")
+
 	rowLen := len(rows)
 	colLen := len(rows[0])
 	gridSize := rowLen * colLen
 	grid := make([]rune, gridSize)
 
 	for i, cols := range rows {
-		offset := rowLen * i
+		offset := colLen * i
 
 		for j, row := range cols {
 			grid[offset+j] = row
