@@ -1,9 +1,19 @@
 package utils
 
 import (
+	"math"
 	"strconv"
 	"strings"
 )
+
+func RotatePoint(x2 int, y2 int, angle int) (int, int) {
+	radians := float64(angle) * (math.Pi / 180.0)
+
+	x3 := math.Cos(radians)*float64(x2) - math.Sin(radians)*float64(y2)
+	y3 := math.Sin(radians)*float64(x2) + math.Cos(radians)*float64(y2)
+
+	return int(math.Round(x3)), int(math.Round(y3))
+}
 
 func AbsInt(n int) int {
 	if n < 0 {
