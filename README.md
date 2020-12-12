@@ -174,7 +174,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 09  | Encoding Error      | Done       | 0.06ms / 0.07ms   |
 | 10  | Adapter Array       | Done       | 0.009ms / 0.03ms  |
 | 11  | Seating System      | Done       | 14.28ms / 17.84ms |
-| 12  | Rain Risk           | Done       | 0.14ms / 0.12ms   |
+| 12  | Rain Risk           | Done       | 0.10ms / 0.12ms   |
 | 13  | TBA                 | Unreleased | n/a               |
 | 14  | TBA                 | Unreleased | n/a               |
 | 15  | TBA                 | Unreleased | n/a               |

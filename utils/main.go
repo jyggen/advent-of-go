@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func RotatePoint(x2 int, y2 int, angle int) (int, int) {
+func RotateRelativePoint(x2 int, y2 int, angle int) (int, int) {
 	radians := float64(angle) * (math.Pi / 180.0)
 
 	x3 := math.Cos(radians)*float64(x2) - math.Sin(radians)*float64(y2)
