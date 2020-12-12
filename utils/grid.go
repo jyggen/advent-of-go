@@ -26,9 +26,7 @@ func ToCoordinates(offset int, columnLength int) (x int, y int) {
 	return x, y
 }
 
-func Neighbour(offset int, direction int, rowLength int, columnLength int) int {
-	x, y := ToCoordinates(offset, columnLength)
-
+func Neighbour(x int, y int, direction int, rowLength int, columnLength int) int {
 	switch direction {
 	case North:
 		y--

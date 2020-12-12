@@ -173,7 +173,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 08  | Handheld Halting    | Done       | 0.12ms / 0.29ms   |
 | 09  | Encoding Error      | Done       | 0.06ms / 0.07ms   |
 | 10  | Adapter Array       | Done       | 0.009ms / 0.03ms  |
-| 11  | Seating System      | Done       | 31.01ms / 51.79ms |
+| 11  | Seating System      | Done       | 14.28ms / 17.84ms |
 | 12  | TBA                 | Unreleased | n/a               |
 | 13  | TBA                 | Unreleased | n/a               |
 | 14  | TBA                 | Unreleased | n/a               |

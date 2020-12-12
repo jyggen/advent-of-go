@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jyggen/advent-of-go/solver"
 	"github.com/jyggen/advent-of-go/utils"
-	"math"
 	"os"
 	"strconv"
 )
@@ -13,20 +12,18 @@ const empty = 'L'
 const floor = '.'
 const occupied = '#'
 
-type change struct {
-	cell int
-	kind rune
-}
-
-var directions = [8]int{
+var directions = [4]int{
 	utils.North,
 	utils.NorthEast,
-	utils.East,
-	utils.SouthEast,
-	utils.South,
-	utils.SouthWest,
 	utils.West,
 	utils.NorthWest,
+}
+
+var opposites = [4]int{
+	utils.South,
+	utils.SouthWest,
+	utils.East,
+	utils.SouthEast,
 }
 
 func main() {
@@ -41,20 +38,22 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	return strconv.Itoa(simulate(input, 1, 4)), nil
+	return strconv.Itoa(simulate(input, false, 4)), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	return strconv.Itoa(simulate(input, math.MaxUint8, 5)), nil
+	return strconv.Itoa(simulate(input, true, 5)), nil
 }
 
-func simulate(input string, los int, tolerance int) int {
+func simulate(input string, los bool, tolerance int) int {
 	rows := utils.ToRuneSlice(input, "\n")
 	rowLen := len(rows)
 	colLen := len(rows[0])
 	gridSize := rowLen * colLen
 	grid := make([]rune, gridSize)
+	gridCopy := make([]rune, gridSize)
 	neighbours := make([][8]int, gridSize)
+	result := 0
 
 	for y, cols := range rows {
 		offset := colLen * y
@@ -63,14 +62,39 @@ func simulate(input string, los int, tolerance int) int {
 			pos := offset + x
 			grid[pos] = row
 
-			for _, d := range directions {
-				neighbours[pos][d] = utils.Neighbour(pos, d, rowLen, colLen)
+			if row == occupied {
+				result++
+			}
+
+			for d := range neighbours[pos] {
+				neighbours[pos][d] = -1
+			}
+
+			for i, d := range directions {
+				neighbour := utils.Neighbour(x, y, d, rowLen, colLen)
+
+				if los {
+					for {
+						if neighbour == -1 || grid[neighbour] != floor {
+							break
+						}
+
+						neighbour = neighbours[neighbour][d]
+					}
+				}
+
+				if neighbour != -1 {
+					neighbours[pos][d] = neighbour
+					neighbours[neighbour][opposites[i]] = pos
+				}
 			}
 		}
 	}
 
+	copy(gridCopy, grid)
+
 	for {
-		pending := make([]*change, 0)
+		current := result
 
 		for i, g := range grid {
 			if g == floor {
@@ -79,55 +103,26 @@ func simulate(input string, los int, tolerance int) int {
 
 			count := 0
 
-			for _, d := range directions {
-				j := i
-
-				for k := 0; k < los; k++ {
-					j = neighbours[j][d]
-
-					if j == -1 {
-						break
-					}
-
-					if grid[j] == floor {
-						continue
-					}
-
-					if grid[j] == occupied {
-						count++
-					}
-
-					break
+			for _, j := range neighbours[i] {
+				if j != -1 && grid[j] == occupied {
+					count++
 				}
 			}
 
-			switch g {
-			case empty:
-				if count == 0 {
-					pending = append(pending, &change{cell: i, kind: occupied})
-				}
-			case occupied:
-				if count >= tolerance {
-					pending = append(pending, &change{cell: i, kind: empty})
-				}
+			if g == occupied && count >= tolerance {
+				result--
+				gridCopy[i] = empty
+			} else if g == empty && count == 0 {
+				result++
+				gridCopy[i] = occupied
 			}
 		}
 
-		if len(pending) == 0 {
+		if current == result {
 			break
 		}
 
-		for _, p := range pending {
-			grid[p.cell] = p.kind
-		}
-	}
-
-	result := 0
-
-	for _, v := range grid {
-		if v == occupied {
-			result++
-		}
+		copy(grid, gridCopy)
 	}
 
 	return result
