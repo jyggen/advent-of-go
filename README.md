@@ -176,7 +176,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 11  | Seating System      | Done       | 14.28ms / 17.84ms |
 | 12  | Rain Risk           | Done       | 0.10ms / 0.12ms   |
 | 13  | Shuttle Search      | Done       | 0.002ms / 0.01ms  |
-| 14  | TBA                 | Unreleased | n/a               |
+| 14  | Docking Data        | Done       | 0.72ms / 86.70ms  |
 | 15  | TBA                 | Unreleased | n/a               |
 | 16  | TBA                 | Unreleased | n/a               |
 | 17  | TBA                 | Unreleased | n/a               |

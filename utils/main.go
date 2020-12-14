@@ -10,6 +10,22 @@ import (
 
 var one = big.NewInt(1)
 
+func Combinations(characters []rune, length int) [][]rune {
+	result := make([][]rune, 0)
+
+	for _, c := range characters {
+		if length > 1 {
+			for _, r := range Combinations(characters, length-1) {
+				result = append(result, append([]rune{c}, r...))
+			}
+		} else {
+			result = append(result, []rune{c})
+		}
+	}
+
+	return result
+}
+
 // courtesy of https://rosettacode.org/wiki/Chinese_remainder_theorem#Go
 func Crt(a []*big.Int, n []*big.Int) (*big.Int, error) {
 	p := new(big.Int).Set(n[0])
