@@ -20,13 +20,6 @@ func main() {
 	fmt.Println(p2)
 }
 
-/*func SolvePart1(input string) (string, error) {
-	up := len(strings.Replace(input, "(", "", -1))
-	down := len(strings.Replace(input, ")", "", -1))
-
-	return strconv.Itoa(-up + down), nil
-}*/
-
 func SolvePart1(input string) (string, error) {
 	up := strings.Count(input, "(")
 	down := strings.Count(input, ")")
