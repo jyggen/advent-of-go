@@ -16,7 +16,7 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 01  | Not Quite Lisp                         | Unimplemented | n/a                 |
 | 02  | I Was Told There Would Be No Math      | Unimplemented | n/a                 |
 | 03  | Perfectly Spherical Houses in a Vacuum | Unimplemented | n/a                 |
-| 04  | The Ideal Stocking Stuffer             | Done          | 94.12ms / 2623.24ms |
+| 04  | The Ideal Stocking Stuffer             | Done          | 94.12ms / 2.62s     |
 | 05  | Doesn't He Have Intern-Elves For This? | Unimplemented | n/a                 |
 | 06  | Probably a Fire Hazard                 | Unimplemented | n/a                 |
 | 07  | Some Assembly Required                 | Unimplemented | n/a                 |
@@ -113,11 +113,11 @@ The execution times in the performance column are based on `go test -bench .` ru
 | 08  | Memory Maneuver                      | Done        | 1.02ms / 0.95ms          |
 | 09  | Marble Mania                         | Done        | 10.15ms / 1345.21ms      |
 | 10  | The Stars Align                      | Done        | 390.70ms / 23.56ms       |
-| 11  | Chronal Charge                       | Done        | 7.41ms / 1436.90ms       |
+| 11  | Chronal Charge                       | Done        | 7.41ms / 1.43s           |
 | 12  | Subterranean Sustainability          | Done        | 0.29ms / 3.24ms          |
 | 13  | Mine Cart Madness                    | Done        | 1.10ms / 7.38ms          |
-| 14  | Chocolate Charts                     | Done        | 8.56ms / 3647.77ms       |
-| 15  | Beverage Bandits                     | Done        | 11140.31ms / 126852.57ms |
+| 14  | Chocolate Charts                     | Done        | 8.56ms / 3.64s           |
+| 15  | Beverage Bandits                     | Done        | 11.14s / 12.68s          |
 | 16  | Chronal Classification               | Done        | 7.62ms / 8.44ms          |
 | 17  | Reservoir Research                   | Done        | 27.05ms / 29.28ms        |
 | 18  | Settlers of The North Pole           | Done        | 15.52ms / 903ms          |
@@ -161,33 +161,33 @@ The execution times in the performance column are based on `go test -bench .` ru
 
 ### 2020
 
-| Day | Name                | Status     | Performance       |
-|---- | ------------------- | ---------- | ----------------- |
-| 01  | Report Repair       | Done       | 0.59ms / 0.39ms   |
-| 02  | Password Philosophy | Done       | 0.41ms / 0.42ms   |
-| 03  | Toboggan Trajectory | Done       | 0.08ms / 0.07ms   |
-| 04  | Passport Processing | Done       | 2.38ms / 2.70ms   |
-| 05  | Binary Boarding     | Done       | 0.18ms / 0.18ms   |
-| 06  | Custom Customs      | Done       | 0.34ms / 0.30ms   |
-| 07  | Handy Haversacks    | Done       | 2.89ms / 2.88ms   |
-| 08  | Handheld Halting    | Done       | 0.12ms / 0.29ms   |
-| 09  | Encoding Error      | Done       | 0.06ms / 0.07ms   |
-| 10  | Adapter Array       | Done       | 0.009ms / 0.03ms  |
-| 11  | Seating System      | Done       | 14.28ms / 17.84ms |
-| 12  | Rain Risk           | Done       | 0.10ms / 0.12ms   |
-| 13  | Shuttle Search      | Done       | 0.002ms / 0.01ms  |
-| 14  | Docking Data        | Done       | 0.72ms / 86.70ms  |
-| 15  | TBA                 | Unreleased | n/a               |
-| 16  | TBA                 | Unreleased | n/a               |
-| 17  | TBA                 | Unreleased | n/a               |
-| 18  | TBA                 | Unreleased | n/a               |
-| 19  | TBA                 | Unreleased | n/a               |
-| 20  | TBA                 | Unreleased | n/a               |
-| 21  | TBA                 | Unreleased | n/a               |
-| 22  | TBA                 | Unreleased | n/a               |
-| 23  | TBA                 | Unreleased | n/a               |
-| 24  | TBA                 | Unreleased | n/a               |
-| 25  | TBA                 | Unreleased | n/a               |
+| Day | Name                    | Status     | Performance       |
+|---- | ----------------------- | ---------- | ----------------- |
+| 01  | Report Repair           | Done       | 0.59ms / 0.39ms   |
+| 02  | Password Philosophy     | Done       | 0.41ms / 0.42ms   |
+| 03  | Toboggan Trajectory     | Done       | 0.08ms / 0.07ms   |
+| 04  | Passport Processing     | Done       | 2.38ms / 2.70ms   |
+| 05  | Binary Boarding         | Done       | 0.18ms / 0.18ms   |
+| 06  | Custom Customs          | Done       | 0.34ms / 0.30ms   |
+| 07  | Handy Haversacks        | Done       | 2.89ms / 2.88ms   |
+| 08  | Handheld Halting        | Done       | 0.12ms / 0.29ms   |
+| 09  | Encoding Error          | Done       | 0.06ms / 0.07ms   |
+| 10  | Adapter Array           | Done       | 0.009ms / 0.03ms  |
+| 11  | Seating System          | Done       | 14.28ms / 17.84ms |
+| 12  | Rain Risk               | Done       | 0.10ms / 0.12ms   |
+| 13  | Shuttle Search          | Done       | 0.002ms / 0.01ms  |
+| 14  | Docking Data            | Done       | 0.72ms / 86.70ms  |
+| 15  | Rambunctious Recitation | Done       | 0.15ms / 4.87s    |
+| 16  | TBA                     | Unreleased | n/a               |
+| 17  | TBA                     | Unreleased | n/a               |
+| 18  | TBA                     | Unreleased | n/a               |
+| 19  | TBA                     | Unreleased | n/a               |
+| 20  | TBA                     | Unreleased | n/a               |
+| 21  | TBA                     | Unreleased | n/a               |
+| 22  | TBA                     | Unreleased | n/a               |
+| 23  | TBA                     | Unreleased | n/a               |
+| 24  | TBA                     | Unreleased | n/a               |
+| 25  | TBA                     | Unreleased | n/a               |
 
 
 [build]: https://github.com/jyggen/advent-of-go/actions
