@@ -44,4 +44,3 @@ func SolvePart2(input string) (string, error) {
 
 	return strconv.Itoa(-1), errors.New("unable to find solution")
 }
-
