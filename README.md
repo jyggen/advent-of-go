@@ -176,8 +176,8 @@ My solutions for Advent of Code - Go Edition!
 | 13  | Shuttle Search          | Done       |
 | 14  | Docking Data            | Done       |
 | 15  | Rambunctious Recitation | Done       |
-| 16  | TBA                     | Unreleased |
-| 17  | TBA                     | Unreleased |
+| 16  | Ticket Translation      | Done       |
+| 17  | Conway Cubes            | Done       |
 | 18  | TBA                     | Unreleased |
 | 19  | TBA                     | Unreleased |
 | 20  | TBA                     | Unreleased |
