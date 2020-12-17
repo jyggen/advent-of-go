@@ -88,24 +88,13 @@ func getCubeOffset(x int, y int, z int, w int, height int, width int, depth int)
 }
 
 func getNeighbours(x int, y int, z int, w int, height int, width int, depth int, hyper int) []int {
-	neighbours := make([]int, 0)
+	neighbours := make([]int, 0, 3*3*3*3-1)
 
-	for nw := w - 1; nw <= w+1; nw++ {
-		if nw < 0 || nw == hyper {
-			continue
-		}
-		for nz := z - 1; nz <= z+1; nz++ {
-			if nz < 0 || nz == depth {
-				continue
-			}
-
-			for ny := y - 1; ny <= y+1; ny++ {
-				if ny < 0 || ny == height {
-					continue
-				}
-
-				for nx := x - 1; nx <= x+1; nx++ {
-					if nx < 0 || nx == width || (nw == w && nz == z && ny == y && nx == x) {
+	for nw := utils.MaxInt(w-1, 0); nw <= w+1 && nw < hyper; nw++ {
+		for nz := utils.MaxInt(z-1, 0); nz <= z+1 && nz < depth; nz++ {
+			for ny := utils.MaxInt(y-1, 0); ny <= y+1 && ny < height; ny++ {
+				for nx := utils.MaxInt(x-1, 0); nx <= x+1 && nx < width; nx++ {
+					if nw == w && nz == z && ny == y && nx == x {
 						continue
 					}
 

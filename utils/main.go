@@ -67,6 +67,14 @@ func AbsInt(n int) int {
 	return n
 }
 
+func MaxInt(a int, b int) int {
+	if a > b {
+		return a
+	}
+
+	return b
+}
+
 func IntRange(min int, max int) []int {
 	a := make([]int, max-min+1)
 
