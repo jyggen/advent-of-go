@@ -58,19 +58,12 @@ func SolvePart2(input string) (string, error) {
 	for _, t := range append(tickets, myTicket) {
 		for i, v := range t.values {
 			for j := 0; j < len(possibilities[i]); {
-				validField := false
+				rules := fields[possibilities[i][j]].rules
 
-				for _, r := range fields[possibilities[i][j]].rules {
-					if v >= r.lower && v <= r.upper {
-						validField = true
-						break
-					}
-				}
-
-				if !validField {
-					possibilities[i] = remove(possibilities[i], j)
-				} else {
+				if (v >= rules[0].lower && v <= rules[0].upper) || (v >= rules[1].lower && v <= rules[1].upper) {
 					j++
+				} else {
+					possibilities[i] = remove(possibilities[i], j)
 				}
 			}
 		}
