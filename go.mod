@@ -8,4 +8,5 @@ require (
 	github.com/otiai10/mint v1.3.2 // indirect
 	github.com/stretchr/testify v1.6.1
 	golang.org/x/net v0.0.0-20201202161906-c7110b5ffcbb // indirect
+	golang.org/x/tools v0.0.0-20201215192005-fa10ef0b8743
 )

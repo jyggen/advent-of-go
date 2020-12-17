@@ -58,6 +58,11 @@ func InputFromFile(name string) string {
 
 func SolveFromFile(f *os.File, s1 Solver, s2 Solver) (string, string, error) {
 	input, err := ioutil.ReadAll(f)
+
+	if err != nil {
+		return "", "", err
+	}
+
 	inputStr := strings.Replace(string(input), "\r", "", -1)
 
 	if err != nil {
