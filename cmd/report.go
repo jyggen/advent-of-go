@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"golang.org/x/tools/benchmark/parse"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -70,6 +71,14 @@ func main() {
 			}
 		}
 
+		durr, err := time.ParseDuration(fmt.Sprintf("%.2f", benchmark.NsPerOp) + "ns")
+
+		if err != nil {
+			log.Println(err)
+		}
+
+		log.Println(y, d, n, p, durr.String())
+
 		results[key].Parts[p] = &Part{
 			Ms: benchmark.NsPerOp / 1000000,
 		}
@@ -98,15 +107,28 @@ func main() {
 
 func parsePkg(pkg string) (int, int, string) {
 	pkg = pkgReplacer.Replace(pkg)
-	year, _ := strconv.Atoi(pkg[0:4])
-	day, _ := strconv.Atoi(pkg[5:7])
+	year, err := strconv.Atoi(pkg[0:4])
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	day, err := strconv.Atoi(pkg[5:7])
+
+	if err != nil {
+		log.Println(err)
+	}
 
 	return year, day, strings.Title(nameReplacer.Replace(pkg[8:]))
 }
 
 func parseName(name string) int {
 	parts := strings.Split(name, "/")
-	part, _ := strconv.Atoi(strings.Split(parts[2], "-")[0])
+	part, err := strconv.Atoi(strings.Split(parts[2], "-")[0])
+
+	if err != nil {
+		log.Println(err)
+	}
 
 	return part
 }
