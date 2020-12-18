@@ -101,10 +101,20 @@ function formatMs(ms) {
     		day.innerText = item.Day;
     		link.href = "https://" + item.Pkg.substr(0, 31) + "blob/main/" + item.Pkg.substr(31) + "/main.go";
     		link.innerText = item.Name;
-    		part1.innerText = formatMs(item.Parts[0].Ms);
-    		part1.className = performanceClass(item.Parts[0].Ms);
-    		part2.innerText = formatMs(item.Parts[1].Ms);
-    		part2.className = performanceClass(item.Parts[1].Ms);
+
+    		if (item.Parts[0] != null) {
+    			part1.innerText = formatMs(item.Parts[0].Ms);
+    			part1.className = performanceClass(item.Parts[0].Ms);
+    		} else {
+    			part1.innerText = "-";
+    		}
+
+    		if (item.Parts[0] != null) {
+				part2.innerText = formatMs(item.Parts[1].Ms);
+				part2.className = performanceClass(item.Parts[1].Ms);
+			} else {
+				part2.innerText = "-";
+    		}
 
 			name.append(link);
     		tr.append(year, day, name, part1, part2);
