@@ -39,6 +39,7 @@ var nameReplacer = strings.NewReplacer("-", " ")
 func main() {
 	results := make(map[string]*Day, 0)
 	scanner := bufio.NewScanner(os.Stdin)
+	previous := ""
 
 	for scanner.Scan() {
 		test := &TestEvent{}
@@ -46,6 +47,16 @@ func main() {
 
 		if err != nil {
 			panic(err)
+		}
+
+		if len(test.Output) > 0 && test.Output[len(test.Output)-1] != '\n' {
+			previous += test.Output
+			continue
+		}
+
+		if previous != "" {
+			test.Output = previous + test.Output
+			previous = ""
 		}
 
 		if test.Action != "output" || !strings.HasPrefix(test.Output, "Benchmark") {
@@ -71,11 +82,7 @@ func main() {
 			}
 		}
 
-		durr, err := time.ParseDuration(fmt.Sprintf("%.2f", benchmark.NsPerOp) + "ns")
-
-		if err != nil {
-			log.Println(err)
-		}
+		durr, _ := time.ParseDuration(fmt.Sprintf("%.2f", benchmark.NsPerOp) + "ns")
 
 		log.Println(y, d, n, p, durr.String())
 
@@ -107,28 +114,15 @@ func main() {
 
 func parsePkg(pkg string) (int, int, string) {
 	pkg = pkgReplacer.Replace(pkg)
-	year, err := strconv.Atoi(pkg[0:4])
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	day, err := strconv.Atoi(pkg[5:7])
-
-	if err != nil {
-		log.Println(err)
-	}
+	year, _ := strconv.Atoi(pkg[0:4])
+	day, _ := strconv.Atoi(pkg[5:7])
 
 	return year, day, strings.Title(nameReplacer.Replace(pkg[8:]))
 }
 
 func parseName(name string) int {
 	parts := strings.Split(name, "/")
-	part, err := strconv.Atoi(strings.Split(parts[2], "-")[0])
-
-	if err != nil {
-		log.Println(err)
-	}
+	part, _ := strconv.Atoi(strings.Split(parts[2], "-")[0])
 
 	return part
 }
