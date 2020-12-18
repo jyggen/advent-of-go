@@ -81,7 +81,7 @@ function formatMs(ms) {
 }
 
 (function() {
-	let thead = document.getElementById("days")
+	let tbody = document.getElementById("days")
 
 	fetch("benchmark.json", { headers: { "Content-Type": "application/json; charset=utf-8" }})
     .then(res => res.json())
@@ -108,7 +108,7 @@ function formatMs(ms) {
 
 			name.append(link);
     		tr.append(year, day, name, part1, part2);
-    		thead.append(tr);
+    		tbody.append(tr);
 		});
     });
 })();
