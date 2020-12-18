@@ -29,8 +29,7 @@ type Day struct {
 }
 
 type Part struct {
-	index int
-	Ms    float64
+	Ms float64
 }
 
 var pkgReplacer = strings.NewReplacer("github.com/jyggen/advent-of-go/", "")
@@ -59,7 +58,7 @@ func main() {
 		}
 
 		y, d, n := parsePkg(test.Package)
-		t, p := parseName(benchmark.Name)
+		p := parseName(benchmark.Name)
 		key := fmt.Sprint(y, d)
 
 		if _, ok := results[key]; !ok {
@@ -71,13 +70,8 @@ func main() {
 			}
 		}
 
-		if results[key].Parts[p] != nil && results[key].Parts[p].index > t {
-			continue
-		}
-
 		results[key].Parts[p] = &Part{
-			index: t,
-			Ms:    benchmark.NsPerOp / 1000000,
+			Ms: benchmark.NsPerOp / 1000000,
 		}
 	}
 
@@ -110,10 +104,9 @@ func parsePkg(pkg string) (int, int, string) {
 	return year, day, strings.Title(nameReplacer.Replace(pkg[8:]))
 }
 
-func parseName(name string) (int, int) {
+func parseName(name string) int {
 	parts := strings.Split(name, "/")
-	test, _ := strconv.Atoi(parts[1])
 	part, _ := strconv.Atoi(strings.Split(parts[2], "-")[0])
 
-	return test, part
+	return part
 }
