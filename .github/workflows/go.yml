@@ -25,4 +25,13 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Test
-              run: go test ./...
+              run: go test -short ./...
+
+            - name: Benchmark
+              run: go test -short -bench . -json -run NONE ./... | go run cmd/report.go > public/benchmark.json
+
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./public

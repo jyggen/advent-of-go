@@ -17,11 +17,16 @@ type TestCaseSolver struct {
 }
 
 type TestCase struct {
+	Short   bool
 	Input   string
 	Solvers []*TestCaseSolver
 }
 
 func (tc *TestCase) Benchmark(b *testing.B) {
+	if testing.Short() && tc.Short == false {
+		b.SkipNow()
+	}
+
 	for j, solver := range tc.Solvers {
 		b.Run(fmt.Sprint(j), func(subtest *testing.B) {
 			for i := 0; i < subtest.N; i++ {
@@ -36,6 +41,10 @@ func (tc *TestCase) Benchmark(b *testing.B) {
 }
 
 func (tc *TestCase) Test(t *testing.T) {
+	if testing.Short() && tc.Short == false {
+		t.SkipNow()
+	}
+
 	for j, solver := range tc.Solvers {
 		t.Run(fmt.Sprint(j), func(subtest *testing.T) {
 			actualOutput, err := solver.Solver(tc.Input)
@@ -64,10 +73,6 @@ func SolveFromFile(f *os.File, s1 Solver, s2 Solver) (string, string, error) {
 	}
 
 	inputStr := strings.Replace(string(input), "\r", "", -1)
-
-	if err != nil {
-		return "", "", err
-	}
 
 	part1, err := s1(inputStr)
 

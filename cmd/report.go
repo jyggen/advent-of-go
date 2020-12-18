@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"golang.org/x/tools/benchmark/parse"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -22,6 +21,7 @@ type TestEvent struct {
 }
 
 type Day struct {
+	Pkg   string
 	Year  int
 	Day   int
 	Name  string
@@ -45,7 +45,7 @@ func main() {
 		err := json.Unmarshal(scanner.Bytes(), test)
 
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
 		if test.Action != "output" || !strings.HasPrefix(test.Output, "Benchmark") {
@@ -64,6 +64,7 @@ func main() {
 
 		if _, ok := results[key]; !ok {
 			results[key] = &Day{
+				Pkg:  test.Package,
 				Year: y,
 				Day:  d,
 				Name: n,
@@ -81,13 +82,21 @@ func main() {
 	}
 
 	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
-	txt, err := json.Marshal(results)
+	output := make([]*Day, len(results))
+	i := 0
+
+	for _, p := range results {
+		output[i] = p
+		i++
+	}
+
+	txt, err := json.Marshal(output)
 
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
 
 	fmt.Println(string(txt))
@@ -97,8 +106,6 @@ func parsePkg(pkg string) (int, int, string) {
 	pkg = pkgReplacer.Replace(pkg)
 	year, _ := strconv.Atoi(pkg[0:4])
 	day, _ := strconv.Atoi(pkg[5:7])
-
-	fmt.Println(pkg, year, pkg[0:4], day, pkg[5:7])
 
 	return year, day, strings.Title(nameReplacer.Replace(pkg[8:]))
 }

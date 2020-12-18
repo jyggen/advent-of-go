@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Advent of Go</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+</head>
+<body>
+<section class="hero is-primary">
+	<div class="hero-body">
+		<div class="container">
+			<h1 class="title">
+				Advent of Go
+			</h1>
+			<h2 class="subtitle">
+				Benchmarks
+			</h2>
+		</div>
+	</div>
+</section>
+<section class="section">
+	<div class="container">
+		<table class="table is-striped is-hoverable is-fullwidth">
+			<thead>
+				<tr>
+					<th>Year</th>
+					<th>Day</th>
+					<th>Name</th>
+					<th>Part 1</th>
+					<th>Part 2</th>
+				</tr>
+			</thead>
+			<tbody id="days"></tbody>
+		</table>
+	</div>
+</section>
+<script>
+function compare(a, b) {
+	if (a.Year < b.Year) {
+		return -1;
+	}
+
+	if (a.Year > b.Year) {
+		return 1;
+	}
+
+	if (a.Day < b.Day) {
+		return -1;
+	}
+
+	if (a.Day > b.Day) {
+		return 1;
+	}
+
+	return 0;
+}
+
+function performanceClass(ms) {
+    if (ms > 1000) {
+        return "has-text-danger-dark";
+    }
+
+    if (ms < 1) {
+    	return "has-text-success-dark";
+	}
+
+    return "has-text-warning-dark";
+}
+
+function formatMs(ms) {
+    if (ms > 1000) {
+        return (ms / 1000).toFixed(2) + "s";
+    }
+
+    if (ms < 1) {
+    	return ms.toPrecision(2) + "ms";
+	}
+
+    return ms.toFixed(2) + "ms";
+}
+
+(function() {
+	let thead = document.getElementById("days")
+
+	fetch("benchmark.json", { headers: { "Content-Type": "application/json; charset=utf-8" }})
+    .then(res => res.json())
+    .then(response => {
+    	response
+    	.sort(compare)
+    	.forEach(item => {
+    		let tr = document.createElement("tr");
+    		let year = document.createElement("td");
+    		let day = document.createElement("td");
+    		let link = document.createElement("a");
+    		let name = document.createElement("td");
+    		let part1 = document.createElement("td");
+    		let part2 = document.createElement("td");
+
+    		year.innerText = item.Year;
+    		day.innerText = item.Day;
+    		link.href = "https://" + item.Pkg.substr(0, 31) + "blob/main/" + item.Pkg.substr(31) + "/main.go";
+    		link.innerText = item.Name;
+    		part1.innerText = formatMs(item.Parts[0].Ms);
+    		part1.className = performanceClass(item.Parts[0].Ms);
+    		part2.innerText = formatMs(item.Parts[1].Ms);
+    		part2.className = performanceClass(item.Parts[1].Ms);
+
+			name.append(link);
+    		tr.append(year, day, name, part1, part2);
+    		thead.append(tr);
+		});
+    });
+})();
+</script>
+</body>
+</html>
