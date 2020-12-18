@@ -34,7 +34,7 @@ jobs:
                        ${{ runner.os }}-go-
 
             - name: Test
-              run: go test -short ./...
+              run: go test ./...
 
             - name: Benchmark
               run: go test -short -bench . -json -run NONE ./... | go run cmd/report.go > public/benchmark.json
