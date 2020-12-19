@@ -57,19 +57,12 @@ func SolvePart2(input string) (string, error) {
 	return strconv.Itoa(sum), nil
 }
 
-func build(parts map[int]*regexPart, index int, history []int) string {
-	for _, h := range history {
-		if h == index {
-			fmt.Println("loop @", index, history)
-			//return "+"
-		}
-	}
-
+func build(parts map[int]*regexPart, index int) string {
 	if !parts[index].resolved {
 		replace := make([]interface{}, len(parts[index].replace))
 
 		for k, v := range parts[index].replace {
-			replace[k] = build(parts, v, append(history, index))
+			replace[k] = build(parts, v)
 		}
 
 		parts[index].pattern = fmt.Sprintf(parts[index].pattern, replace...)
@@ -131,7 +124,7 @@ func parse(input string) (*regexp.Regexp, []string) {
 		}
 	}
 
-	b := "^" + build(parts, 0, make([]int, 0, len(parts))) + "$"
+	b := "^" + build(parts, 0) + "$"
 
 	return regexp.MustCompile(b), msgs
 }
