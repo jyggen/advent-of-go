@@ -11,9 +11,9 @@ import (
 )
 
 type regexPart struct {
-	id int
-	pattern string
-	replace []int
+	id       int
+	pattern  string
+	replace  []int
 	resolved bool
 }
 
@@ -89,9 +89,9 @@ func parse(input string) (*regexp.Regexp, []string) {
 
 			for _, f := range fields {
 				if strings.HasSuffix(f, ":") {
-					part.id, _ = strconv.Atoi(f[0:len(f)-1])
+					part.id, _ = strconv.Atoi(f[0 : len(f)-1])
 				} else if strings.HasPrefix(f, "\"") {
-					part.pattern += f[1:len(f)-1]
+					part.pattern += f[1 : len(f)-1]
 				} else if f == "|" {
 					part.pattern += "|"
 					or = true
@@ -105,7 +105,7 @@ func parse(input string) (*regexp.Regexp, []string) {
 
 					if strings.HasSuffix(f, ")+") {
 						suffix = ")+"
-						f = f[0:len(f)-2]
+						f = f[0 : len(f)-2]
 					}
 
 					num, _ := strconv.Atoi(f)

@@ -60,8 +60,8 @@ func resolve(input string) (map[string]int, map[string]string, map[string]string
 
 	for _, r := range utils.ToStringSlice(input, "\n") {
 		disclaimerAt := strings.IndexRune(r, '(')
-		ingredients := r[0: disclaimerAt]
-		disclaimer := r[disclaimerAt+10:len(r)-1]
+		ingredients := r[0:disclaimerAt]
+		disclaimer := r[disclaimerAt+10 : len(r)-1]
 
 		for _, i := range strings.Fields(ingredients) {
 			if _, ok := ingredientsCount[i]; !ok {
@@ -92,7 +92,7 @@ func resolve(input string) (map[string]int, map[string]string, map[string]string
 	shouldRestart := true
 	endless := false
 
-	for shouldRestart && !endless  {
+	for shouldRestart && !endless {
 		shouldRestart = false
 		endless = true
 

@@ -37,11 +37,12 @@ func SolvePart2(input string) (string, error) {
 	corners := findCorners(variants)
 	tileSet := buildTileSet(variants, corners)
 
-	for _,t := range tileSet {
+	for _, t := range tileSet {
 		removeBorders(t)
 	}
 
 	data := mergeTiles(tileSet)
+
 	width := int(math.Sqrt(float64(len(data))))
 	finds := false
 	rotations := 0
@@ -109,28 +110,27 @@ func SolvePart2(input string) (string, error) {
 }
 
 type tileVariants struct {
-	id int
-	height int
-	width int
+	id       int
+	height   int
+	width    int
 	variants []*tile
 }
 
-
 type tile struct {
-	id int
+	id      int
 	variant int
-	height int
-	width int
-	sides [4]int
-	data []bool
+	height  int
+	width   int
+	sides   [4]int
+	data    []bool
 }
 
 func getSideIds(data []bool, width int, height int) [4]int {
 	return [4]int{
-		getSideId(data, 0, width, 1), // top
-		getSideId(data, width-1, height*width, width), // right
+		getSideId(data, 0, width, 1),                       // top
+		getSideId(data, width-1, height*width, width),      // right
 		getSideId(data, (height-1)*width, height*width, 1), // bottom
-		getSideId(data, 0, height*width, width), // left
+		getSideId(data, 0, height*width, width),            // left
 	}
 }
 
@@ -158,11 +158,11 @@ func getTileVariants(input string) []*tileVariants {
 		rows := utils.ToRuneSlice(p, "\n")
 		height := len(rows[1:])
 		width := len(rows[1])
-		id, _ := strconv.Atoi(string(rows[0][5:len(rows[0])-1]))
-		tiles[i] = &tileVariants {
-			id: id,
-			height: height,
-			width: width,
+		id, _ := strconv.Atoi(string(rows[0][5 : len(rows[0])-1]))
+		tiles[i] = &tileVariants{
+			id:       id,
+			height:   height,
+			width:    width,
 			variants: make([]*tile, 0, 8),
 		}
 
@@ -187,17 +187,16 @@ func getTileVariants(input string) []*tileVariants {
 			rotate(flipped, width, 1),
 			rotate(flipped, width, 2),
 			rotate(flipped, width, 3),
-
 		} {
 			sideIds := getSideIds(d, width, height)
 			variantId := sideIds[0] + sideIds[1] + sideIds[2] + sideIds[3]
 			tiles[i].variants = append(tiles[i].variants, &tile{
-				id: id,
+				id:      id,
 				variant: variantId,
-				height: height,
-				width: width,
-				data: d,
-				sides: sideIds,
+				height:  height,
+				width:   width,
+				data:    d,
+				sides:   sideIds,
 			})
 		}
 	}
@@ -205,37 +204,12 @@ func getTileVariants(input string) []*tileVariants {
 	return tiles
 }
 
-func printTileData(data []bool, width int) {
-	for i, d := range data {
-		if d {
-			fmt.Print("#")
-		} else {
-			fmt.Print(".")
-		}
-
-		if i % width == width-1 {
-			fmt.Print("\n")
-		}
-	}
-
-	fmt.Println("")
-}
-
-func printTiles(tiles []*tile) {
-	for _, t := range tiles {
-		fmt.Println("Tile " + strconv.Itoa(t.id))
-		printTileData(t.data, t.width)
-	}
-
-	fmt.Println("")
-}
-
 func flip(data []bool, width int) []bool {
 	newData := make([]bool, len(data))
 
 	for x := 0; x < width; x++ {
 		for y := 0; y < width; y++ {
-			newData[width * (width-1-y) + x] = data[width * y + x]
+			newData[width*(width-1-y)+x] = data[width*y+x]
 		}
 	}
 
@@ -248,7 +222,7 @@ func rotate(data []bool, width int, times int) []bool {
 
 		for x := 0; x < width; x++ {
 			for y := 0; y < width; y++ {
-				newData[width * x + (width - 1 - y)] = data[width * y + x]
+				newData[width*x+(width-1-y)] = data[width*y+x]
 			}
 		}
 
@@ -300,6 +274,7 @@ func buildTileSet(variants []*tileVariants, corners []*tileVariants) []*tile {
 	max := len(variants)
 	width := int(math.Sqrt(float64(max)))
 	firstCorner := 0
+	firstCornerVariant := 0
 
 	var tileSet []*tile
 
@@ -312,21 +287,25 @@ MainLoop:
 				offset := width*y + x
 
 				if x == 0 && y == 0 {
-					tileSet[offset] = corners[0].variants[firstCorner]
+					tileSet[offset] = corners[firstCorner].variants[firstCornerVariant]
 					continue
 				}
 
 				var selection []*tileVariants
 
 				if (x == width-1 && y == 0) || (x == 0 && y == width-1) || (x == width-1 && y == width-1) {
-					selection = []*tileVariants{corners[1], corners[2], corners[3]}
+					selection = corners
 				} else {
 					selection = variants
 				}
 
 			SelectionLoop:
 				for _, v := range selection {
-					if tileSet[offset-1].id == v.id {
+					if offset > 0 && tileSet[offset-1].id == v.id {
+						continue
+					}
+
+					if offset > width && tileSet[offset-width].id == v.id {
 						continue
 					}
 
@@ -345,7 +324,13 @@ MainLoop:
 				}
 
 				if tileSet[offset] == nil {
-					firstCorner++
+					firstCornerVariant++
+
+					if firstCornerVariant == len(corners[firstCorner].variants) {
+						firstCorner++
+						firstCornerVariant = 0
+					}
+
 					continue MainLoop
 				}
 			}
@@ -362,16 +347,16 @@ func mergeTiles(tiles []*tile) []bool {
 	perRow := int(math.Sqrt(float64(tileLen)))
 	width := tiles[0].width * perRow
 	height := tiles[0].height * perRow
-	data := make([]bool, width * height)
+	data := make([]bool, width*height)
 	start := 0
 
 	for i := start; i < perRow; i++ {
 		for y := 0; y < tiles[0].height; y++ {
 			for j := start; j < perRow; j++ {
 				for x := 0; x < tiles[0].width; x++ {
-					index := i*perRow+j
-					oldOffset := tiles[0].width*y+x
-					newOffset := width * y  + (x + (perRow * tiles[0].width * tiles[0].width * i) + (j*tiles[0].width))
+					index := i*perRow + j
+					oldOffset := tiles[0].width*y + x
+					newOffset := width*y + (x + (perRow * tiles[0].width * tiles[0].width * i) + (j * tiles[0].width))
 					data[newOffset] = tiles[index].data[oldOffset]
 				}
 			}
@@ -382,11 +367,11 @@ func mergeTiles(tiles []*tile) []bool {
 }
 
 func removeBorders(t *tile) {
-	newData := make([]bool, len(t.data) - 2*(t.height-2) - 2*t.width)
+	newData := make([]bool, len(t.data)-2*(t.height-2)-2*t.width)
 
 	for y := 1; y < t.height-1; y++ {
 		for x := 1; x < t.width-1; x++ {
-			newData[(t.width-2) * (y-1) + (x-1)] = t.data[t.width*y+x]
+			newData[(t.width-2)*(y-1)+(x-1)] = t.data[t.width*y+x]
 		}
 	}
 

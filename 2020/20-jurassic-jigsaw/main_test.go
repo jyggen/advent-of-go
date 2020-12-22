@@ -28,6 +28,10 @@ var testCases = []*solver.TestCase{
 				Solver: SolvePart1,
 				Output: "18262194216271",
 			},
+			{
+				Solver: SolvePart2,
+				Output: "2023",
+			},
 		},
 	},
 }
