@@ -87,6 +87,18 @@ func MaxIntSlice(a []int) int {
 	return high
 }
 
+func MinIntSlice(a []int) int {
+	low := math.MaxInt64
+
+	for _, b := range a {
+		if b < low {
+			low = b
+		}
+	}
+
+	return low
+}
+
 func IntRange(min int, max int) []int {
 	a := make([]int, max-min+1)
 
