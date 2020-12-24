@@ -46,10 +46,10 @@ func SolvePart2(input string) (string, error) {
 	cups, _ := utils.ToIntegerSlice(input, "")
 	max := utils.MaxIntSlice(cups)
 	min := utils.MinIntSlice(cups)
-	additional := make([]int, p2cups - max)
+	additional := make([]int, p2cups-max)
 
 	for i := 0; i < len(additional); i++ {
-		additional[i] = max+i+1
+		additional[i] = max + i + 1
 	}
 
 	max = p2cups
