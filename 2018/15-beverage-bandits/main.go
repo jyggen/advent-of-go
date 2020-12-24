@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/RyanCarrier/dijkstra"
 	"github.com/beefsack/go-astar"
 	"github.com/jyggen/advent-of-go/solver"
 	"github.com/jyggen/advent-of-go/utils"
@@ -29,12 +30,14 @@ func SolvePart1(input string) (string, error) {
 
 	for _, c := range elves {
 		if !c.IsDead() {
+			//fmt.Println(c.hp)
 			remainingHp += c.hp
 		}
 	}
 
 	for _, c := range goblins {
 		if !c.IsDead() {
+			//fmt.Println(c.hp)
 			remainingHp += c.hp
 		}
 	}
@@ -44,25 +47,44 @@ func SolvePart1(input string) (string, error) {
 
 func SolvePart2(input string) (string, error) {
 	rows := utils.ToStringSlice(input, "\n")
-	ap := 4
+	ap := 3
+	apDiff := 0
+	upper := false
+	lower := false
 PartTwoLoop:
 	for {
-		round, elves, goblins := playGame(rows, ap)
+		//fmt.Println(ap, apDiff, upper, lower)
+		round, elves, _ := playGame(rows, ap)
 		remainingHp := 0
 
 		for _, c := range elves {
 			if !c.IsDead() {
 				remainingHp += c.hp
 			} else {
-				ap++
+				if !upper {
+					newAp := ap * 2
+					apDiff = newAp - ap
+					ap = newAp
+				} else {
+					lower = true
+					ap++
+				}
+
 				continue PartTwoLoop
 			}
 		}
 
-		for _, c := range goblins {
-			if !c.IsDead() {
-				remainingHp += c.hp
+		if !lower {
+			upper = true
+			apDiff = apDiff / 2
+
+			if apDiff < 1 {
+				apDiff = 1
 			}
+
+			ap -= apDiff
+
+			continue PartTwoLoop
 		}
 
 		return strconv.Itoa(round * remainingHp), nil
@@ -70,8 +92,9 @@ PartTwoLoop:
 }
 
 func playGame(rows []string, elvesAp int) (int, []*Creature, []*Creature) {
+	rowLen := len(rows)
 	colLen := len(rows[0])
-	battlefield := make([]*Tile, len(rows)*colLen)
+	battlefield := make([]*Tile, rowLen*colLen)
 	elves := make([]*Creature, 0)
 	goblins := make([]*Creature, 0)
 	input := 0
@@ -88,6 +111,7 @@ func playGame(rows []string, elvesAp int) (int, []*Creature, []*Creature) {
 				battlefield[position] = &Tile{
 					position: position,
 					colLen:   colLen,
+					rowLen:   rowLen,
 					occupied: true,
 					tiles:    &battlefield,
 				}
@@ -96,6 +120,7 @@ func playGame(rows []string, elvesAp int) (int, []*Creature, []*Creature) {
 				battlefield[position] = &Tile{
 					position: position,
 					colLen:   colLen,
+					rowLen:   rowLen,
 					occupied: false,
 					tiles:    &battlefield,
 				}
@@ -104,6 +129,7 @@ func playGame(rows []string, elvesAp int) (int, []*Creature, []*Creature) {
 				battlefield[position] = &Tile{
 					position: position,
 					colLen:   colLen,
+					rowLen:   rowLen,
 					occupied: true,
 					tiles:    &battlefield,
 				}
@@ -120,6 +146,7 @@ func playGame(rows []string, elvesAp int) (int, []*Creature, []*Creature) {
 				battlefield[position] = &Tile{
 					position: position,
 					colLen:   colLen,
+					rowLen:   rowLen,
 					occupied: true,
 					tiles:    &battlefield,
 				}
@@ -145,11 +172,21 @@ func playGame(rows []string, elvesAp int) (int, []*Creature, []*Creature) {
 
 GameLoop:
 	for {
-		//Draw(battlefield, elves, goblins)
+		/*if round == 29 || round == 1 || round == 2 || round == 3 || round == 24 {
+			Draw(battlefield, elves, goblins)
 
-		if round > 47 {
-			//break
-		}
+			for _, c := range elves {
+				if !c.IsDead() {
+					fmt.Println(c.hp)
+				}
+			}
+
+			for _, c := range goblins {
+				if !c.IsDead() {
+					fmt.Println(c.hp)
+				}
+			}
+		}*/
 
 		//fmt.Printf("Starting round %d!\n", round)
 
@@ -189,6 +226,37 @@ GameLoop:
 	//fmt.Println()
 
 	return round, elves, goblins
+}
+
+func ToGraph(battlefield []*Tile) *dijkstra.Graph {
+	graph := dijkstra.NewGraph()
+	colLen := battlefield[0].colLen
+
+	for x := 0; x < colLen; x++ {
+		for y := 0; y < battlefield[0].rowLen; y++ {
+			offset := y*colLen + x
+
+			//fmt.Println(offset)
+
+			graph.AddVertex(offset)
+
+			if battlefield[offset].occupied {
+				continue
+			}
+
+			if x != 0 && !battlefield[offset-1].occupied {
+				graph.AddArc(offset, offset-1, 1)
+				graph.AddArc(offset-1, offset, 1)
+			}
+
+			if y != 0 && !battlefield[offset-colLen].occupied {
+				graph.AddArc(offset, offset-colLen, 1)
+				graph.AddArc(offset-colLen, offset, 1)
+			}
+		}
+	}
+
+	return graph
 }
 
 func calculateDistance(from int, to int, colLen int) int {
@@ -279,9 +347,9 @@ func (c *Creature) IsNextTo(c2 *Creature) bool {
 }
 
 func (c *Creature) Move() error {
-	options := make([]*Creature, 0)
+	options := make([]*Creature, 0, len(*c.enemies))
 	optionsLen := 0
-	possibilities := make([][]*Tile, 0)
+	possibilities := make([][]*Tile, 0, len(*c.enemies)*4*4)
 
 	for _, e := range *c.enemies {
 		if e.IsDead() {
@@ -318,27 +386,42 @@ func (c *Creature) Move() error {
 		return nil
 	}
 
-	bestPath := make([]astar.Pather, 0)
-	bestPathDistance := float64(-1)
+	bestPath := [2]int{0, 0}
+	bestPathDistance := int64(-1)
+	g := ToGraph(*c.tile.tiles)
+
+	//fmt.Println(g)
 
 	for _, p := range possibilities {
-		path, distance, found := astar.Path(p[0], p[1])
+		path := [2]int{0, 0}
+		distance := int64(0)
 
-		if !found {
-			//fmt.Printf("\t\tNo path to %s from %s, skip!\n", p[1].Coordinates(), p[0].Coordinates())
-			continue
+		//path, distance, found := astar.Path(p[0], p[1])
+		if p[0].position == p[1].position {
+			path = [2]int{p[0].position, p[1].position}
+		} else {
+			p, err := g.Shortest(p[0].position, p[1].position)
+
+			if err != nil {
+				continue
+			}
+
+			path = [2]int{p.Path[0], p.Path[len(p.Path)-1]}
+			distance = p.Distance
 		}
 
 		/*coords := make([]string, len(path))
 
 		for i, yolo := range path {
-			coords[i] = yolo.(*Tile).Coordinates()
+			coords[i] = (*c.tile.tiles)[yolo].Coordinates()
 		}*/
 
-		//fmt.Printf("\t\t%s is %f steps away!\n", strings.Join(coords, ", "), distance)
+		//fmt.Printf("\t\t%s is %d steps away!\n", strings.Join(coords, ", "), distance)
+		//fmt.Println(path.Path, path.Distance)
 
-		if bestPathDistance == -1 || distance < bestPathDistance || (distance == bestPathDistance && path[0].(*Tile).position < bestPath[0].(*Tile).position) || (distance == bestPathDistance && path[0].(*Tile).position == bestPath[0].(*Tile).position && path[len(path)-1].(*Tile).position < bestPath[len(bestPath)-1].(*Tile).position) {
-			bestPath = path
+		if bestPathDistance == -1 || distance < bestPathDistance || (distance == bestPathDistance && path[1] < bestPath[1]) || (distance == bestPathDistance && path[1] == bestPath[1] && path[0] < bestPath[0]) {
+			//fmt.Printf("\t\t%s is %d steps away!\n", strings.Join(coords, ", "), distance)
+			bestPath = [2]int{path[0], path[1]}
 			bestPathDistance = distance
 		}
 	}
@@ -349,7 +432,7 @@ func (c *Creature) Move() error {
 	}
 
 	if bestPathDistance > -1 {
-		newTile := bestPath[len(bestPath)-1].(*Tile)
+		newTile := (*c.tile.tiles)[bestPath[0]]
 		//fmt.Printf("\t\tMoved from %s to %s!\n", c.tile.Coordinates(), newTile.Coordinates())
 
 		c.tile.occupied, newTile.occupied = false, true
@@ -384,6 +467,7 @@ func (c *Creature) Move() error {
 type Tile struct {
 	position int
 	colLen   int
+	rowLen   int
 	occupied bool
 	tiles    *[]*Tile
 }
@@ -401,7 +485,7 @@ func (t *Tile) Coordinates() string {
 }
 
 func (t *Tile) PathNeighbors() []astar.Pather {
-	neighbors := make([]astar.Pather, 0)
+	neighbors := make([]astar.Pather, 0, 4)
 
 	for _, i := range []int{t.position - t.colLen, t.position - 1, t.position + 1, t.position + t.colLen} {
 		if i < 0 || i >= len(*t.tiles) || (*t.tiles)[i].occupied {
