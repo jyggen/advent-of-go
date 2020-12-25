@@ -108,13 +108,17 @@ func getNeighbours(coordinates string) [6]string {
 	fmt.Sscanf(coordinates, "%dx%d", &x, &y)
 
 	return [6]string{
-		fmt.Sprint(x-1, "x", y),
-		fmt.Sprint(x+1, "x", y),
-		fmt.Sprint(x+1, "x", y+1),
-		fmt.Sprint(x, "x", y+1),
-		fmt.Sprint(x-1, "x", y-1),
-		fmt.Sprint(x, "x", y-1),
+		coordinatesKey(x-1, y),
+		coordinatesKey(x+1, y),
+		coordinatesKey(x+1, y+1),
+		coordinatesKey(x, y+1),
+		coordinatesKey(x-1, y-1),
+		coordinatesKey(x, y-1),
 	}
+}
+
+func coordinatesKey(x int, y int) string {
+	return strconv.Itoa(x) + "x" + strconv.Itoa(y)
 }
 
 func getTiles(input string) map[string]bool {
@@ -161,7 +165,7 @@ func getTiles(input string) map[string]bool {
 			buffer = 0
 		}
 
-		flip(tiles, fmt.Sprint(x, "x", y))
+		flip(tiles, coordinatesKey(x, y))
 	}
 
 	return tiles
