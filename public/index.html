@@ -57,11 +57,11 @@ function compare(a, b) {
 }
 
 function performanceClass(ms) {
-    if (ms > 1000) {
+    if (ms > 15000) {
         return "has-text-danger-dark";
     }
 
-    if (ms < 1) {
+    if (ms < 250) {
     	return "has-text-success-dark";
 	}
 
