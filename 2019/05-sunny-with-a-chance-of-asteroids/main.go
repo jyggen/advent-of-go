@@ -28,11 +28,20 @@ func SolvePart1(input string) (string, error) {
 	}
 
 	pc := intcode.NewComputer(instructions)
+	pcInput := make(chan int, 1)
+	pcOutput := make(chan int, 1)
+	output := 0
 
-	err = pc.Execute(1)
-	output := pc.Output()
+	go pc.Execute(pcInput, pcOutput)
 
-	return strconv.Itoa(output[len(output)-1]), err
+	pcInput <- 1
+	close(pcInput)
+
+	for data := range pcOutput {
+		output = data
+	}
+
+	return strconv.Itoa(output), err
 }
 
 func SolvePart2(input string) (string, error) {
@@ -43,9 +52,18 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	pc := intcode.NewComputer(instructions)
+	pcInput := make(chan int, 1)
+	pcOutput := make(chan int, 1)
+	output := 0
 
-	err = pc.Execute(5)
-	output := pc.Output()
+	go pc.Execute(pcInput, pcOutput)
 
-	return strconv.Itoa(output[len(output)-1]), err
+	pcInput <- 5
+	close(pcInput)
+
+	for data := range pcOutput {
+		output = data
+	}
+
+	return strconv.Itoa(output), err
 }

@@ -34,7 +34,14 @@ func SolvePart1(input string) (string, error) {
 	pc.SetValue(1, 12)
 	pc.SetValue(2, 2)
 
-	err = pc.Execute(0)
+	pcInput := make(chan int, 1)
+	pcOutput := make(chan int, 1)
+
+	go pc.Execute(pcInput, pcOutput)
+
+	pcInput <- 0
+	close(pcInput)
+	<-pcOutput
 
 	return strconv.Itoa(pc.Value(0)), err
 }
@@ -55,11 +62,14 @@ func SolvePart2(input string) (string, error) {
 		pc.SetValue(1, noun)
 		pc.SetValue(2, verb)
 
-		err = pc.Execute(0)
+		pcInput := make(chan int, 1)
+		pcOutput := make(chan int, 1)
 
-		if err != nil {
-			return "", err
-		}
+		go pc.Execute(pcInput, pcOutput)
+
+		pcInput <- 0
+		close(pcInput)
+		<-pcOutput
 
 		result = pc.Value(0)
 	}
@@ -71,11 +81,14 @@ func SolvePart2(input string) (string, error) {
 		pc.SetValue(1, noun)
 		pc.SetValue(2, verb)
 
-		err = pc.Execute(0)
+		pcInput := make(chan int, 1)
+		pcOutput := make(chan int, 1)
 
-		if err != nil {
-			return "", err
-		}
+		go pc.Execute(pcInput, pcOutput)
+
+		pcInput <- 0
+		close(pcInput)
+		<-pcOutput
 
 		result = pc.Value(0)
 	}
