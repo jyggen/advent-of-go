@@ -85,11 +85,8 @@ func SolvePart2(input string) (string, error) {
 		}
 
 		for i := 0; i < 5; i++ {
-			pcs[i] = &metadata{
-				intcode.NewComputer(instructions),
-				pcs[(5+i-1)%5].output,
-				pcs[(i+1)%5].input,
-			}
+			pcs[i].input = pcs[(5+i-1)%5].output
+			pcs[i].output = pcs[(i+1)%5].input
 		}
 
 		pcs[4].output = make(chan int, 1)
