@@ -75,7 +75,5 @@ func SolvePart2(input string) (string, error) {
 		sum += growth(256, v)
 	}
 
-	fmt.Println()
-
 	return strconv.Itoa(sum), err
 }
