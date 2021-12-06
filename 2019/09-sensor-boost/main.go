@@ -9,8 +9,6 @@ import (
 	"strconv"
 )
 
-const target = 19690720
-
 func main() {
 	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
@@ -30,20 +28,14 @@ func SolvePart1(input string) (string, error) {
 	}
 
 	pc := intcode.NewComputer(instructions)
-
-	pc.SetValue(1, 12)
-	pc.SetValue(2, 2)
-
 	pcInput := make(chan int, 1)
 	pcOutput := make(chan int, 1)
 
 	go pc.Execute(pcInput, pcOutput)
 
-	pcInput <- 0
-	close(pcInput)
-	<-pcOutput
+	pcInput <- 1
 
-	return strconv.Itoa(pc.Value(0)), nil
+	return strconv.Itoa(<-pcOutput), err
 }
 
 func SolvePart2(input string) (string, error) {
@@ -54,46 +46,12 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	pc := intcode.NewComputer(instructions)
-	noun := 0
-	verb := 0
+	pcInput := make(chan int, 1)
+	pcOutput := make(chan int, 1)
 
-	for result := 0; result <= target; noun++ {
-		pc.Reset()
-		pc.SetValue(1, noun)
-		pc.SetValue(2, verb)
+	go pc.Execute(pcInput, pcOutput)
 
-		pcInput := make(chan int, 1)
-		pcOutput := make(chan int, 1)
+	pcInput <- 2
 
-		go pc.Execute(pcInput, pcOutput)
-
-		pcInput <- 0
-		close(pcInput)
-		<-pcOutput
-
-		result = pc.Value(0)
-	}
-
-	noun -= 2
-
-	for result := 0; result <= target; verb++ {
-		pc.Reset()
-		pc.SetValue(1, noun)
-		pc.SetValue(2, verb)
-
-		pcInput := make(chan int, 1)
-		pcOutput := make(chan int, 1)
-
-		go pc.Execute(pcInput, pcOutput)
-
-		pcInput <- 0
-		close(pcInput)
-		<-pcOutput
-
-		result = pc.Value(0)
-	}
-
-	verb -= 2
-
-	return strconv.Itoa(100*noun + verb), nil
+	return strconv.Itoa(<-pcOutput), err
 }

@@ -53,7 +53,7 @@ func SolvePart1(input string) (string, error) {
 		}
 	}
 
-	return strconv.Itoa(best), err
+	return strconv.Itoa(best), nil
 }
 
 type metadata struct {
@@ -108,5 +108,5 @@ func SolvePart2(input string) (string, error) {
 		}
 	}
 
-	return strconv.Itoa(best), err
+	return strconv.Itoa(best), nil
 }

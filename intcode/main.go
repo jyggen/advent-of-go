@@ -9,6 +9,7 @@ type Computer struct {
 	initial  []int
 	length   int
 	position int
+	relative int
 	running  bool
 	state    []int
 }
@@ -16,6 +17,7 @@ type Computer struct {
 const (
 	positionMode  = iota
 	immediateMode = iota
+	relativeMode  = iota
 )
 
 func NewComputer(input []int) *Computer {
@@ -23,7 +25,7 @@ func NewComputer(input []int) *Computer {
 	pc := &Computer{
 		initial: make([]int, inputLen),
 		length:  inputLen,
-		state:   make([]int, inputLen),
+		state:   make([]int, inputLen*10),
 	}
 
 	copy(pc.initial, input)
@@ -38,15 +40,15 @@ func (pc *Computer) Execute(input chan int, output chan int) {
 	pc.running = true
 
 	for pc.running {
-		id, p1mode, p2mode, _ := pc.parse()
+		id, p1mode, p2mode, p3mode := pc.parse()
 
 		switch id {
 		case 1:
-			pc.opAdd(p1mode, p2mode)
+			pc.opAdd(p1mode, p2mode, p3mode)
 		case 2:
-			pc.opMultiply(p1mode, p2mode)
+			pc.opMultiply(p1mode, p2mode, p3mode)
 		case 3:
-			pc.opInput(input)
+			pc.opInput(input, p1mode)
 		case 4:
 			pc.opOutput(output, p1mode)
 		case 5:
@@ -54,9 +56,11 @@ func (pc *Computer) Execute(input chan int, output chan int) {
 		case 6:
 			pc.opJumpIfFalse(p1mode, p2mode)
 		case 7:
-			pc.opLessThan(p1mode, p2mode)
+			pc.opLessThan(p1mode, p2mode, p3mode)
 		case 8:
-			pc.opEquals(p1mode, p2mode)
+			pc.opEquals(p1mode, p2mode, p3mode)
+		case 9:
+			pc.opRelativeBase(p1mode)
 		case 99:
 			pc.opHalt(output)
 		default:
@@ -103,40 +107,19 @@ func (pc *Computer) parse() (int, int, int, int) {
 	return opcode, p1mode, p2mode, p3mode
 }
 
-func (pc *Computer) opAdd(p1mode int, p2mode int) {
-	p1 := pc.state[pc.position+1]
-	p2 := pc.state[pc.position+2]
-	p3 := pc.state[pc.position+3]
-
-	if p1mode == positionMode {
-		p1 = pc.state[p1]
-	}
-
-	if p2mode == positionMode {
-		p2 = pc.state[p2]
-	}
-
-	pc.state[p3] = p1 + p2
+func (pc *Computer) opAdd(p1mode int, p2mode int, p3mode int) {
+	pc.set(pc.get(pc.position+1, p1mode)+pc.get(pc.position+2, p2mode), pc.position+3, p3mode)
 	pc.position += 4
 }
 
-func (pc *Computer) opEquals(p1mode int, p2mode int) {
-	p1 := pc.state[pc.position+1]
-	p2 := pc.state[pc.position+2]
-	p3 := pc.state[pc.position+3]
-
-	if p1mode == positionMode {
-		p1 = pc.state[p1]
-	}
-
-	if p2mode == positionMode {
-		p2 = pc.state[p2]
-	}
+func (pc *Computer) opEquals(p1mode int, p2mode int, p3mode int) {
+	p1 := pc.get(pc.position+1, p1mode)
+	p2 := pc.get(pc.position+2, p2mode)
 
 	if p1 == p2 {
-		pc.state[p3] = 1
+		pc.set(1, pc.position+3, p3mode)
 	} else {
-		pc.state[p3] = 0
+		pc.set(0, pc.position+3, p3mode)
 	}
 
 	pc.position += 4
@@ -147,23 +130,14 @@ func (pc *Computer) opHalt(output chan int) {
 	pc.running = false
 }
 
-func (pc *Computer) opInput(input chan int) {
-	p1 := pc.state[pc.position+1]
-	pc.state[p1] = <-input
+func (pc *Computer) opInput(input chan int, p1mode int) {
+	pc.set(<-input, pc.position+1, p1mode)
 	pc.position += 2
 }
 
 func (pc *Computer) opJump(p1mode int, p2mode int, compare func(a int, b int) bool) {
-	p1 := pc.state[pc.position+1]
-	p2 := pc.state[pc.position+2]
-
-	if p1mode == positionMode {
-		p1 = pc.state[p1]
-	}
-
-	if p2mode == positionMode {
-		p2 = pc.state[p2]
-	}
+	p1 := pc.get(pc.position+1, p1mode)
+	p2 := pc.get(pc.position+2, p2mode)
 
 	if compare(p1, 0) {
 		pc.position = p2
@@ -184,53 +158,58 @@ func (pc *Computer) opJumpIfTrue(p1mode int, p2mode int) {
 	})
 }
 
-func (pc *Computer) opLessThan(p1mode int, p2mode int) {
-	p1 := pc.state[pc.position+1]
-	p2 := pc.state[pc.position+2]
-	p3 := pc.state[pc.position+3]
-
-	if p1mode == positionMode {
-		p1 = pc.state[p1]
-	}
-
-	if p2mode == positionMode {
-		p2 = pc.state[p2]
-	}
+func (pc *Computer) opLessThan(p1mode int, p2mode int, p3mode int) {
+	p1 := pc.get(pc.position+1, p1mode)
+	p2 := pc.get(pc.position+2, p2mode)
 
 	if p1 < p2 {
-		pc.state[p3] = 1
+		pc.set(1, pc.position+3, p3mode)
 	} else {
-		pc.state[p3] = 0
+		pc.set(0, pc.position+3, p3mode)
 	}
 
 	pc.position += 4
 }
 
-func (pc *Computer) opMultiply(p1mode int, p2mode int) {
-	p1 := pc.state[pc.position+1]
-	p2 := pc.state[pc.position+2]
-	p3 := pc.state[pc.position+3]
-
-	if p1mode == positionMode {
-		p1 = pc.state[p1]
-	}
-
-	if p2mode == positionMode {
-		p2 = pc.state[p2]
-	}
-
-	pc.state[p3] = p1 * p2
+func (pc *Computer) opMultiply(p1mode int, p2mode int, p3mode int) {
+	pc.set(pc.get(pc.position+1, p1mode)*pc.get(pc.position+2, p2mode), pc.position+3, p3mode)
 	pc.position += 4
 }
 
 func (pc *Computer) opOutput(output chan int, p1mode int) {
-	p1 := pc.state[pc.position+1]
-
-	if p1mode == positionMode {
-		p1 = pc.state[p1]
-	}
-
-	output <- p1
+	output <- pc.get(pc.position+1, p1mode)
 
 	pc.position += 2
+}
+
+func (pc *Computer) opRelativeBase(p1mode int) {
+	pc.relative += pc.get(pc.position+1, p1mode)
+	pc.position += 2
+}
+
+func (pc *Computer) get(offset int, mode int) int {
+	value := pc.state[offset]
+
+	switch mode {
+	case positionMode:
+		return pc.state[value]
+	case immediateMode:
+		return value
+	case relativeMode:
+		return pc.state[value+pc.relative]
+	}
+
+	return 0
+}
+
+func (pc *Computer) set(value int, offset int, mode int) {
+	offset = pc.state[offset]
+
+	switch mode {
+	case immediateMode:
+	case positionMode:
+		pc.state[offset] = value
+	case relativeMode:
+		pc.state[offset+pc.relative] = value
+	}
 }

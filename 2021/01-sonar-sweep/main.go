@@ -34,7 +34,7 @@ func SolvePart1(input string) (string, error) {
 		}
 	}
 
-	return strconv.Itoa(result), err
+	return strconv.Itoa(result), nil
 }
 
 func SolvePart2(input string) (string, error) {
@@ -52,5 +52,5 @@ func SolvePart2(input string) (string, error) {
 		}
 	}
 
-	return strconv.Itoa(result), err
+	return strconv.Itoa(result), nil
 }
