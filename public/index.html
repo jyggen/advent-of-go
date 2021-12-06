@@ -57,11 +57,11 @@ function compare(a, b) {
 }
 
 function performanceClass(ms) {
-    if (ms > 15000) {
+    if (ms > 15000) { // every solution completes in at most 15 seconds according to Advent of Code
         return "has-text-danger-dark";
     }
 
-    if (ms < 250) {
+    if (ms <= 20) { // let's aim for 20 milliseconds or less per solution to meet the 1s/year target
     	return "has-text-success-dark";
 	}
 
