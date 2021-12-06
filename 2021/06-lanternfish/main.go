@@ -19,29 +19,18 @@ func main() {
 	fmt.Println(p2)
 }
 
-var lookup map[int]int
+func growth(days int, init []int) int {
+	state := [9]int{}
 
-func growth(days int, cycle int) int {
-	if days <= 0 {
-		return 0
+	for _, v := range init {
+		state[v]++
 	}
 
-	remaining := days - cycle + 7
-
-	if v, ok := lookup[remaining]; ok {
-		return v
+	for i := 0; i < days; i++ {
+		state[8], state[7], state[6], state[5], state[4], state[3], state[2], state[1], state[0] = state[0], state[8], state[7]+state[0], state[6], state[5], state[4], state[3], state[2], state[1]
 	}
 
-	count := remaining / 7
-	sum := 1
-
-	for i := count; i > 0; i-- {
-		sum += growth(remaining-(7*i), 9)
-	}
-
-	lookup[remaining] = sum
-
-	return sum
+	return state[0] + state[1] + state[2] + state[3] + state[4] + state[5] + state[6] + state[7] + state[8]
 }
 
 func SolvePart1(input string) (string, error) {
@@ -51,14 +40,7 @@ func SolvePart1(input string) (string, error) {
 		return "", err
 	}
 
-	lookup = make(map[int]int)
-	sum := 0
-
-	for _, v := range intSlice {
-		sum += growth(80, v)
-	}
-
-	return strconv.Itoa(sum), err
+	return strconv.Itoa(growth(80, intSlice)), nil
 }
 
 func SolvePart2(input string) (string, error) {
@@ -68,12 +50,5 @@ func SolvePart2(input string) (string, error) {
 		return "", err
 	}
 
-	lookup = make(map[int]int)
-	sum := 0
-
-	for _, v := range intSlice {
-		sum += growth(256, v)
-	}
-
-	return strconv.Itoa(sum), err
+	return strconv.Itoa(growth(256, intSlice)), nil
 }
