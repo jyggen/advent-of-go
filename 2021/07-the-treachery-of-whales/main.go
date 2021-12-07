@@ -31,7 +31,6 @@ func SolvePart1(input string) (string, error) {
 	sort.Ints(intSlice)
 
 	median := intSlice[len(intSlice)/2]
-
 	adjustments := 0
 
 	for _, i := range intSlice {
@@ -63,28 +62,25 @@ func SolvePart2(input string) (string, error) {
 	average := float64(sum) / float64(len(intSlice))
 	floor := int(math.Floor(average))
 	ceil := int(math.Ceil(average))
+	best := math.Min(calcCost(intSlice, floor), calcCost(intSlice, ceil))
 
-	best := math.MaxInt
+	return strconv.Itoa(int(best)), nil
+}
 
-	for _, target := range [2]int{floor, ceil} {
-		sum = 0
+func calcCost(positions []int, target int) float64 {
+	sum := 0
 
-		for _, v := range intSlice {
-			diff := v - target
+	for _, v := range positions {
+		diff := v - target
 
-			if diff < 0 {
-				diff = -diff
-			}
-
-			for j := 1; j <= diff; j++ {
-				sum += j
-			}
+		if diff < 0 {
+			diff = -diff
 		}
 
-		if sum < best {
-			best = sum
+		for j := 1; j <= diff; j++ {
+			sum += j
 		}
 	}
 
-	return strconv.Itoa(best), nil
+	return float64(sum)
 }
