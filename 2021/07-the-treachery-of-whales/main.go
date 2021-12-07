@@ -31,7 +31,7 @@ func SolvePart1(input string) (string, error) {
 	sort.Ints(intSlice)
 
 	median := intSlice[len(intSlice)/2]
-	adjustments := 0
+	cost := 0
 
 	for _, i := range intSlice {
 		diff := i - median
@@ -40,10 +40,10 @@ func SolvePart1(input string) (string, error) {
 			diff = -diff
 		}
 
-		adjustments += diff
+		cost += diff
 	}
 
-	return strconv.Itoa(adjustments), nil
+	return strconv.Itoa(cost), nil
 }
 
 func SolvePart2(input string) (string, error) {
@@ -59,16 +59,24 @@ func SolvePart2(input string) (string, error) {
 		sum += v
 	}
 
-	average := float64(sum) / float64(len(intSlice))
-	floor := int(math.Floor(average))
-	ceil := int(math.Ceil(average))
-	best := math.Min(calcCost(intSlice, floor), calcCost(intSlice, ceil))
+	floor := sum / len(intSlice)
+	ceil := floor + 1
+	best := math.MaxInt
 
-	return strconv.Itoa(int(best)), nil
+	for _, v := range [2]int{
+		calcCost(intSlice, floor),
+		calcCost(intSlice, ceil),
+	} {
+		if v < best {
+			best = v
+		}
+	}
+
+	return strconv.Itoa(best), nil
 }
 
-func calcCost(positions []int, target int) float64 {
-	sum := 0
+func calcCost(positions []int, target int) int {
+	cost := 0
 
 	for _, v := range positions {
 		diff := v - target
@@ -77,10 +85,8 @@ func calcCost(positions []int, target int) float64 {
 			diff = -diff
 		}
 
-		for j := 1; j <= diff; j++ {
-			sum += j
-		}
+		cost += diff * (diff + 1) / 2
 	}
 
-	return float64(sum)
+	return cost
 }
