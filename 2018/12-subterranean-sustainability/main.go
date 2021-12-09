@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"math"
 	"os"
 	"strconv"
@@ -16,7 +16,7 @@ type rule struct {
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -27,7 +27,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	pots, rules := makePotsAndRules(utils.ToStringSlice(input, "\n"))
+	pots, rules := makePotsAndRules(utils2.ToStringSlice(input, "\n"))
 
 	var sum int
 
@@ -64,7 +64,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	pots, rules := makePotsAndRules(utils.ToStringSlice(input, "\n"))
+	pots, rules := makePotsAndRules(utils2.ToStringSlice(input, "\n"))
 
 	diffs := make([]int, 10)
 	generation := 1

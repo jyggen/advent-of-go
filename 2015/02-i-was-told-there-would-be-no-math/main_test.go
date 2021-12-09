@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"testing"
 )
 
-var testCases = []*solver.TestCase{
+var testCases = []*solver2.TestCase{
 	{
 		Input: "2x3x4",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "58",
@@ -22,7 +22,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "1x1x10",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "43",
@@ -34,9 +34,9 @@ var testCases = []*solver.TestCase{
 		},
 	},
 	{
-		Input: solver.InputFromFile("input.txt"),
+		Input: solver2.InputFromFile("input.txt"),
 		Short: true,
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "1586300",

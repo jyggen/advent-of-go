@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)

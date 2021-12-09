@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"testing"
 )
 
-var testCases = []*solver.TestCase{
+var testCases = []*solver2.TestCase{
 	{
 		Input: "+1\n-2\n+3\n+1",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "3",
@@ -22,7 +22,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "+1\n+1\n+1",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "3",
@@ -31,7 +31,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "+1\n+1\n-2",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "0",
@@ -40,7 +40,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "-1\n-2\n-3",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "-6",
@@ -49,7 +49,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "+1\n-1",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "0",
@@ -58,7 +58,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "+3\n+3\n+4\n-2\n-4",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "10",
@@ -67,7 +67,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "-6\n+3\n+8\n+5\n-6",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "5",
@@ -76,7 +76,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "+7\n+7\n-2\n-7\n-4",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "14",
@@ -84,9 +84,9 @@ var testCases = []*solver.TestCase{
 		},
 	},
 	{
-		Input: solver.InputFromFile("input.txt"),
+		Input: solver2.InputFromFile("input.txt"),
 		Short: true,
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "505",

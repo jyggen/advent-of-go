@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -51,11 +51,11 @@ func SolvePart2(input string) (string, error) {
 }
 
 func parseInput(input string) [][]int {
-	rows := utils.ToStringSlice(input, "\n")
+	rows := utils2.ToStringSlice(input, "\n")
 	presents := make([][]int, 0, len(rows))
 
 	for _, present := range rows {
-		dimensionStrings := utils.ToStringSlice(present, "x")
+		dimensionStrings := utils2.ToStringSlice(present, "x")
 		dimensions := make([]int, 0, len(dimensionStrings))
 
 		for _, value := range dimensionStrings {

@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/gameboy"
-	"github.com/jyggen/advent-of-go/solver"
+	gameboy2 "github.com/jyggen/advent-of-go/internal/gameboy"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"os"
 	"strconv"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -20,7 +20,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	gb := gameboy.New(input)
+	gb := gameboy2.New(input)
 
 	for {
 		if gb.Lookahead().Visits() == 1 {
@@ -34,7 +34,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	gb := gameboy.New(input)
+	gb := gameboy2.New(input)
 	opcodes := gb.Opcodes()
 	opLen := len(opcodes)
 	i := opLen
@@ -43,7 +43,7 @@ func SolvePart2(input string) (string, error) {
 		i--
 		op := opcodes[i]
 
-		if op.Kind() == gameboy.Jmp && op.Value() < 0 {
+		if op.Kind() == gameboy2.Jmp && op.Value() < 0 {
 			break
 		}
 	}
@@ -52,10 +52,10 @@ BruteLoop:
 	for {
 		op := opcodes[i]
 
-		if op.Kind() == gameboy.Jmp {
-			op.SetKind(gameboy.Nop)
-		} else if op.Kind() == gameboy.Nop {
-			op.SetKind(gameboy.Jmp)
+		if op.Kind() == gameboy2.Jmp {
+			op.SetKind(gameboy2.Nop)
+		} else if op.Kind() == gameboy2.Nop {
+			op.SetKind(gameboy2.Jmp)
 		}
 
 		gb.Reset()
@@ -71,10 +71,10 @@ BruteLoop:
 			gb.Step()
 		}
 
-		if op.Kind() == gameboy.Jmp {
-			op.SetKind(gameboy.Nop)
-		} else if op.Kind() == gameboy.Nop {
-			op.SetKind(gameboy.Jmp)
+		if op.Kind() == gameboy2.Jmp {
+			op.SetKind(gameboy2.Nop)
+		} else if op.Kind() == gameboy2.Nop {
+			op.SetKind(gameboy2.Jmp)
 		}
 
 		i--

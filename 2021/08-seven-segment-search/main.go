@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"math/bits"
 	"os"
 	"strconv"
@@ -46,7 +46,7 @@ var numLookup = map[uint8]int{
 }
 
 func toByteSlice(input string, separator string) []uint8 {
-	stringSlice := utils.ToStringSlice(input, separator)
+	stringSlice := utils2.ToStringSlice(input, separator)
 	byteSlice := make([]uint8, 0, len(stringSlice))
 
 	for _, runes := range stringSlice {
@@ -144,7 +144,7 @@ func (l *lookup) hasAllBitsSet(number uint8, bits uint8) bool {
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -155,11 +155,11 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	stringSlice := utils.ToStringSlice(input, "\n")
+	stringSlice := utils2.ToStringSlice(input, "\n")
 	sum := 0
 
 	for _, s := range stringSlice {
-		output := utils.ToStringSlice(s, "|")[1]
+		output := utils2.ToStringSlice(s, "|")[1]
 		bytes := toByteSlice(output, " ")
 
 		for _, v := range bytes {
@@ -174,11 +174,11 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	stringSlice := utils.ToStringSlice(input, "\n")
+	stringSlice := utils2.ToStringSlice(input, "\n")
 	sum := 0
 
 	for _, s := range stringSlice {
-		parts := utils.ToStringSlice(s, "|")
+		parts := utils2.ToStringSlice(s, "|")
 		patterns, output := toByteSlice(parts[0], " "), toByteSlice(parts[1], " ")
 		countMap := byBitCount(append(patterns, output...))
 		segments := &lookup{

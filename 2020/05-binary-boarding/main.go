@@ -3,8 +3,8 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
@@ -19,7 +19,7 @@ func init() {
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -56,7 +56,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func decodeTickets(input string) ([]int, int, error) {
-	tickets := utils.ToStringSlice(binaryReplacer.Replace(input), "\n")
+	tickets := utils2.ToStringSlice(binaryReplacer.Replace(input), "\n")
 	idLen := len(tickets)
 	ids := make([]int, idLen)
 

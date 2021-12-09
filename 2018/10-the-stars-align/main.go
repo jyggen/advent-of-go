@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"github.com/otiai10/gosseract"
 	"image"
 	"image/color"
@@ -34,7 +34,7 @@ func (l *light) Reverse() {
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -45,7 +45,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	img, _ := solve(utils.ToStringSlice(input, "\n"))
+	img, _ := solve(utils2.ToStringSlice(input, "\n"))
 	buf := new(bytes.Buffer)
 
 	client := gosseract.NewClient()
@@ -61,7 +61,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	_, seconds := solve(utils.ToStringSlice(input, "\n"))
+	_, seconds := solve(utils2.ToStringSlice(input, "\n"))
 
 	return strconv.Itoa(seconds), nil
 }

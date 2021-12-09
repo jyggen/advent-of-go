@@ -3,14 +3,14 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -21,7 +21,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	boxes := utils.ToStringSlice(input, "\n")
+	boxes := utils2.ToStringSlice(input, "\n")
 	ids := make([][]rune, len(boxes))
 	twos, threes := 0, 0
 
@@ -52,7 +52,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	boxes := utils.ToStringSlice(input, "\n")
+	boxes := utils2.ToStringSlice(input, "\n")
 	ids := make([][]rune, len(boxes))
 
 	for i, box := range boxes {

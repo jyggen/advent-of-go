@@ -3,15 +3,15 @@ package main
 import (
 	"container/list"
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -28,7 +28,7 @@ type grid struct {
 }
 
 func makeGrid(input string) (*grid, error) {
-	runeSlice := utils.ToRuneSlice(input, "\n")
+	runeSlice := utils2.ToRuneSlice(input, "\n")
 	colLength := len(runeSlice[0])
 	rowLength := len(runeSlice)
 	g := &grid{
@@ -56,14 +56,14 @@ func (g *grid) lowPoints() []int {
 	lowPoints := make([]int, 0)
 
 	for k, v := range g.grid {
-		x, y := utils.ToCoordinates(k, g.colLength)
+		x, y := utils2.ToCoordinates(k, g.colLength)
 		lower := true
 
 		for _, n := range []int{
-			utils.Neighbour(x, y, utils.North, g.rowLength, g.colLength),
-			utils.Neighbour(x, y, utils.East, g.rowLength, g.colLength),
-			utils.Neighbour(x, y, utils.South, g.rowLength, g.colLength),
-			utils.Neighbour(x, y, utils.West, g.rowLength, g.colLength),
+			utils2.Neighbour(x, y, utils2.North, g.rowLength, g.colLength),
+			utils2.Neighbour(x, y, utils2.East, g.rowLength, g.colLength),
+			utils2.Neighbour(x, y, utils2.South, g.rowLength, g.colLength),
+			utils2.Neighbour(x, y, utils2.West, g.rowLength, g.colLength),
 		} {
 			if n == -1 {
 				continue
@@ -118,12 +118,12 @@ func SolvePart2(input string) (string, error) {
 			v := e.Value.(int)
 
 			if _, ok := cache[v]; !ok {
-				x, y := utils.ToCoordinates(v, g.colLength)
+				x, y := utils2.ToCoordinates(v, g.colLength)
 				for _, n := range []int{
-					utils.Neighbour(x, y, utils.North, g.rowLength, g.colLength),
-					utils.Neighbour(x, y, utils.East, g.rowLength, g.colLength),
-					utils.Neighbour(x, y, utils.South, g.rowLength, g.colLength),
-					utils.Neighbour(x, y, utils.West, g.rowLength, g.colLength),
+					utils2.Neighbour(x, y, utils2.North, g.rowLength, g.colLength),
+					utils2.Neighbour(x, y, utils2.East, g.rowLength, g.colLength),
+					utils2.Neighbour(x, y, utils2.South, g.rowLength, g.colLength),
+					utils2.Neighbour(x, y, utils2.West, g.rowLength, g.colLength),
 				} {
 					if n != -1 && g.grid[n] != 9 && g.grid[n] > g.grid[v] {
 						queue.PushBack(n)

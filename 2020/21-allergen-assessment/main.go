@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -58,7 +58,7 @@ func resolve(input string) (map[string]int, map[string]string, map[string]string
 	assessments := make(map[string]map[string]int, 0)
 	ingredientsCount := make(map[string]int, 0)
 
-	for _, r := range utils.ToStringSlice(input, "\n") {
+	for _, r := range utils2.ToStringSlice(input, "\n") {
 		disclaimerAt := strings.IndexRune(r, '(')
 		ingredients := r[0:disclaimerAt]
 		disclaimer := r[disclaimerAt+10 : len(r)-1]
@@ -71,7 +71,7 @@ func resolve(input string) (map[string]int, map[string]string, map[string]string
 			ingredientsCount[i]++
 		}
 
-		for _, d := range utils.ToStringSlice(disclaimer, ", ") {
+		for _, d := range utils2.ToStringSlice(disclaimer, ", ") {
 			if _, ok := assessments[d]; !ok {
 				assessments[d] = make(map[string]int, 0)
 			}

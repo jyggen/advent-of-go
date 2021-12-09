@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"regexp"
 	"sort"
@@ -18,7 +18,7 @@ type guard struct {
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -29,7 +29,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	guards := makeGuards(utils.ToStringSlice(input, "\n"))
+	guards := makeGuards(utils2.ToStringSlice(input, "\n"))
 
 	var bestCount, bestId, bestMinute int
 
@@ -52,7 +52,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	guards := makeGuards(utils.ToStringSlice(input, "\n"))
+	guards := makeGuards(utils2.ToStringSlice(input, "\n"))
 
 	var bestCount, bestId, bestMinute int
 

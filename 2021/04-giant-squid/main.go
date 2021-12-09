@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -132,14 +132,14 @@ func SolvePart2(input string) (string, error) {
 }
 
 func parseInput(input string) ([]int, []*board, error) {
-	rows := utils.ToStringSlice(input, "\n")
-	numbers, err := utils.ToIntegerSlice(rows[0], ",")
+	rows := utils2.ToStringSlice(input, "\n")
+	numbers, err := utils2.ToIntegerSlice(rows[0], ",")
 
 	if err != nil {
 		return numbers, make([]*board, 0), err
 	}
 
-	rawBoards := utils.ToStringSlice(strings.Join(rows[2:], "\n"), "\n\n")
+	rawBoards := utils2.ToStringSlice(strings.Join(rows[2:], "\n"), "\n\n")
 	boards := make([]*board, len(rawBoards))
 
 	for i, rawBoard := range rawBoards {

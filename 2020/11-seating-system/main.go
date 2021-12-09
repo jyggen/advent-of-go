@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 )
@@ -13,21 +13,21 @@ const floor = '.'
 const occupied = '#'
 
 var directions = [4]int{
-	utils.North,
-	utils.NorthEast,
-	utils.West,
-	utils.NorthWest,
+	utils2.North,
+	utils2.NorthEast,
+	utils2.West,
+	utils2.NorthWest,
 }
 
 var opposites = [4]int{
-	utils.South,
-	utils.SouthWest,
-	utils.East,
-	utils.SouthEast,
+	utils2.South,
+	utils2.SouthWest,
+	utils2.East,
+	utils2.SouthEast,
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -46,7 +46,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func simulate(input string, los bool, tolerance int) int {
-	rows := utils.ToRuneSlice(input, "\n")
+	rows := utils2.ToRuneSlice(input, "\n")
 	rowLen := len(rows)
 	colLen := len(rows[0])
 	gridSize := rowLen * colLen
@@ -71,7 +71,7 @@ func simulate(input string, los bool, tolerance int) int {
 			}
 
 			for i, d := range directions {
-				neighbour := utils.Neighbour(x, y, d, rowLen, colLen)
+				neighbour := utils2.Neighbour(x, y, d, rowLen, colLen)
 
 				if los {
 					for {

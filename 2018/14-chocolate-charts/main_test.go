@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"testing"
 )
 
-var testCases = []*solver.TestCase{
+var testCases = []*solver2.TestCase{
 	{
 		Input: "9",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "5158916779",
@@ -18,7 +18,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "5",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "0124515891",
@@ -27,7 +27,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "18",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "9251071085",
@@ -36,7 +36,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "2018",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "5941429882",
@@ -45,7 +45,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "51589",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "9",
@@ -54,7 +54,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "01245",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "5",
@@ -63,7 +63,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "92510",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "18",
@@ -72,7 +72,7 @@ var testCases = []*solver.TestCase{
 	},
 	{
 		Input: "59414",
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "2018",
@@ -80,9 +80,9 @@ var testCases = []*solver.TestCase{
 		},
 	},
 	{
-		Input: solver.InputFromFile("input.txt"),
+		Input: solver2.InputFromFile("input.txt"),
 		Short: true,
-		Solvers: []*solver.TestCaseSolver{
+		Solvers: []*solver2.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "1464411010",

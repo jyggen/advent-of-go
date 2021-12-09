@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"math"
 	"os"
 	"regexp"
@@ -45,7 +45,7 @@ const endless = 4
 var inputRegex = regexp.MustCompile("^([xy])=(\\d+), [xy]=(\\d+)..(\\d+)$")
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -56,7 +56,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	data := utils.ToStringSlice(input, "\n")
+	data := utils2.ToStringSlice(input, "\n")
 	clayTiles := make([]*clayTile, 0)
 	minX := math.MaxInt16
 	maxX := 0
@@ -186,7 +186,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	data := utils.ToStringSlice(input, "\n")
+	data := utils2.ToStringSlice(input, "\n")
 	clayTiles := make([]*clayTile, 0)
 	minX := math.MaxInt16
 	maxX := 0

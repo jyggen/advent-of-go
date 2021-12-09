@@ -3,8 +3,8 @@ package main
 import (
 	"container/ring"
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
@@ -15,7 +15,7 @@ const p2rounds = 10000000
 const p2cups = 1000000
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -26,9 +26,9 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	cups, _ := utils.ToIntegerSlice(input, "")
-	max := utils.MaxIntSlice(cups)
-	min := utils.MinIntSlice(cups)
+	cups, _ := utils2.ToIntegerSlice(input, "")
+	max := utils2.MaxIntSlice(cups)
+	min := utils2.MinIntSlice(cups)
 	r := play(cups, min, max, p1rounds)
 
 	var b strings.Builder
@@ -43,9 +43,9 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	cups, _ := utils.ToIntegerSlice(input, "")
-	max := utils.MaxIntSlice(cups)
-	min := utils.MinIntSlice(cups)
+	cups, _ := utils2.ToIntegerSlice(input, "")
+	max := utils2.MaxIntSlice(cups)
+	min := utils2.MinIntSlice(cups)
 	additional := make([]int, p2cups-max)
 
 	for i := 0; i < len(additional); i++ {

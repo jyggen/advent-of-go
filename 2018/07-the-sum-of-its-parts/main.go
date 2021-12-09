@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
@@ -15,7 +15,7 @@ type workOrder struct {
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -26,14 +26,14 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	rules, runes := buildRulesAndRunes(utils.ToStringSlice(input, "\n"))
+	rules, runes := buildRulesAndRunes(utils2.ToStringSlice(input, "\n"))
 	result, _ := build(runes, rules, 1, 0)
 
 	return string(result), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	rules, runes := buildRulesAndRunes(utils.ToStringSlice(input, "\n"))
+	rules, runes := buildRulesAndRunes(utils2.ToStringSlice(input, "\n"))
 	_, timeSpent := build(runes, rules, 5, 60)
 
 	return strconv.Itoa(timeSpent), nil

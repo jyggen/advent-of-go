@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 )
@@ -21,7 +21,7 @@ func init() {
 }
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -32,7 +32,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	wires := utils.ToStringSlice(input, "\n")
+	wires := utils2.ToStringSlice(input, "\n")
 
 	wireOne, err := toPoints(wires[0])
 
@@ -69,7 +69,7 @@ func SolvePart1(input string) (string, error) {
 				{{a2, b2}, {a1, b1}},
 			} {
 				if isOverlapping(pairs[0], pairs[1]) {
-					distance := utils.ManhattanDistance(pairs[0][0][x], pairs[1][0][y])
+					distance := utils2.ManhattanDistance(pairs[0][0][x], pairs[1][0][y])
 
 					if closest == -1 || distance < closest {
 						closest = distance
@@ -82,7 +82,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	wires := utils.ToStringSlice(input, "\n")
+	wires := utils2.ToStringSlice(input, "\n")
 
 	wireOne, err := toPoints(wires[0])
 
@@ -108,9 +108,9 @@ func SolvePart2(input string) (string, error) {
 		b1 := wireOne[i]
 
 		if a1[x] == b1[x] {
-			wireOneSteps += utils.AbsInt(a1[y] - b1[y])
+			wireOneSteps += utils2.AbsInt(a1[y] - b1[y])
 		} else {
-			wireOneSteps += utils.AbsInt(a1[x] - b1[x])
+			wireOneSteps += utils2.AbsInt(a1[x] - b1[x])
 		}
 
 		wireTwoSteps := 0
@@ -124,9 +124,9 @@ func SolvePart2(input string) (string, error) {
 			b2 := wireTwo[j]
 
 			if a2[x] == b2[x] {
-				wireTwoSteps += utils.AbsInt(a2[y] - b2[y])
+				wireTwoSteps += utils2.AbsInt(a2[y] - b2[y])
 			} else {
-				wireTwoSteps += utils.AbsInt(a2[x] - b2[x])
+				wireTwoSteps += utils2.AbsInt(a2[x] - b2[x])
 			}
 
 			for _, pairs := range [][][][]int{
@@ -135,8 +135,8 @@ func SolvePart2(input string) (string, error) {
 			} {
 				if isOverlapping(pairs[0], pairs[1]) {
 					score := wireTwoSteps + wireOneSteps
-					score -= utils.AbsInt(pairs[0][1][y] - pairs[1][0][y])
-					score -= utils.AbsInt(pairs[1][1][x] - pairs[0][0][x])
+					score -= utils2.AbsInt(pairs[0][1][y] - pairs[1][0][y])
+					score -= utils2.AbsInt(pairs[1][1][x] - pairs[0][0][x])
 
 					if lowest == -1 || score < lowest {
 						lowest = score
@@ -161,7 +161,7 @@ func isOverlapping(a [][]int, b [][]int) bool {
 }
 
 func toPoints(wire string) ([][]int, error) {
-	moves := utils.ToRuneSlice(wire, ",")
+	moves := utils2.ToRuneSlice(wire, ",")
 	wired := make([][]int, len(moves)+1)
 	x, y := 0, 0
 	wired[0] = []int{x, y}

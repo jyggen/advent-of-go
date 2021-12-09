@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 )
@@ -16,7 +16,7 @@ const (
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -27,7 +27,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	runeSlice := utils.ToRuneSlice(input, "\n")
+	runeSlice := utils2.ToRuneSlice(input, "\n")
 	x, y, degrees := 0, 0, east
 
 	for _, v := range runeSlice {
@@ -60,11 +60,11 @@ func SolvePart1(input string) (string, error) {
 		}
 	}
 
-	return strconv.Itoa(utils.ManhattanDistance(x, y)), nil
+	return strconv.Itoa(utils2.ManhattanDistance(x, y)), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	runeSlice := utils.ToRuneSlice(input, "\n")
+	runeSlice := utils2.ToRuneSlice(input, "\n")
 	shipX, shipY, waypointX, waypointY := 0, 0, 10, -1
 
 	for _, v := range runeSlice {
@@ -80,14 +80,14 @@ func SolvePart2(input string) (string, error) {
 		case 'W':
 			waypointX -= distance
 		case 'L':
-			waypointX, waypointY = utils.RotateRelativePoint(waypointX, waypointY, -distance)
+			waypointX, waypointY = utils2.RotateRelativePoint(waypointX, waypointY, -distance)
 		case 'R':
-			waypointX, waypointY = utils.RotateRelativePoint(waypointX, waypointY, distance)
+			waypointX, waypointY = utils2.RotateRelativePoint(waypointX, waypointY, distance)
 		case 'F':
 			shipX += waypointX * distance
 			shipY += waypointY * distance
 		}
 	}
 
-	return strconv.Itoa(utils.ManhattanDistance(shipX, shipY)), nil
+	return strconv.Itoa(utils2.ManhattanDistance(shipX, shipY)), nil
 }

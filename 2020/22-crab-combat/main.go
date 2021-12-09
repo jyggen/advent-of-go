@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
@@ -15,7 +15,7 @@ const (
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -76,8 +76,8 @@ func play(p1deck []int, p2deck []int) []int {
 
 func playRecurse(p1deck []int, p2deck []int, root bool) (int, []int) {
 	if !root {
-		p1high := utils.MaxIntSlice(p1deck)
-		p2high := utils.MaxIntSlice(p2deck)
+		p1high := utils2.MaxIntSlice(p1deck)
+		p2high := utils2.MaxIntSlice(p2deck)
 
 		if p1high > p2high {
 			return p1win, p1deck
@@ -134,11 +134,11 @@ func playRecurse(p1deck []int, p2deck []int, root bool) (int, []int) {
 }
 
 func parse(input string) ([]int, []int) {
-	playerSlice := utils.ToStringSlice(input, "\n\n")
+	playerSlice := utils2.ToStringSlice(input, "\n\n")
 	players := make([][]int, len(playerSlice))
 
 	for i, p := range playerSlice {
-		cards, _ := utils.ToIntegerSlice(p[strings.IndexRune(p, '\n'):], "\n")
+		cards, _ := utils2.ToIntegerSlice(p[strings.IndexRune(p, '\n'):], "\n")
 		players[i] = make([]int, len(cards))
 
 		for j, c := range cards {

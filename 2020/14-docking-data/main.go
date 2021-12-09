@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -21,7 +21,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	lines := utils.ToStringSlice(input, "\n")
+	lines := utils2.ToStringSlice(input, "\n")
 	memory := make(map[int]int)
 	mask := [36]rune{}
 
@@ -35,7 +35,7 @@ func SolvePart1(input string) (string, error) {
 				mask[k] = v
 			}
 		} else {
-			parts := utils.ToStringSlice(l, " = ")
+			parts := utils2.ToStringSlice(l, " = ")
 			address, _ := strconv.Atoi(parts[0][4 : len(parts[0])-1])
 			decVal, _ := strconv.Atoi(parts[1])
 			binVal := []rune(fmt.Sprintf("%036s", strconv.FormatInt(int64(decVal), 2)))
@@ -61,7 +61,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	lines := utils.ToStringSlice(input, "\n")
+	lines := utils2.ToStringSlice(input, "\n")
 	memory := make(map[int]int)
 	masks := make([][]rune, 0)
 
@@ -69,7 +69,7 @@ func SolvePart2(input string) (string, error) {
 		if l[:7] == "mask = " {
 			masks = make([][]rune, 0)
 
-			for _, m := range utils.Combinations([]rune{'0', '1'}, strings.Count(l[7:], "X")) {
+			for _, m := range utils2.Combinations([]rune{'0', '1'}, strings.Count(l[7:], "X")) {
 				mask := make([]rune, 36)
 				offset := 0
 
@@ -89,7 +89,7 @@ func SolvePart2(input string) (string, error) {
 				masks = append(masks, mask)
 			}
 		} else {
-			parts := utils.ToStringSlice(l, " = ")
+			parts := utils2.ToStringSlice(l, " = ")
 			value, _ := strconv.Atoi(parts[1])
 			decAddr, _ := strconv.Atoi(parts[0][4 : len(parts[0])-1])
 			binAddr := []rune(fmt.Sprintf("%036s", strconv.FormatInt(int64(decAddr), 2)))

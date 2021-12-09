@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"math"
 	"os"
 	"strconv"
 )
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -151,11 +151,11 @@ func getSideId(data []bool, i int, max int, increment int) int {
 }
 
 func getTileVariants(input string) []*tileVariants {
-	parts := utils.ToStringSlice(input, "\n\n")
+	parts := utils2.ToStringSlice(input, "\n\n")
 	tiles := make([]*tileVariants, len(parts))
 
 	for i, p := range parts {
-		rows := utils.ToRuneSlice(p, "\n")
+		rows := utils2.ToRuneSlice(p, "\n")
 		height := len(rows[1:])
 		width := len(rows[1])
 		id, _ := strconv.Atoi(string(rows[0][5 : len(rows[0])-1]))

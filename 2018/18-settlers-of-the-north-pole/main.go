@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/solver"
-	"github.com/jyggen/advent-of-go/utils"
+	solver2 "github.com/jyggen/advent-of-go/internal/solver"
+	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 )
@@ -13,7 +13,7 @@ const tree = '|'
 const lumberyard = '#'
 
 func main() {
-	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
+	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 
 	if err != nil {
 		panic(err)
@@ -32,7 +32,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func simulate(input string, times int) int {
-	rows := utils.ToRuneSlice(input, "\n")
+	rows := utils2.ToRuneSlice(input, "\n")
 
 	rowLen := len(rows)
 	colLen := len(rows[0])
