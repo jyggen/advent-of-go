@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
 )
 
 var eolReplacer *strings.Replacer
@@ -15,8 +16,7 @@ func init() {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}

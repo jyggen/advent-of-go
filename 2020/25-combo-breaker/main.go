@@ -2,18 +2,20 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
-const subjectNumber = 7
-const divisionNumber = 20201227
+const (
+	subjectNumber  = 7
+	divisionNumber = 20201227
+)
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -23,7 +25,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	publicKeys, _ := utils2.ToIntegerSlice(input, "\n")
+	publicKeys, _ := utils.ToIntegerSlice(input, "\n")
 	cardKey, doorKey := publicKeys[0], publicKeys[1]
 	cardLoopSize := 1
 

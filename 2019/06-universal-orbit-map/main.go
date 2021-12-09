@@ -3,11 +3,12 @@ package main
 import (
 	"container/list"
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type item struct {
@@ -16,8 +17,7 @@ type item struct {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -27,11 +27,11 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	rows := utils2.ToStringSlice(strings.TrimSpace(input), "\n")
+	rows := utils.ToStringSlice(strings.TrimSpace(input), "\n")
 	orbits := make(map[string]string, len(rows))
 
 	for _, row := range rows {
-		parts := utils2.ToStringSlice(row, ")")
+		parts := utils.ToStringSlice(row, ")")
 		orbits[parts[1]] = parts[0]
 	}
 
@@ -45,11 +45,11 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	rows := utils2.ToStringSlice(strings.TrimSpace(input), "\n")
+	rows := utils.ToStringSlice(strings.TrimSpace(input), "\n")
 	orbits := make(map[string][]string, len(rows))
 
 	for _, row := range rows {
-		parts := utils2.ToStringSlice(row, ")")
+		parts := utils.ToStringSlice(row, ")")
 
 		if _, ok := orbits[parts[1]]; !ok {
 			orbits[parts[1]] = make([]string, 0)

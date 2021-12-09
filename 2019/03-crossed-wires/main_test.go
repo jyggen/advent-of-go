@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"testing"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
 )
 
-var testCases = []*solver2.TestCase{
+var testCases = []*solver.TestCase{
 	{
 		Input: "R8,U5,L5,D3\nU7,R6,D4,L4",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "6",
@@ -22,7 +23,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "R75,D30,R83,U83,L12,D49,R71,U7,L72\nU62,R66,U55,R34,D71,R55,D58,R83",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "159",
@@ -35,7 +36,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51\nU98,R91,D20,R16,D67,R40,U7,R15,U6,R7",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "135",
@@ -47,9 +48,9 @@ var testCases = []*solver2.TestCase{
 		},
 	},
 	{
-		Input: solver2.InputFromFile("input.txt"),
+		Input: solver.InputFromFile("input.txt"),
 		Short: true,
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "1084",

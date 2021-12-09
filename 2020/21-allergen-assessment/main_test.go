@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"testing"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
 )
 
-var testCases = []*solver2.TestCase{
+var testCases = []*solver.TestCase{
 	{
 		Input: "mxmxvkd kfcds sqjhc nhms (contains dairy, fish)\ntrh fvjkl sbzzf mxmxvkd (contains dairy)\nsqjhc fvjkl (contains soy)\nsqjhc mxmxvkd sbzzf (contains fish)",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "5",
@@ -21,9 +22,9 @@ var testCases = []*solver2.TestCase{
 		},
 	},
 	{
-		Input: solver2.InputFromFile("input.txt"),
+		Input: solver.InputFromFile("input.txt"),
 		Short: true,
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "2150",

@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/gitchander/permutation"
-	intcode2 "github.com/jyggen/advent-of-go/internal/intcode"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
+
+	"github.com/gitchander/permutation"
+	"github.com/jyggen/advent-of-go/internal/intcode"
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -22,8 +22,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	instructions, err := utils2.ToIntegerSlice(input, ",")
-
+	instructions, err := utils.ToIntegerSlice(input, ",")
 	if err != nil {
 		return "", err
 	}
@@ -36,7 +35,7 @@ func SolvePart1(input string) (string, error) {
 		in := 0
 
 		for i := 0; i < 5; i++ {
-			pc := intcode2.NewComputer(instructions)
+			pc := intcode.NewComputer(instructions)
 			pcInput := make(chan int, 1)
 			pcOutput := make(chan int, 1)
 
@@ -57,14 +56,13 @@ func SolvePart1(input string) (string, error) {
 }
 
 type metadata struct {
-	pc     *intcode2.Computer
+	pc     *intcode.Computer
 	input  chan int
 	output chan int
 }
 
 func SolvePart2(input string) (string, error) {
-	instructions, err := utils2.ToIntegerSlice(input, ",")
-
+	instructions, err := utils.ToIntegerSlice(input, ",")
 	if err != nil {
 		return "", err
 	}
@@ -78,7 +76,7 @@ func SolvePart2(input string) (string, error) {
 
 		for i := 0; i < 5; i++ {
 			pcs[i] = &metadata{
-				intcode2.NewComputer(instructions),
+				intcode.NewComputer(instructions),
 				make(chan int, 1),
 				make(chan int, 1),
 			}

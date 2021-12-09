@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"os"
 	"sort"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
 )
 
 type cart struct {
@@ -15,14 +16,18 @@ type cart struct {
 	intersection int
 }
 
-const up = 0
-const right = 1
-const down = 2
-const left = 3
+const (
+	up    = 0
+	right = 1
+	down  = 2
+	left  = 3
+)
 
-const turnLeft = 0
-const goStraight = 1
-const turnRight = 2
+const (
+	turnLeft   = 0
+	goStraight = 1
+	turnRight  = 2
+)
 
 var cartUp, cartRight, cartDown, cartLeft, intersection, turnOne, turnTwo, vertical, horizontal rune
 
@@ -39,8 +44,7 @@ func init() {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}

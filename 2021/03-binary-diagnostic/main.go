@@ -2,16 +2,16 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -21,13 +21,13 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	rows := utils2.ToStringSlice(input, "\n")
+	rows := utils.ToStringSlice(input, "\n")
 	instructions := make([][]int, len(rows))
 
 	var err error
 
 	for i, row := range rows {
-		instructions[i], err = utils2.ToIntegerSlice(row, "")
+		instructions[i], err = utils.ToIntegerSlice(row, "")
 
 		if err != nil {
 			return "", err
@@ -59,13 +59,11 @@ func SolvePart1(input string) (string, error) {
 	}
 
 	epsilonInt, err := strconv.ParseInt(string(epsilon), 2, 64)
-
 	if err != nil {
 		return "", fmt.Errorf("unable to parse epsilon: %w", err)
 	}
 
 	gammaInt, err := strconv.ParseInt(string(gamma), 2, 64)
-
 	if err != nil {
 		return "", fmt.Errorf("unable to parse gamma: %w", err)
 	}
@@ -74,13 +72,13 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	rows := utils2.ToStringSlice(input, "\n")
+	rows := utils.ToStringSlice(input, "\n")
 	instructions := make([][]int, len(rows))
 
 	var err error
 
 	for i, row := range rows {
-		instructions[i], err = utils2.ToIntegerSlice(row, "")
+		instructions[i], err = utils.ToIntegerSlice(row, "")
 
 		if err != nil {
 			return "", err
@@ -139,13 +137,11 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	oxygenInt, err := strconv.ParseInt(strings.Trim(strings.Join(strings.Fields(fmt.Sprint(parts[0].instructions[0])), ""), "[]"), 2, 64)
-
 	if err != nil {
 		return "", fmt.Errorf("unable to parse oxygen: %w", err)
 	}
 
 	co2Int, err := strconv.ParseInt(strings.Trim(strings.Join(strings.Fields(fmt.Sprint(parts[1].instructions[0])), ""), "[]"), 2, 64)
-
 	if err != nil {
 		return "", fmt.Errorf("unable to parse co2: %w", err)
 	}

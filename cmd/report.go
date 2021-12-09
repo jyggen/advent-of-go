@@ -4,12 +4,13 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
-	"golang.org/x/tools/benchmark/parse"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 	"time"
+
+	"golang.org/x/tools/benchmark/parse"
 )
 
 type TestEvent struct {
@@ -33,8 +34,10 @@ type Part struct {
 	Ms float64
 }
 
-var pkgReplacer = strings.NewReplacer("github.com/jyggen/advent-of-go/", "")
-var nameReplacer = strings.NewReplacer("-", " ")
+var (
+	pkgReplacer  = strings.NewReplacer("github.com/jyggen/advent-of-go/", "")
+	nameReplacer = strings.NewReplacer("-", " ")
+)
 
 func main() {
 	results := make(map[string]*Day, 0)
@@ -44,7 +47,6 @@ func main() {
 	for scanner.Scan() {
 		test := &TestEvent{}
 		err := json.Unmarshal(scanner.Bytes(), test)
-
 		if err != nil {
 			panic(err)
 		}
@@ -64,7 +66,6 @@ func main() {
 		}
 
 		benchmark, err := parse.ParseLine(test.Output)
-
 		if err != nil {
 			continue
 		}
@@ -104,7 +105,6 @@ func main() {
 	}
 
 	txt, err := json.Marshal(output)
-
 	if err != nil {
 		panic(err)
 	}

@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type field struct {
@@ -24,8 +25,7 @@ type ticket struct {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -119,10 +119,10 @@ func SolvePart2(input string) (string, error) {
 }
 
 func parseInput(input string) (ticket, []ticket, []field) {
-	sections := utils2.ToStringSlice(input, "\n\n")
+	sections := utils.ToStringSlice(input, "\n\n")
 	fields := parseField(sections[0])
-	myTicket := parseTicket(utils2.ToStringSlice(sections[1], "\n")[1])
-	rows := utils2.ToStringSlice(sections[2], "\n")[1:]
+	myTicket := parseTicket(utils.ToStringSlice(sections[1], "\n")[1])
+	rows := utils.ToStringSlice(sections[2], "\n")[1:]
 	tickets := make([]ticket, len(rows))
 
 	for i, r := range rows {
@@ -133,15 +133,15 @@ func parseInput(input string) (ticket, []ticket, []field) {
 }
 
 func parseField(input string) []field {
-	rows := utils2.ToStringSlice(input, "\n")
+	rows := utils.ToStringSlice(input, "\n")
 	fields := make([]field, len(rows))
 
 	for i, row := range rows {
-		parts := utils2.ToStringSlice(row, ": ")
+		parts := utils.ToStringSlice(row, ": ")
 		rules := [2]rule{}
 
-		for k, r := range utils2.ToStringSlice(parts[1], " or ") {
-			bounds, _ := utils2.ToIntegerSlice(r, "-")
+		for k, r := range utils.ToStringSlice(parts[1], " or ") {
+			bounds, _ := utils.ToIntegerSlice(r, "-")
 			rules[k] = rule{
 				lower: bounds[0],
 				upper: bounds[1],
@@ -158,7 +158,7 @@ func parseField(input string) []field {
 }
 
 func parseTicket(input string) ticket {
-	values, _ := utils2.ToIntegerSlice(input, ",")
+	values, _ := utils.ToIntegerSlice(input, ",")
 
 	return ticket{
 		values: values,

@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"math/bits"
 	"os"
 	"strconv"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 const (
@@ -46,7 +47,7 @@ var numLookup = map[uint8]int{
 }
 
 func toByteSlice(input string, separator string) []uint8 {
-	stringSlice := utils2.ToStringSlice(input, separator)
+	stringSlice := utils.ToStringSlice(input, separator)
 	byteSlice := make([]uint8, 0, len(stringSlice))
 
 	for _, runes := range stringSlice {
@@ -89,14 +90,6 @@ func (l *lookup) lockSegment(segment uint8) {
 	}
 }
 
-func (l *lookup) clearNumber(number uint8, value uint8) {
-	for k := range l.segments {
-		if number&k != 0 {
-			l.clearSegment(k, value)
-		}
-	}
-}
-
 func (l *lookup) clearSegment(segment uint8, value uint8) {
 	l.segments[segment] &^= value
 }
@@ -118,7 +111,7 @@ func (l *lookup) clearSegmentByNumber(segment uint8, number uint8) {
 }
 
 func byBitCount(bytes []uint8) map[int][]uint8 {
-	countMap := make(map[int][]uint8, 0)
+	countMap := make(map[int][]uint8)
 
 	for _, v := range bytes {
 		count := bits.OnesCount8(v)
@@ -144,8 +137,7 @@ func (l *lookup) hasAllBitsSet(number uint8, bits uint8) bool {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -155,11 +147,11 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	stringSlice := utils2.ToStringSlice(input, "\n")
+	stringSlice := utils.ToStringSlice(input, "\n")
 	sum := 0
 
 	for _, s := range stringSlice {
-		output := utils2.ToStringSlice(s, "|")[1]
+		output := utils.ToStringSlice(s, "|")[1]
 		bytes := toByteSlice(output, " ")
 
 		for _, v := range bytes {
@@ -174,11 +166,11 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	stringSlice := utils2.ToStringSlice(input, "\n")
+	stringSlice := utils.ToStringSlice(input, "\n")
 	sum := 0
 
 	for _, s := range stringSlice {
-		parts := utils2.ToStringSlice(s, "|")
+		parts := utils.ToStringSlice(s, "|")
 		patterns, output := toByteSlice(parts[0], " "), toByteSlice(parts[1], " ")
 		countMap := byBitCount(append(patterns, output...))
 		segments := &lookup{
@@ -210,11 +202,12 @@ func SolvePart2(input string) (string, error) {
 
 		if v, ok := countMap[6]; ok {
 			for _, n := range v {
-				if segments.hasAllBitsSet(n, four) {
+				switch {
+				case segments.hasAllBitsSet(n, four):
 					segments.andNumber(nine, n)
-				} else if segments.hasAllBitsSet(n, seven) {
+				case segments.hasAllBitsSet(n, seven):
 					segments.andNumber(zero, n)
-				} else {
+				default:
 					segments.andNumber(six, n)
 				}
 			}
@@ -227,6 +220,7 @@ func SolvePart2(input string) (string, error) {
 
 		for i, bit := range output {
 			bits := uint8(0)
+
 			for k, v := range segments.segments {
 				if bit&v != 0 {
 					bits |= k

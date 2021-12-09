@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type Bag struct {
@@ -23,8 +24,10 @@ type Match struct {
 
 const ourBagColor = "shiny gold"
 
-var parentBagRegex *regexp.Regexp
-var childBagRegex *regexp.Regexp
+var (
+	parentBagRegex *regexp.Regexp
+	childBagRegex  *regexp.Regexp
+)
 
 func init() {
 	parentBagRegex = regexp.MustCompile(`(.+?) bags`)
@@ -32,8 +35,7 @@ func init() {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +46,6 @@ func main() {
 
 func SolvePart1(input string) (string, error) {
 	ourBag, err := parseBags(input)
-
 	if err != nil {
 		return "", err
 	}
@@ -54,7 +55,6 @@ func SolvePart1(input string) (string, error) {
 
 func SolvePart2(input string) (string, error) {
 	ourBag, err := parseBags(input)
-
 	if err != nil {
 		return "", err
 	}
@@ -99,7 +99,7 @@ func parentCount(bag *Bag, colors map[string]bool) (count int) {
 }
 
 func parseBags(input string) (*Bag, error) {
-	rules := utils2.ToStringSlice(input, "\n")
+	rules := utils.ToStringSlice(input, "\n")
 	rulesLen := len(rules)
 	bags := make(map[string]*Bag, rulesLen)
 	matches := make([]*Match, rulesLen)
@@ -122,7 +122,6 @@ func parseBags(input string) (*Bag, error) {
 			childBag := bags[c[2]]
 			childBag.parents = append(childBag.parents, m.parent)
 			childCount, err := strconv.Atoi(c[1])
-
 			if err != nil {
 				return nil, err
 			}

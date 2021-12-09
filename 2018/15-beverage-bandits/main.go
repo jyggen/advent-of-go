@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
-	"github.com/RyanCarrier/dijkstra"
-	"github.com/beefsack/go-astar"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/RyanCarrier/dijkstra"
+	"github.com/beefsack/go-astar"
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -24,20 +24,20 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	rows := utils2.ToStringSlice(input, "\n")
+	rows := utils.ToStringSlice(input, "\n")
 	round, elves, goblins := playGame(rows, 3)
 	remainingHp := 0
 
 	for _, c := range elves {
 		if !c.IsDead() {
-			//fmt.Println(c.hp)
+			// fmt.Println(c.hp)
 			remainingHp += c.hp
 		}
 	}
 
 	for _, c := range goblins {
 		if !c.IsDead() {
-			//fmt.Println(c.hp)
+			// fmt.Println(c.hp)
 			remainingHp += c.hp
 		}
 	}
@@ -46,14 +46,14 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	rows := utils2.ToStringSlice(input, "\n")
+	rows := utils.ToStringSlice(input, "\n")
 	ap := 3
 	apDiff := 0
 	upper := false
 	lower := false
 PartTwoLoop:
 	for {
-		//fmt.Println(ap, apDiff, upper, lower)
+		// fmt.Println(ap, apDiff, upper, lower)
 		round, elves, _ := playGame(rows, ap)
 		remainingHp := 0
 
@@ -188,7 +188,7 @@ GameLoop:
 			}
 		}*/
 
-		//fmt.Printf("Starting round %d!\n", round)
+		// fmt.Printf("Starting round %d!\n", round)
 
 		sort.Slice(creatures, func(i, j int) bool {
 			return creatures[i].tile.position < creatures[j].tile.position
@@ -203,10 +203,10 @@ GameLoop:
 				lastUnit = false
 			}
 
-			//fmt.Printf("\tIt's %s #%d's turn! This %s is at %s and has %d HP.\n", c.kind, c.id, c.kind, c.tile.Coordinates(), c.hp)
+			// fmt.Printf("\tIt's %s #%d's turn! This %s is at %s and has %d HP.\n", c.kind, c.id, c.kind, c.tile.Coordinates(), c.hp)
 
 			if !c.HasEnemiesAlive() {
-				//fmt.Printf("\t\tThis %s has no enemies alive - victory!\n", c.kind)
+				// fmt.Printf("\t\tThis %s has no enemies alive - victory!\n", c.kind)
 				victory = true
 				break GameLoop
 			}
@@ -221,9 +221,9 @@ GameLoop:
 		round--
 	}
 
-	//fmt.Println(round)
-	//Draw(battlefield, elves, goblins)
-	//fmt.Println()
+	// fmt.Println(round)
+	// Draw(battlefield, elves, goblins)
+	// fmt.Println()
 
 	return round, elves, goblins
 }
@@ -236,7 +236,7 @@ func ToGraph(battlefield []*Tile) *dijkstra.Graph {
 		for y := 0; y < battlefield[0].rowLen; y++ {
 			offset := y*colLen + x
 
-			//fmt.Println(offset)
+			// fmt.Println(offset)
 
 			graph.AddVertex(offset)
 
@@ -298,7 +298,7 @@ func (c *Creature) Attack(enemies []*Creature) {
 	var closestEnemy *Creature
 
 	for _, e := range enemies {
-		//fmt.Printf("\t\t%s #%d is at %d with %d HP!\n", e.kind, e.id, e.tile.position, e.hp)
+		// fmt.Printf("\t\t%s #%d is at %d with %d HP!\n", e.kind, e.id, e.tile.position, e.hp)
 		if closestEnemy == nil || e.hp < closestEnemy.hp || (e.hp == closestEnemy.hp && e.tile.position < closestEnemy.tile.position) {
 			closestEnemy = e
 		}
@@ -308,7 +308,7 @@ func (c *Creature) Attack(enemies []*Creature) {
 		return
 	}
 
-	//fmt.Printf("\t\tAttacking %s #%d!\n", closestEnemy.kind, closestEnemy.id)
+	// fmt.Printf("\t\tAttacking %s #%d!\n", closestEnemy.kind, closestEnemy.id)
 
 	closestEnemy.hp -= c.ap
 
@@ -357,7 +357,7 @@ func (c *Creature) Move() error {
 		}
 
 		if c.IsNextTo(e) {
-			//fmt.Printf("\t\tWe're next to %s #%d, could attack!\n", e.kind, e.id)
+			// fmt.Printf("\t\tWe're next to %s #%d, could attack!\n", e.kind, e.id)
 			options = append(options, e)
 			optionsLen++
 			continue
@@ -368,7 +368,7 @@ func (c *Creature) Move() error {
 		}
 
 		for _, et := range e.tile.PathNeighbors() {
-			//fmt.Printf("\t\tCould attack %s #%d if we get to %s!\n", e.kind, e.id, et.(*Tile).Coordinates())
+			// fmt.Printf("\t\tCould attack %s #%d if we get to %s!\n", e.kind, e.id, et.(*Tile).Coordinates())
 
 			for _, ct := range c.tile.PathNeighbors() {
 				possibilities = append(possibilities, []*Tile{ct.(*Tile), et.(*Tile)})
@@ -382,7 +382,7 @@ func (c *Creature) Move() error {
 	}
 
 	if len(possibilities) == 0 {
-		//fmt.Print("\t\tNo move options. Skip turn :(\n")
+		// fmt.Print("\t\tNo move options. Skip turn :(\n")
 		return nil
 	}
 
@@ -390,18 +390,17 @@ func (c *Creature) Move() error {
 	bestPathDistance := int64(-1)
 	g := ToGraph(*c.tile.tiles)
 
-	//fmt.Println(g)
+	// fmt.Println(g)
 
 	for _, p := range possibilities {
 		path := [2]int{0, 0}
 		distance := int64(0)
 
-		//path, distance, found := astar.Path(p[0], p[1])
+		// path, distance, found := astar.Path(p[0], p[1])
 		if p[0].position == p[1].position {
 			path = [2]int{p[0].position, p[1].position}
 		} else {
 			p, err := g.Shortest(p[0].position, p[1].position)
-
 			if err != nil {
 				continue
 			}
@@ -416,24 +415,24 @@ func (c *Creature) Move() error {
 			coords[i] = (*c.tile.tiles)[yolo].Coordinates()
 		}*/
 
-		//fmt.Printf("\t\t%s is %d steps away!\n", strings.Join(coords, ", "), distance)
-		//fmt.Println(path.Path, path.Distance)
+		// fmt.Printf("\t\t%s is %d steps away!\n", strings.Join(coords, ", "), distance)
+		// fmt.Println(path.Path, path.Distance)
 
 		if bestPathDistance == -1 || distance < bestPathDistance || (distance == bestPathDistance && path[1] < bestPath[1]) || (distance == bestPathDistance && path[1] == bestPath[1] && path[0] < bestPath[0]) {
-			//fmt.Printf("\t\t%s is %d steps away!\n", strings.Join(coords, ", "), distance)
+			// fmt.Printf("\t\t%s is %d steps away!\n", strings.Join(coords, ", "), distance)
 			bestPath = [2]int{path[0], path[1]}
 			bestPathDistance = distance
 		}
 	}
 
 	if bestPathDistance == -1 {
-		//fmt.Print("\t\tSeems like we can't go anywhere :(!\n")
+		// fmt.Print("\t\tSeems like we can't go anywhere :(!\n")
 		return nil
 	}
 
 	if bestPathDistance > -1 {
 		newTile := (*c.tile.tiles)[bestPath[0]]
-		//fmt.Printf("\t\tMoved from %s to %s!\n", c.tile.Coordinates(), newTile.Coordinates())
+		// fmt.Printf("\t\tMoved from %s to %s!\n", c.tile.Coordinates(), newTile.Coordinates())
 
 		c.tile.occupied, newTile.occupied = false, true
 		c.tile = newTile
@@ -450,7 +449,7 @@ func (c *Creature) Move() error {
 		}
 
 		if c.IsNextTo(e) {
-			//fmt.Printf("\t\tWe can reach %s #%d!\n", e.kind, e.id)
+			// fmt.Printf("\t\tWe can reach %s #%d!\n", e.kind, e.id)
 			options = append(options, e)
 		}
 	}

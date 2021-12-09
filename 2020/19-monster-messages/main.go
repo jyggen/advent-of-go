@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type regexPart struct {
@@ -18,8 +19,7 @@ type regexPart struct {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -77,7 +77,7 @@ func parse(input string) (*regexp.Regexp, []string) {
 	msgs := make([]string, 0)
 	parts := make(map[int]*regexPart, 0)
 
-	for _, v := range utils2.ToStringSlice(input, "\n") {
+	for _, v := range utils.ToStringSlice(input, "\n") {
 		if v == "" {
 			phase++
 		} else if phase == 1 {

@@ -3,24 +3,23 @@ package main
 import (
 	"errors"
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 var binaryReplacer *strings.Replacer
 
 func init() {
 	binaryReplacer = strings.NewReplacer("F", "0", "B", "1", "L", "0", "R", "1")
-
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -31,7 +30,6 @@ func main() {
 
 func SolvePart1(input string) (string, error) {
 	ids, length, err := decodeTickets(input)
-
 	if err != nil {
 		return "", err
 	}
@@ -41,7 +39,6 @@ func SolvePart1(input string) (string, error) {
 
 func SolvePart2(input string) (string, error) {
 	ids, length, err := decodeTickets(input)
-
 	if err != nil {
 		return "", err
 	}
@@ -56,13 +53,12 @@ func SolvePart2(input string) (string, error) {
 }
 
 func decodeTickets(input string) ([]int, int, error) {
-	tickets := utils2.ToStringSlice(binaryReplacer.Replace(input), "\n")
+	tickets := utils.ToStringSlice(binaryReplacer.Replace(input), "\n")
 	idLen := len(tickets)
 	ids := make([]int, idLen)
 
 	for i, ticket := range tickets {
 		id, err := strconv.ParseInt(ticket, 2, 64)
-
 		if err != nil {
 			return ids, idLen, err
 		}

@@ -2,16 +2,16 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -33,7 +33,7 @@ type calculator func(input string) int
 func solve(input string, c calculator) int {
 	sum := 0
 
-	for _, line := range utils2.ToStringSlice(input, "\n") {
+	for _, line := range utils.ToStringSlice(input, "\n") {
 		line = "(" + line + ")"
 		stack := make([]int, 0)
 

@@ -1,9 +1,10 @@
 package gameboy
 
 import (
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 const (
@@ -27,7 +28,7 @@ type opcode struct {
 }
 
 func New(input string) *Gameboy {
-	lines := utils2.ToStringSlice(input, "\n")
+	lines := utils.ToStringSlice(input, "\n")
 	opcodes := make([]*opcode, len(lines))
 
 	for i, line := range lines {

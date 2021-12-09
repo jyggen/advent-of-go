@@ -2,19 +2,21 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
-const open = '.'
-const tree = '|'
-const lumberyard = '#'
+const (
+	open       = '.'
+	tree       = '|'
+	lumberyard = '#'
+)
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -32,7 +34,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func simulate(input string, times int) int {
-	rows := utils2.ToRuneSlice(input, "\n")
+	rows := utils.ToRuneSlice(input, "\n")
 
 	rowLen := len(rows)
 	colLen := len(rows[0])
@@ -44,7 +46,6 @@ func simulate(input string, times int) int {
 
 		for j, row := range cols {
 			grid[offset+j] = row
-
 		}
 	}
 
@@ -59,7 +60,7 @@ func simulate(input string, times int) int {
 
 		copy(newGrid, grid)
 
-		for i, _ := range grid {
+		for i := range grid {
 			y := i / colLen
 			x := i - (colLen * y)
 			above, right, below, left := y != 0, x != colLen-1, y != rowLen-1, x != 0

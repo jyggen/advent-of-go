@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"reflect"
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type opcode func(registers []int, a int, b int, c int)
@@ -33,8 +34,7 @@ var opcodeList = []opcode{
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -44,7 +44,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	data := utils2.ToStringSlice(input, "\n\n\n")
+	data := utils.ToStringSlice(input, "\n\n\n")
 	samples := data[0]
 	partOne := 0
 	before := make([]int, 4)
@@ -62,7 +62,6 @@ func SolvePart1(input string) (string, error) {
 			var a, b, c, d int
 
 			_, err := fmt.Sscanf(s, "Before: [%d, %d, %d, %d]", &a, &b, &c, &d)
-
 			if err != nil {
 				panic(err)
 			}
@@ -75,7 +74,6 @@ func SolvePart1(input string) (string, error) {
 			var instruction, a, b, c int
 
 			_, err := fmt.Sscanf(s, "%d %d %d %d", &instruction, &a, &b, &c)
-
 			if err != nil {
 				panic(err)
 			}
@@ -88,7 +86,6 @@ func SolvePart1(input string) (string, error) {
 			var a, b, c, d int
 
 			_, err := fmt.Sscanf(s, "After:  [%d, %d, %d, %d]", &a, &b, &c, &d)
-
 			if err != nil {
 				panic(err)
 			}
@@ -132,7 +129,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	data := utils2.ToStringSlice(input, "\n\n\n")
+	data := utils.ToStringSlice(input, "\n\n\n")
 	samples := data[0]
 	before := make([]int, 4)
 	instructions := make([]int, 4)
@@ -156,7 +153,6 @@ func SolvePart2(input string) (string, error) {
 			var a, b, c, d int
 
 			_, err := fmt.Sscanf(s, "Before: [%d, %d, %d, %d]", &a, &b, &c, &d)
-
 			if err != nil {
 				panic(err)
 			}
@@ -169,7 +165,6 @@ func SolvePart2(input string) (string, error) {
 			var instruction, a, b, c int
 
 			_, err := fmt.Sscanf(s, "%d %d %d %d", &instruction, &a, &b, &c)
-
 			if err != nil {
 				panic(err)
 			}
@@ -182,7 +177,6 @@ func SolvePart2(input string) (string, error) {
 			var a, b, c, d int
 
 			_, err := fmt.Sscanf(s, "After:  [%d, %d, %d, %d]", &a, &b, &c, &d)
-
 			if err != nil {
 				panic(err)
 			}
@@ -246,7 +240,6 @@ func SolvePart2(input string) (string, error) {
 		var instruction, a, b, c int
 
 		_, err := fmt.Sscanf(t, "%d %d %d %d", &instruction, &a, &b, &c)
-
 		if err != nil {
 			panic(err)
 		}

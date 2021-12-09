@@ -2,16 +2,16 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -28,6 +28,7 @@ func (b *board) Mark(number int) {
 	for i, n := range b.numbers {
 		if n == number {
 			b.numbers[i] = -1
+
 			break
 		}
 	}
@@ -52,6 +53,7 @@ func (b *board) IsSolved() bool {
 		for j := i * 5; j < (i+1)*5; j++ {
 			if b.numbers[j] != -1 {
 				solved = false
+
 				break
 			}
 		}
@@ -65,6 +67,7 @@ func (b *board) IsSolved() bool {
 		for j := i; j < len(b.numbers); j += 5 {
 			if b.numbers[j] != -1 {
 				solved = false
+
 				break
 			}
 		}
@@ -79,7 +82,6 @@ func (b *board) IsSolved() bool {
 
 func SolvePart1(input string) (string, error) {
 	numbers, boards, err := parseInput(input)
-
 	if err != nil {
 		return "", err
 	}
@@ -98,12 +100,11 @@ func SolvePart1(input string) (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("no bingo achived")
+	return "", fmt.Errorf("no bingo achieved")
 }
 
 func SolvePart2(input string) (string, error) {
 	numbers, boards, err := parseInput(input)
-
 	if err != nil {
 		return "", err
 	}
@@ -128,18 +129,18 @@ func SolvePart2(input string) (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("no bingos achived")
+	return "", fmt.Errorf("no bingos achieved")
 }
 
 func parseInput(input string) ([]int, []*board, error) {
-	rows := utils2.ToStringSlice(input, "\n")
-	numbers, err := utils2.ToIntegerSlice(rows[0], ",")
+	rows := utils.ToStringSlice(input, "\n")
+	numbers, err := utils.ToIntegerSlice(rows[0], ",")
 
 	if err != nil {
 		return numbers, make([]*board, 0), err
 	}
 
-	rawBoards := utils2.ToStringSlice(strings.Join(rows[2:], "\n"), "\n\n")
+	rawBoards := utils.ToStringSlice(strings.Join(rows[2:], "\n"), "\n\n")
 	boards := make([]*board, len(rawBoards))
 
 	for i, rawBoard := range rawBoards {

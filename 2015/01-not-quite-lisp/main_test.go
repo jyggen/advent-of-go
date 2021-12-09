@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
 	"testing"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
 )
 
-var testCases = []*solver2.TestCase{
+var testCases = []*solver.TestCase{
 	{
 		Input: "(())",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "0",
@@ -18,7 +19,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "()()",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "0",
@@ -27,7 +28,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "(((",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "3",
@@ -36,7 +37,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "(()(()(",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "3",
@@ -45,7 +46,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "))(((((",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "3",
@@ -54,7 +55,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "())",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "-1",
@@ -63,7 +64,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "))(",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "-1",
@@ -72,7 +73,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: ")))",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "-3",
@@ -81,7 +82,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: ")())())",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "-3",
@@ -90,7 +91,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: ")",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "1",
@@ -99,7 +100,7 @@ var testCases = []*solver2.TestCase{
 	},
 	{
 		Input: "()())",
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart2,
 				Output: "5",
@@ -107,9 +108,9 @@ var testCases = []*solver2.TestCase{
 		},
 	},
 	{
-		Input: solver2.InputFromFile("input.txt"),
+		Input: solver.InputFromFile("input.txt"),
 		Short: true,
-		Solvers: []*solver2.TestCaseSolver{
+		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "232",

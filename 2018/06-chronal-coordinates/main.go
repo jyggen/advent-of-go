@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type coordinate struct {
@@ -15,8 +16,7 @@ type coordinate struct {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -38,8 +38,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func solve(input string) (string, string, error) {
-	coords, err := makeCoords(utils2.ToStringSlice(input, "\n"))
-
+	coords, err := makeCoords(utils.ToStringSlice(input, "\n"))
 	if err != nil {
 		return "", "", err
 	}
@@ -74,7 +73,7 @@ func solve(input string) (string, string, error) {
 			totalDistance := 0
 
 			for i, c := range coords {
-				distance := utils2.AbsInt(c.x-x) + utils2.AbsInt(c.y-y)
+				distance := utils.AbsInt(c.x-x) + utils.AbsInt(c.y-y)
 				totalDistance += distance
 
 				if distance < closestDistance {
@@ -104,15 +103,13 @@ func makeCoords(input []string) ([]*coordinate, error) {
 	coords := make([]*coordinate, len(input))
 
 	for i, l := range input {
-		split := utils2.ToStringSlice(l, ", ")
+		split := utils.ToStringSlice(l, ", ")
 		x, err := strconv.Atoi(split[0])
-
 		if err != nil {
 			return coords, err
 		}
 
 		y, err := strconv.Atoi(split[1])
-
 		if err != nil {
 			return coords, err
 		}

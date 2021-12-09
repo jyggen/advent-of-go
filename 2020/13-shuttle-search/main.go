@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"math"
 	"math/big"
 	"os"
 	"strconv"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -22,9 +22,9 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	parts := utils2.ToStringSlice(input, "\n")
+	parts := utils.ToStringSlice(input, "\n")
 	earliest, _ := strconv.Atoi(parts[0])
-	lines := utils2.ToStringSlice(parts[1], ",")
+	lines := utils.ToStringSlice(parts[1], ",")
 	bestWait := math.MaxInt16
 	bestId := 0
 
@@ -46,8 +46,8 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	parts := utils2.ToStringSlice(input, "\n")
-	busses := utils2.ToStringSlice(parts[1], ",")
+	parts := utils.ToStringSlice(input, "\n")
+	busses := utils.ToStringSlice(parts[1], ",")
 	a := make([]*big.Int, 0)
 	n := make([]*big.Int, 0)
 
@@ -61,8 +61,7 @@ func SolvePart2(input string) (string, error) {
 		a = append(a, big.NewInt(int64(line-k)))
 	}
 
-	result, err := utils2.Crt(a, n)
-
+	result, err := utils.Crt(a, n)
 	if err != nil {
 		return "", err
 	}

@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 var tree rune
@@ -15,8 +16,7 @@ func init() {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -49,7 +49,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func parseInput(input string) [][]rune {
-	data := utils2.ToStringSlice(input, "\n")
+	data := utils.ToStringSlice(input, "\n")
 	rows := make([][]rune, len(data))
 
 	for i, row := range data {

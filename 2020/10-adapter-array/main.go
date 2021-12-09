@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	solver2 "github.com/jyggen/advent-of-go/internal/solver"
-	utils2 "github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type branch struct {
@@ -17,8 +18,7 @@ type branch struct {
 }
 
 func main() {
-	p1, p2, err := solver2.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
-
+	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +28,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	adapters, _ := utils2.ToIntegerSlice(input, "\n")
+	adapters, _ := utils.ToIntegerSlice(input, "\n")
 	gaps := []int{0, 0, 1}
 
 	sort.Ints(adapters)
@@ -45,7 +45,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	adapters, _ := utils2.ToIntegerSlice(strings.TrimSpace(input)+"\n0", "\n")
+	adapters, _ := utils.ToIntegerSlice(strings.TrimSpace(input)+"\n0", "\n")
 
 	sort.Ints(adapters)
 
