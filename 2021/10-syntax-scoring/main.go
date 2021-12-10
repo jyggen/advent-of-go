@@ -25,6 +25,18 @@ func filterCorrupted(input string) ([][]rune, int) {
 	lines := utils.ToRuneSlice(input, "\n")
 	score := 0
 	incomplete := make([][]rune, 0, len(lines))
+	pairs := map[rune]rune{
+		'(': ')',
+		'[': ']',
+		'{': '}',
+		'<': '>',
+	}
+	points := map[rune]int{
+		')': 3,
+		']': 57,
+		'}': 1197,
+		'>': 25137,
+	}
 
 	for _, runes := range lines {
 		state := list.New()
@@ -32,49 +44,13 @@ func filterCorrupted(input string) ([][]rune, int) {
 
 		for _, r := range runes {
 			switch r {
-			case '(':
-				state.PushBack(0)
-			case ')':
+			case '(', '[', '{', '<':
+				state.PushBack(r)
+			case ')', ']', '}', '>':
 				e := state.Back()
 
-				if e.Value.(int) != 0 {
-					score += 3
-					corrupted = true
-					break
-				}
-
-				state.Remove(e)
-			case '[':
-				state.PushBack(1)
-			case ']':
-				e := state.Back()
-
-				if e.Value.(int) != 1 {
-					score += 57
-					corrupted = true
-					break
-				}
-
-				state.Remove(e)
-			case '{':
-				state.PushBack(2)
-			case '}':
-				e := state.Back()
-
-				if e.Value.(int) != 2 {
-					score += 1197
-					corrupted = true
-					break
-				}
-
-				state.Remove(e)
-			case '<':
-				state.PushBack(3)
-			case '>':
-				e := state.Back()
-
-				if e.Value.(int) != 3 {
-					score += 25137
+				if pairs[e.Value.(rune)] != r {
+					score += points[r]
 					corrupted = true
 					break
 				}
@@ -100,6 +76,12 @@ func SolvePart1(input string) (string, error) {
 func SolvePart2(input string) (string, error) {
 	incomplete, _ := filterCorrupted(input)
 	scores := make([]int, 0, len(incomplete))
+	points := map[rune]int{
+		'(': 1,
+		'[': 2,
+		'{': 3,
+		'<': 4,
+	}
 
 	for _, runes := range incomplete {
 		state := list.New()
@@ -107,43 +89,17 @@ func SolvePart2(input string) (string, error) {
 
 		for _, r := range runes {
 			switch r {
-			case '(':
-				state.PushBack(0)
-			case ')':
-				e := state.Back()
-				state.Remove(e)
-			case '[':
-				state.PushBack(1)
-			case ']':
-				e := state.Back()
-				state.Remove(e)
-			case '{':
-				state.PushBack(2)
-			case '}':
-				e := state.Back()
-				state.Remove(e)
-			case '<':
-				state.PushBack(3)
-			case '>':
-				e := state.Back()
-				state.Remove(e)
+			case '(', '[', '{', '<':
+				state.PushBack(r)
+			case ')', ']', '}', '>':
+				state.Remove(state.Back())
 			}
 		}
 
 		for state.Len() > 0 {
 			e := state.Back()
 			score *= 5
-
-			switch e.Value.(int) {
-			case 0:
-				score += 1
-			case 1:
-				score += 2
-			case 2:
-				score += 3
-			case 3:
-				score += 4
-			}
+			score += points[e.Value.(rune)]
 
 			state.Remove(e)
 		}
