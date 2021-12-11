@@ -1,7 +1,6 @@
 package main
 
 import (
-	"container/list"
 	"fmt"
 	"github.com/jyggen/advent-of-go/internal/grid"
 	"os"
@@ -22,22 +21,22 @@ func main() {
 }
 
 func simulate(g *grid.Grid) int {
-	queue := list.New()
+	//queue := list.New()
 	flashes := 0
+	queue := make([]*grid.Cell, 0, g.Size())
 
 	g.Each(func(c *grid.Cell) bool {
 		c.Value = c.Value + 1
 
 		if c.Value > 9 {
-			queue.PushBack(c)
+			queue = append(queue, c)
 		}
 
 		return true
 	})
 
-	for queue.Len() > 0 {
-		e := queue.Front()
-		c := e.Value.(*grid.Cell)
+	for len(queue) > 0 {
+		c := queue[0]
 
 		if c.Value != 0 {
 			c.Value = c.Value + 1
@@ -48,11 +47,13 @@ func simulate(g *grid.Grid) int {
 			c.Value = 0
 
 			for _, n := range c.Neighbours() {
-				queue.PushBack(n)
+				queue = append(queue, n)
 			}
 		}
 
-		queue.Remove(e)
+		queue[0] = queue[len(queue)-1]
+		queue[len(queue)-1] = nil
+		queue = queue[:len(queue)-1]
 	}
 
 	return flashes

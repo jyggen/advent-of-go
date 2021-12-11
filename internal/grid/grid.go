@@ -64,12 +64,13 @@ type Cell struct {
 
 func (c Cell) Neighbours() []*Cell {
 	neighbours := make([]*Cell, 0, 8)
-	coordsList := [][2]int{
+	coordsList := make([][2]int, 0, 8)
+	coordsList = append(coordsList, [][2]int{
 		{c.x, c.y - 1}, // N
 		{c.x + 1, c.y}, // E
 		{c.x, c.y + 1}, // S
 		{c.x - 1, c.y}, // W
-	}
+	}...)
 
 	if c.grid.allowDiagonalNeighbours {
 		coordsList = append(coordsList, [][2]int{
