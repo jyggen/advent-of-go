@@ -3,6 +3,7 @@ package main
 import (
 	"container/list"
 	"fmt"
+	"github.com/jyggen/advent-of-go/internal/grid"
 	"os"
 	"strconv"
 
@@ -20,51 +21,34 @@ func main() {
 	fmt.Println(p2)
 }
 
-type grid struct {
-	colLength int
-	grid      []int
-	rowLength int
-}
-
-func (g *grid) simulate() int {
+func simulate(g *grid.Grid) int {
 	queue := list.New()
 	flashes := 0
 
-	for j := 0; j < len(g.grid); j++ {
-		g.grid[j]++
+	g.Each(func(c *grid.Cell) bool {
+		c.Value = c.Value.(int) + 1
 
-		if g.grid[j] > 9 {
-			queue.PushBack(j)
+		if c.Value.(int) > 9 {
+			queue.PushBack(c)
 		}
-	}
+
+		return true
+	})
 
 	for queue.Len() > 0 {
 		e := queue.Front()
-		j := e.Value.(int)
+		c := e.Value.(*grid.Cell)
 
-		if g.grid[j] != 0 {
-			g.grid[j]++
+		if c.Value.(int) != 0 {
+			c.Value = c.Value.(int) + 1
 		}
 
-		if g.grid[j] > 9 {
+		if c.Value.(int) > 9 {
 			flashes++
+			c.Value = 0
 
-			g.grid[j] = 0
-			x, y := utils.ToCoordinates(j, g.colLength)
-
-			for _, k := range []int{
-				utils.Neighbour(x, y, utils.North, g.rowLength, g.colLength),
-				utils.Neighbour(x, y, utils.NorthEast, g.rowLength, g.colLength),
-				utils.Neighbour(x, y, utils.East, g.rowLength, g.colLength),
-				utils.Neighbour(x, y, utils.SouthEast, g.rowLength, g.colLength),
-				utils.Neighbour(x, y, utils.South, g.rowLength, g.colLength),
-				utils.Neighbour(x, y, utils.SouthWest, g.rowLength, g.colLength),
-				utils.Neighbour(x, y, utils.West, g.rowLength, g.colLength),
-				utils.Neighbour(x, y, utils.NorthWest, g.rowLength, g.colLength),
-			} {
-				if k != -1 {
-					queue.PushBack(k)
-				}
+			for _, n := range c.Neighbours() {
+				queue.PushBack(n)
 			}
 		}
 
@@ -74,29 +58,25 @@ func (g *grid) simulate() int {
 	return flashes
 }
 
-func makeGrid(input string) (*grid, error) {
+func makeGrid(input string) (*grid.Grid, error) {
 	stringSlice := utils.ToStringSlice(input, "\n")
-	colLength := len(stringSlice[0])
-	rowLength := len(stringSlice)
-	g := &grid{
-		colLength: colLength,
-		grid:      make([]int, len(stringSlice)*colLength),
-		rowLength: rowLength,
-	}
+	values := make([][]interface{}, len(stringSlice))
 
 	for i, s := range stringSlice {
-		ints, err := utils.ToIntegerSlice(s, "")
+		numbers, err := utils.ToIntegerSlice(s, "")
 
 		if err != nil {
-			return g, err
+			return nil, err
 		}
 
-		for j, digit := range ints {
-			g.grid[(i*colLength)+j] = digit
+		values[i] = make([]interface{}, len(numbers))
+
+		for j, n := range numbers {
+			values[i][j] = n
 		}
 	}
 
-	return g, nil
+	return grid.NewGrid(values, true), nil
 }
 
 func SolvePart1(input string) (string, error) {
@@ -109,7 +89,7 @@ func SolvePart1(input string) (string, error) {
 	flashes := 0
 
 	for i := 0; i < 100; i++ {
-		flashes += g.simulate()
+		flashes += simulate(g)
 	}
 
 	return strconv.Itoa(flashes), nil
@@ -123,16 +103,19 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	for i := 0; ; i++ {
-		g.simulate()
+		simulate(g)
 
 		allFlashed := true
 
-		for _, v := range g.grid {
-			if v != 0 {
+		g.Each(func(c *grid.Cell) bool {
+			if c.Value.(int) != 0 {
 				allFlashed = false
-				break
+
+				return false
 			}
-		}
+
+			return true
+		})
 
 		if allFlashed {
 			return strconv.Itoa(i + 1), nil
