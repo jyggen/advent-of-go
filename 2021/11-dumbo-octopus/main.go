@@ -21,7 +21,6 @@ func main() {
 }
 
 func simulate(g *grid.Grid) int {
-	//queue := list.New()
 	flashes := 0
 	queue := make([]*grid.Cell, 0, g.Size())
 

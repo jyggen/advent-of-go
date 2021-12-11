@@ -56,40 +56,45 @@ func (g Grid) Size() int {
 }
 
 type Cell struct {
-	x     int
-	y     int
-	grid  *Grid
-	Value int
+	x          int
+	y          int
+	grid       *Grid
+	neighbours []*Cell
+	Value      int
 }
 
 func (c Cell) Neighbours() []*Cell {
-	neighbours := make([]*Cell, 0, 8)
-	coordsList := make([][2]int, 0, 8)
-	coordsList = append(coordsList, [][2]int{
-		{c.x, c.y - 1}, // N
-		{c.x + 1, c.y}, // E
-		{c.x, c.y + 1}, // S
-		{c.x - 1, c.y}, // W
-	}...)
-
-	if c.grid.allowDiagonalNeighbours {
+	if c.neighbours == nil {
+		neighbours := make([]*Cell, 0, 8)
+		coordsList := make([][2]int, 0, 8)
 		coordsList = append(coordsList, [][2]int{
-			{c.x + 1, c.y - 1}, // NE
-			{c.x + 1, c.y + 1}, // SE
-			{c.x - 1, c.y + 1}, // SW
-			{c.x - 1, c.y - 1}, // NW
+			{c.x, c.y - 1}, // N
+			{c.x + 1, c.y}, // E
+			{c.x, c.y + 1}, // S
+			{c.x - 1, c.y}, // W
 		}...)
-	}
 
-	for _, coords := range coordsList {
-		n := c.grid.CellAt(coords[0], coords[1])
-
-		if n == nil {
-			continue
+		if c.grid.allowDiagonalNeighbours {
+			coordsList = append(coordsList, [][2]int{
+				{c.x + 1, c.y - 1}, // NE
+				{c.x + 1, c.y + 1}, // SE
+				{c.x - 1, c.y + 1}, // SW
+				{c.x - 1, c.y - 1}, // NW
+			}...)
 		}
 
-		neighbours = append(neighbours, n)
+		for _, coords := range coordsList {
+			n := c.grid.CellAt(coords[0], coords[1])
+
+			if n == nil {
+				continue
+			}
+
+			neighbours = append(neighbours, n)
+		}
+
+		c.neighbours = neighbours
 	}
 
-	return neighbours
+	return c.neighbours
 }
