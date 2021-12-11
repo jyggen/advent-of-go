@@ -26,9 +26,9 @@ func simulate(g *grid.Grid) int {
 	flashes := 0
 
 	g.Each(func(c *grid.Cell) bool {
-		c.Value = c.Value.(int) + 1
+		c.Value = c.Value + 1
 
-		if c.Value.(int) > 9 {
+		if c.Value > 9 {
 			queue.PushBack(c)
 		}
 
@@ -39,11 +39,11 @@ func simulate(g *grid.Grid) int {
 		e := queue.Front()
 		c := e.Value.(*grid.Cell)
 
-		if c.Value.(int) != 0 {
-			c.Value = c.Value.(int) + 1
+		if c.Value != 0 {
+			c.Value = c.Value + 1
 		}
 
-		if c.Value.(int) > 9 {
+		if c.Value > 9 {
 			flashes++
 			c.Value = 0
 
@@ -60,7 +60,7 @@ func simulate(g *grid.Grid) int {
 
 func makeGrid(input string) (*grid.Grid, error) {
 	stringSlice := utils.ToStringSlice(input, "\n")
-	values := make([][]interface{}, len(stringSlice))
+	values := make([][]int, len(stringSlice))
 
 	for i, s := range stringSlice {
 		numbers, err := utils.ToIntegerSlice(s, "")
@@ -69,11 +69,7 @@ func makeGrid(input string) (*grid.Grid, error) {
 			return nil, err
 		}
 
-		values[i] = make([]interface{}, len(numbers))
-
-		for j, n := range numbers {
-			values[i][j] = n
-		}
+		values[i] = numbers
 	}
 
 	return grid.NewGrid(values, true), nil
@@ -103,21 +99,7 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	for i := 0; ; i++ {
-		simulate(g)
-
-		allFlashed := true
-
-		g.Each(func(c *grid.Cell) bool {
-			if c.Value.(int) != 0 {
-				allFlashed = false
-
-				return false
-			}
-
-			return true
-		})
-
-		if allFlashed {
+		if simulate(g) == g.Size() {
 			return strconv.Itoa(i + 1), nil
 		}
 	}

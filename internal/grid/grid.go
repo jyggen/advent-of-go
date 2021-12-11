@@ -1,6 +1,6 @@
 package grid
 
-func NewGrid(values [][]interface{}, allowDiagonalNeighbours bool) *Grid {
+func NewGrid(values [][]int, allowDiagonalNeighbours bool) *Grid {
 	g := &Grid{
 		cells:                   make([][]*Cell, len(values)),
 		allowDiagonalNeighbours: allowDiagonalNeighbours,
@@ -51,11 +51,15 @@ func (g Grid) Each(callback func(c *Cell) bool) {
 	}
 }
 
+func (g Grid) Size() int {
+	return len(g.cells) * len(g.cells[0])
+}
+
 type Cell struct {
 	x     int
 	y     int
 	grid  *Grid
-	Value interface{}
+	Value int
 }
 
 func (c Cell) Neighbours() []*Cell {
