@@ -31,18 +31,25 @@ func (g *grid) simulate() int {
 	flashes := 0
 
 	for j := 0; j < len(g.grid); j++ {
-		queue.PushBack(j)
+		g.grid[j]++
+
+		if g.grid[j] > 9 {
+			queue.PushBack(j)
+		}
 	}
 
 	for queue.Len() > 0 {
 		e := queue.Front()
 		j := e.Value.(int)
 
-		g.grid[j]++
+		if g.grid[j] != 0 {
+			g.grid[j]++
+		}
 
-		if g.grid[j] == 10 {
+		if g.grid[j] > 9 {
 			flashes++
 
+			g.grid[j] = 0
 			x, y := utils.ToCoordinates(j, g.colLength)
 
 			for _, k := range []int{
@@ -103,12 +110,6 @@ func SolvePart1(input string) (string, error) {
 
 	for i := 0; i < 100; i++ {
 		flashes += g.simulate()
-
-		for k, v := range g.grid {
-			if v > 9 {
-				g.grid[k] = 0
-			}
-		}
 	}
 
 	return strconv.Itoa(flashes), nil
@@ -124,17 +125,16 @@ func SolvePart2(input string) (string, error) {
 	for i := 0; ; i++ {
 		g.simulate()
 
-		flashed := true
+		allFlashed := true
 
-		for k, v := range g.grid {
-			if v > 9 {
-				g.grid[k] = 0
-			} else {
-				flashed = false
+		for _, v := range g.grid {
+			if v != 0 {
+				allFlashed = false
+				break
 			}
 		}
 
-		if flashed {
+		if allFlashed {
 			return strconv.Itoa(i + 1), nil
 		}
 	}
