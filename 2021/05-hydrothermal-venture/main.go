@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -20,11 +19,11 @@ func main() {
 }
 
 type line struct {
-	x *pair
-	y *pair
+	x pair
+	y pair
 }
 
-func (l *line) IsStraight() bool {
+func (l line) IsStraight() bool {
 	return l.x.IsStraight() || l.y.IsStraight()
 }
 
@@ -33,7 +32,7 @@ type pair struct {
 	to   int
 }
 
-func (p *pair) Check(v int) bool {
+func (p pair) Check(v int) bool {
 	if p.from < p.to {
 		return v <= p.to
 	}
@@ -41,7 +40,7 @@ func (p *pair) Check(v int) bool {
 	return v >= p.to
 }
 
-func (p *pair) Next(v int) int {
+func (p pair) Next(v int) int {
 	if p.from < p.to {
 		return v + 1
 	}
@@ -49,7 +48,7 @@ func (p *pair) Next(v int) int {
 	return v - 1
 }
 
-func (p *pair) IsStraight() bool {
+func (p pair) IsStraight() bool {
 	return p.to == p.from
 }
 
@@ -117,18 +116,22 @@ func SolvePart2(input string) (string, error) {
 	return strconv.Itoa(sum), nil
 }
 
-func makeGrid(input string) ([][]int, []*line, error) {
+func makeGrid(input string) ([][]int, []line, error) {
 	stringSlice := utils.ToStringSlice(input, "\n")
-	lines := make([]*line, len(stringSlice))
+	lines := make([]line, len(stringSlice))
 	maxX := 0
 	maxY := 0
 
 	for i, row := range stringSlice {
 		var x1, y1, x2, y2 int
 
-		if _, err := fmt.Sscanf(row, "%d,%d -> %d,%d", &x1, &y1, &x2, &y2); err != nil {
-			return make([][]int, 0), lines, err
-		}
+		parts := utils.ToStringSlice(row, " -> ")
+		one, _ := utils.ToIntegerSlice(parts[0], ",")
+		two, _ := utils.ToIntegerSlice(parts[1], ",")
+		x1 = one[0]
+		y1 = one[1]
+		x2 = two[0]
+		y2 = two[1]
 
 		if x1 > maxX {
 			maxX = x1
@@ -146,7 +149,7 @@ func makeGrid(input string) ([][]int, []*line, error) {
 			maxY = y2
 		}
 
-		lines[i] = &line{&pair{from: x1, to: x2}, &pair{from: y1, to: y2}}
+		lines[i] = line{pair{from: x1, to: x2}, pair{from: y1, to: y2}}
 	}
 
 	grid := make([][]int, maxY+1)
