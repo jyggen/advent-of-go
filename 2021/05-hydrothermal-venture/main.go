@@ -58,6 +58,8 @@ func SolvePart1(input string) (string, error) {
 		return "", err
 	}
 
+	sum := 0
+
 	for _, l := range lines {
 		if !l.IsStraight() {
 			continue
@@ -66,16 +68,10 @@ func SolvePart1(input string) (string, error) {
 		for x := l.x.from; l.x.Check(x); x = l.x.Next(x) {
 			for y := l.y.from; l.y.Check(y); y = l.y.Next(y) {
 				grid[y][x]++
-			}
-		}
-	}
 
-	sum := 0
-
-	for _, row := range grid {
-		for _, col := range row {
-			if col >= 2 {
-				sum++
+				if grid[y][x] == 2 {
+					sum++
+				}
 			}
 		}
 	}
@@ -89,26 +85,26 @@ func SolvePart2(input string) (string, error) {
 		return "", err
 	}
 
+	sum := 0
+
 	for _, l := range lines {
 		if !l.IsStraight() {
 			for x, y := l.x.from, l.y.from; l.x.Check(x) && l.y.Check(y); x, y = l.x.Next(x), l.y.Next(y) {
 				grid[y][x]++
+
+				if grid[y][x] == 2 {
+					sum++
+				}
 			}
 		} else {
 			for x := l.x.from; l.x.Check(x); x = l.x.Next(x) {
 				for y := l.y.from; l.y.Check(y); y = l.y.Next(y) {
 					grid[y][x]++
+
+					if grid[y][x] == 2 {
+						sum++
+					}
 				}
-			}
-		}
-	}
-
-	sum := 0
-
-	for _, row := range grid {
-		for _, col := range row {
-			if col >= 2 {
-				sum++
 			}
 		}
 	}
@@ -117,21 +113,13 @@ func SolvePart2(input string) (string, error) {
 }
 
 func makeGrid(input string) ([][]int, []line, error) {
-	stringSlice := utils.ToStringSlice(input, "\n")
-	lines := make([]line, len(stringSlice))
+	integers := utils.ToOptimisticIntSlice(input)
+	lines := make([]line, 0, len(integers)/4)
 	maxX := 0
 	maxY := 0
 
-	for i, row := range stringSlice {
-		var x1, y1, x2, y2 int
-
-		parts := utils.ToStringSlice(row, " -> ")
-		one, _ := utils.ToIntegerSlice(parts[0], ",")
-		two, _ := utils.ToIntegerSlice(parts[1], ",")
-		x1 = one[0]
-		y1 = one[1]
-		x2 = two[0]
-		y2 = two[1]
+	for i, j, k, l := 0, 1, 2, 3; l < len(integers); i, j, k, l = i+4, j+4, k+4, l+4 {
+		x1, y1, x2, y2 := integers[i], integers[j], integers[k], integers[l]
 
 		if x1 > maxX {
 			maxX = x1
@@ -149,7 +137,7 @@ func makeGrid(input string) ([][]int, []line, error) {
 			maxY = y2
 		}
 
-		lines[i] = line{pair{from: x1, to: x2}, pair{from: y1, to: y2}}
+		lines = append(lines, line{pair{from: x1, to: x2}, pair{from: y1, to: y2}})
 	}
 
 	grid := make([][]int, maxY+1)

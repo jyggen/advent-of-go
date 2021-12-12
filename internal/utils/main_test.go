@@ -26,6 +26,13 @@ func BenchmarkToIntegerSlice(b *testing.B) {
 	}
 }
 
+func BenchmarkToOptimisticIntSlice(b *testing.B) {
+	input := "0,9 -> 5,9\n8,0 -> 0,8\n9,4 -> 3,4\n2,2 -> 2,1\n7,0 -> 7,4\n6,4 -> 2,0\n0,9 -> 2,9\n3,4 -> 1,4\n0,0 -> 8,8\n5,5 -> 8,2"
+	for i := 0; i < b.N; i++ {
+		ToOptimisticIntSlice(input)
+	}
+}
+
 func BenchmarkToRuneSlice(b *testing.B) {
 	input := "abc,def,ghi,jkl,mno,pqr,stu,vwx,yz"
 	for i := 0; i < b.N; i++ {
@@ -44,6 +51,12 @@ func TestToIntegerSlice(t *testing.T) {
 	result, _ := ToIntegerSlice("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20", ",")
 
 	assert.Equal(t, []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20}, result)
+}
+
+func TestToOptimisticIntSlice(t *testing.T) {
+	input := "0,9 -> 5,9\n8,0 -> 0,8\n9,4 -> 3,4\n2,2 -> 2,1\n7,0 -> 7,4\n6,4 -> 2,0\n0,9 -> 2,9\n3,4 -> 1,4\n0,0 -> 8,8\n5,5 -> 8,2"
+
+	assert.Equal(t, []int{0, 9, 5, 9, 8, 0, 0, 8, 9, 4, 3, 4, 2, 2, 2, 1, 7, 0, 7, 4, 6, 4, 2, 0, 0, 9, 2, 9, 3, 4, 1, 4, 0, 0, 8, 8, 5, 5, 8, 2}, ToOptimisticIntSlice(input))
 }
 
 func TestToRuneSlice(t *testing.T) {

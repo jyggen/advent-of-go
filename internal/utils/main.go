@@ -153,3 +153,17 @@ func IsUpper(s string) bool {
 	}
 	return true
 }
+
+func ToOptimisticIntSlice(input string) []int {
+	fields := strings.FieldsFunc(input, func(r rune) bool {
+		return !unicode.IsDigit(r)
+	})
+
+	integers := make([]int, len(fields))
+
+	for i, s := range fields {
+		integers[i], _ = strconv.Atoi(s)
+	}
+
+	return integers
+}
