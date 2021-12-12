@@ -26,7 +26,7 @@ type item struct {
 	history         []string
 }
 
-func SolvePart1(input string) (string, error) {
+func parseInput(input string) map[string][]string {
 	remaining := utils.ToStringSlice(input, "\n")
 	connections := make(map[string][]string)
 
@@ -45,117 +45,68 @@ func SolvePart1(input string) (string, error) {
 		}
 	}
 
-	queue := make([]item, 0, len(connections))
-	queue = append(queue, item{
-		pos:     "start",
-		history: make([]string, 0, len(connections)),
-	})
+	return connections
+}
 
+func traverse(connections map[string][]string, i item, allowDuplicates bool) int {
+	if i.pos == "end" {
+		return 1
+	}
+
+	i.history = append(i.history, i.pos)
 	paths := 0
 
-	var i item
-
-	for len(queue) > 0 {
-		i, queue = queue[len(queue)-1], queue[:len(queue)-1]
-		i.history = append(i.history, i.pos)
-
-		if i.pos == "end" {
-			paths++
+Outer:
+	for _, o := range connections[i.pos] {
+		if o == "start" {
 			continue
 		}
 
-	Outer:
-		for _, o := range connections[i.pos] {
-			h := make([]string, len(i.history))
-			copy(h, i.history)
+		h := make([]string, len(i.history))
+		copy(h, i.history)
 
-			if o != strings.ToUpper(o) {
-				for _, p := range h {
-					if p == o {
-						continue Outer
+		duplicated := i.duplicatedSmall
+
+		if o != strings.ToUpper(o) {
+			for _, p := range h {
+				if p == o {
+					if !duplicated && allowDuplicates {
+						duplicated = true
+						break
 					}
+					continue Outer
 				}
 			}
-
-			queue = append(queue, item{
-				pos:     o,
-				history: h,
-			})
 		}
+
+		paths += traverse(connections, item{
+			pos:             o,
+			duplicatedSmall: duplicated,
+			history:         h,
+		}, allowDuplicates)
 	}
+
+	return paths
+}
+
+func SolvePart1(input string) (string, error) {
+	connections := parseInput(input)
+	paths := traverse(connections, item{
+		pos:             "start",
+		duplicatedSmall: false,
+		history:         make([]string, 0, len(connections)),
+	}, false)
 
 	return strconv.Itoa(paths), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	remaining := utils.ToStringSlice(input, "\n")
-	connections := make(map[string][]string)
-
-	for _, r := range remaining {
-		parts := utils.ToStringSlice(r, "-")
-
-		for _, v := range [2][2]string{
-			{parts[0], parts[1]},
-			{parts[1], parts[0]},
-		} {
-			if _, ok := connections[v[0]]; !ok {
-				connections[v[0]] = make([]string, 0, len(connections))
-			}
-
-			connections[v[0]] = append(connections[v[0]], v[1])
-		}
-	}
-
-	queue := make([]item, 0, len(connections))
-	queue = append(queue, item{
+	connections := parseInput(input)
+	paths := traverse(connections, item{
 		pos:             "start",
 		duplicatedSmall: false,
 		history:         make([]string, 0, len(connections)),
-	})
-
-	paths := 0
-
-	var i item
-
-	for len(queue) > 0 {
-		i, queue = queue[len(queue)-1], queue[:len(queue)-1]
-		i.history = append(i.history, i.pos)
-
-		if i.pos == "end" {
-			paths++
-			continue
-		}
-
-	Outer:
-		for _, o := range connections[i.pos] {
-			if o == "start" {
-				continue
-			}
-
-			h := make([]string, len(i.history))
-			copy(h, i.history)
-
-			duplicated := i.duplicatedSmall
-
-			if o != strings.ToUpper(o) {
-				for _, p := range h {
-					if p == o {
-						if !duplicated {
-							duplicated = true
-							break
-						}
-						continue Outer
-					}
-				}
-			}
-
-			queue = append(queue, item{
-				pos:             o,
-				duplicatedSmall: duplicated,
-				history:         h,
-			})
-		}
-	}
+	}, true)
 
 	return strconv.Itoa(paths), nil
 }
