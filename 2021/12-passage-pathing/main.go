@@ -18,15 +18,20 @@ func main() {
 	fmt.Println(p2)
 }
 
+type cave struct {
+	name  string
+	small bool
+}
+
 type item struct {
-	pos             string
+	name            string
 	duplicatedSmall bool
 	available       []string
 }
 
-func parseInput(input string) map[string][]string {
+func parseInput(input string) map[string][]cave {
 	remaining := utils.ToStringSlice(input, "\n")
-	connections := make(map[string][]string)
+	connections := make(map[string][]cave, len(remaining))
 
 	for _, r := range remaining {
 		parts := utils.ToStringSlice(r, "-")
@@ -35,26 +40,32 @@ func parseInput(input string) map[string][]string {
 			{parts[0], parts[1]},
 			{parts[1], parts[0]},
 		} {
-			if _, ok := connections[v[0]]; !ok {
-				connections[v[0]] = make([]string, 0, len(connections))
+			p1 := cave{name: v[1], small: false}
+
+			if v[1] != "start" && v[1] != "end" && !utils.IsUpper(v[1]) {
+				p1.small = true
 			}
 
-			connections[v[0]] = append(connections[v[0]], v[1])
+			if _, ok := connections[v[0]]; !ok {
+				connections[v[0]] = make([]cave, 0, len(connections))
+			}
+
+			connections[v[0]] = append(connections[v[0]], p1)
 		}
 	}
 
 	return connections
 }
 
-func traverse(connections map[string][]string, i item, allowDuplicates bool) int {
-	if i.pos == "end" {
+func traverse(connections map[string][]cave, i item, allowDuplicates bool) int {
+	if i.name == "end" {
 		return 1
 	}
 
 	paths := 0
 
-	for _, o := range connections[i.pos] {
-		if o == "start" {
+	for _, o := range connections[i.name] {
+		if o.name == "start" {
 			continue
 		}
 
@@ -63,11 +74,11 @@ func traverse(connections map[string][]string, i item, allowDuplicates bool) int
 
 		copy(a, i.available)
 
-		if o != "end" && !utils.IsUpper(o) {
+		if o.small {
 			visited := true
 
 			for k, v := range a {
-				if v == o {
+				if v == o.name {
 					a = append(a[:k], a[k+1:]...)
 					visited = false
 					break
@@ -84,7 +95,7 @@ func traverse(connections map[string][]string, i item, allowDuplicates bool) int
 		}
 
 		paths += traverse(connections, item{
-			pos:             o,
+			name:            o.name,
 			duplicatedSmall: duplicated,
 			available:       a,
 		}, allowDuplicates)
@@ -104,7 +115,7 @@ func SolvePart1(input string) (string, error) {
 	}
 
 	paths := traverse(connections, item{
-		pos:             "start",
+		name:            "start",
 		duplicatedSmall: false,
 		available:       available,
 	}, false)
@@ -123,7 +134,7 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	paths := traverse(connections, item{
-		pos:             "start",
+		name:            "start",
 		duplicatedSmall: false,
 		available:       available,
 	}, true)
