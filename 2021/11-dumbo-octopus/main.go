@@ -20,12 +20,11 @@ func main() {
 	fmt.Println(p2)
 }
 
-func simulate(g *grid.Grid) int {
+func simulate(g *grid.Grid, queue []*grid.Cell) int {
 	flashes := 0
-	queue := make([]*grid.Cell, 0, g.Size())
 
 	g.Each(func(c *grid.Cell) bool {
-		c.Value = c.Value + 1
+		c.Value++
 
 		if c.Value > 9 {
 			queue = append(queue, c)
@@ -44,10 +43,7 @@ func simulate(g *grid.Grid) int {
 		if c.Value > 9 {
 			flashes++
 			c.Value = 0
-
-			for _, n := range c.Neighbours() {
-				queue = append(queue, n)
-			}
+			queue = append(queue, c.Neighbours()...)
 		}
 
 		queue[0] = queue[len(queue)-1]
@@ -62,14 +58,14 @@ func makeGrid(input string) (*grid.Grid, error) {
 	stringSlice := utils.ToStringSlice(input, "\n")
 	values := make([][]int, len(stringSlice))
 
+	var err error
+
 	for i, s := range stringSlice {
-		numbers, err := utils.ToIntegerSlice(s, "")
+		values[i], err = utils.ToIntegerSlice(s, "")
 
 		if err != nil {
 			return nil, err
 		}
-
-		values[i] = numbers
 	}
 
 	return grid.NewGrid(values, true), nil
@@ -83,9 +79,10 @@ func SolvePart1(input string) (string, error) {
 	}
 
 	flashes := 0
+	queue := make([]*grid.Cell, 0, g.Size())
 
 	for i := 0; i < 100; i++ {
-		flashes += simulate(g)
+		flashes += simulate(g, queue)
 	}
 
 	return strconv.Itoa(flashes), nil
@@ -98,8 +95,10 @@ func SolvePart2(input string) (string, error) {
 		return "", err
 	}
 
+	queue := make([]*grid.Cell, 0, g.Size())
+
 	for i := 0; ; i++ {
-		if simulate(g) == g.Size() {
+		if simulate(g, queue) == g.Size() {
 			return strconv.Itoa(i + 1), nil
 		}
 	}
