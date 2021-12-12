@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
 var one = big.NewInt(1)
@@ -142,4 +143,13 @@ func ToRuneSlice(input string, separator string) [][]rune {
 
 func ToStringSlice(input string, separator string) []string {
 	return strings.Split(strings.TrimSpace(input), separator)
+}
+
+func IsUpper(s string) bool {
+	for _, r := range s {
+		if !unicode.IsUpper(r) && unicode.IsLetter(r) {
+			return false
+		}
+	}
+	return true
 }

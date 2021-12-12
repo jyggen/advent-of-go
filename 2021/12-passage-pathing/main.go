@@ -2,12 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
-
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -23,7 +21,7 @@ func main() {
 type item struct {
 	pos             string
 	duplicatedSmall bool
-	history         []string
+	available       []string
 }
 
 func parseInput(input string) map[string][]string {
@@ -53,36 +51,47 @@ func traverse(connections map[string][]string, i item, allowDuplicates bool) int
 		return 1
 	}
 
-	i.history = append(i.history, i.pos)
 	paths := 0
 
-Outer:
 	for _, o := range connections[i.pos] {
 		if o == "start" {
 			continue
 		}
 
-		h := make([]string, len(i.history))
-		copy(h, i.history)
+		a := make([]string, len(i.available))
+		copy(a, i.available)
 
 		duplicated := i.duplicatedSmall
 
-		if o != strings.ToUpper(o) {
-			for _, p := range h {
+		if !utils.IsUpper(o) {
+			visited := true
+
+			for _, p := range a {
 				if p == o {
-					if !duplicated && allowDuplicates {
-						duplicated = true
-						break
-					}
-					continue Outer
+					visited = false
+					break
 				}
+			}
+
+			if visited {
+				if duplicated {
+					continue
+				} else {
+					duplicated = true
+				}
+			}
+		}
+
+		for k, v := range i.available {
+			if v == o {
+				a = append(a[:k], a[k+1:]...)
 			}
 		}
 
 		paths += traverse(connections, item{
 			pos:             o,
 			duplicatedSmall: duplicated,
-			history:         h,
+			available:       a,
 		}, allowDuplicates)
 	}
 
@@ -91,10 +100,18 @@ Outer:
 
 func SolvePart1(input string) (string, error) {
 	connections := parseInput(input)
+	available := make([]string, 0, len(connections))
+
+	for k := range connections {
+		if k != "start" {
+			available = append(available, k)
+		}
+	}
+
 	paths := traverse(connections, item{
 		pos:             "start",
 		duplicatedSmall: false,
-		history:         make([]string, 0, len(connections)),
+		available:       available,
 	}, false)
 
 	return strconv.Itoa(paths), nil
@@ -102,10 +119,18 @@ func SolvePart1(input string) (string, error) {
 
 func SolvePart2(input string) (string, error) {
 	connections := parseInput(input)
+	available := make([]string, 0, len(connections))
+
+	for k := range connections {
+		if k != "start" {
+			available = append(available, k)
+		}
+	}
+
 	paths := traverse(connections, item{
 		pos:             "start",
 		duplicatedSmall: false,
-		history:         make([]string, 0, len(connections)),
+		available:       available,
 	}, true)
 
 	return strconv.Itoa(paths), nil
