@@ -39,7 +39,7 @@ jobs:
               run: go test ./...
 
             - name: Benchmark
-              run: go test -short -bench . -json -run NONE ./... | go run cmd/report.go > public/benchmark.json
+              run: go test -short -bench BenchmarkSolvers -json -run NONE ./... | go run cmd/report.go > public/benchmark.json
 
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v3
