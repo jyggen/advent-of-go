@@ -27,8 +27,8 @@ func SolvePart1(input string) (string, error) {
 
 	result := 0
 
-	for i := 1; i < len(intSlice); i++ {
-		if intSlice[i] > intSlice[i-1] {
+	for i, j := 1, 0; i < len(intSlice); i, j = i+1, j+1 {
+		if intSlice[i] > intSlice[j] {
 			result++
 		}
 	}
@@ -44,8 +44,8 @@ func SolvePart2(input string) (string, error) {
 
 	result := 0
 
-	for i := 0; i < len(intSlice)-3; i++ {
-		if intSlice[i+1]+intSlice[i+2]+intSlice[i+3] > intSlice[i]+intSlice[i+1]+intSlice[i+2] {
+	for i, j, k, l := 3, 2, 1, 0; i < len(intSlice); i, j, k, l = i+1, j+1, k+1, l+1 {
+		if intSlice[j]+intSlice[k]+intSlice[l] < intSlice[i]+intSlice[j]+intSlice[k] {
 			result++
 		}
 	}

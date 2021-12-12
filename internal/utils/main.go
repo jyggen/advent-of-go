@@ -118,13 +118,13 @@ func ToIntegerSlice(input string, separator string) ([]int, error) {
 	stringSlice := ToStringSlice(input, separator)
 	integerSlice := make([]int, len(stringSlice))
 
+	var err error
+
 	for i, val := range stringSlice {
-		numVal, err := strconv.Atoi(val)
+		integerSlice[i], err = strconv.Atoi(val)
 		if err != nil {
 			return integerSlice, err
 		}
-
-		integerSlice[i] = numVal
 	}
 
 	return integerSlice, nil
