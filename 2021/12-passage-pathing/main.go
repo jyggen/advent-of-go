@@ -63,7 +63,7 @@ func traverse(connections map[string][]string, i item, allowDuplicates bool) int
 
 		copy(a, i.available)
 
-		if !utils.IsUpper(o) {
+		if o != "end" && !utils.IsUpper(o) {
 			visited := true
 
 			for k, v := range a {
@@ -98,7 +98,7 @@ func SolvePart1(input string) (string, error) {
 	available := make([]string, 0, len(connections))
 
 	for k := range connections {
-		if k != "start" {
+		if k != "start" && k != "end" && !utils.IsUpper(k) {
 			available = append(available, k)
 		}
 	}
@@ -117,7 +117,7 @@ func SolvePart2(input string) (string, error) {
 	available := make([]string, 0, len(connections))
 
 	for k := range connections {
-		if k != "start" {
+		if k != "start" && k != "end" && !utils.IsUpper(k) {
 			available = append(available, k)
 		}
 	}
