@@ -58,16 +58,17 @@ func traverse(connections map[string][]string, i item, allowDuplicates bool) int
 			continue
 		}
 
-		a := make([]string, len(i.available))
-		copy(a, i.available)
-
 		duplicated := i.duplicatedSmall
+		a := make([]string, len(i.available))
+
+		copy(a, i.available)
 
 		if !utils.IsUpper(o) {
 			visited := true
 
-			for _, p := range a {
-				if p == o {
+			for k, v := range a {
+				if v == o {
+					a = append(a[:k], a[k+1:]...)
 					visited = false
 					break
 				}
@@ -79,12 +80,6 @@ func traverse(connections map[string][]string, i item, allowDuplicates bool) int
 				} else {
 					duplicated = true
 				}
-			}
-		}
-
-		for k, v := range i.available {
-			if v == o {
-				a = append(a[:k], a[k+1:]...)
 			}
 		}
 
