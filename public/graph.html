@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Graphs! - Advent of Go</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+</head>
+<body>
+<section class="hero is-primary">
+	<div class="hero-body">
+		<div class="container">
+			<h1 class="title">
+				Advent of Go
+			</h1>
+			<h2 class="subtitle">
+				Graphs!
+			</h2>
+		</div>
+	</div>
+</section>
+<section class="section">
+	<div class="container">
+		<canvas id="graph"></canvas>
+	</div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2/dist/chart.min.js" integrity="sha256-D2tkh/3EROq+XuDEmgxOLW1oNxf0rLNlOwsPIUX+co4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-autocolors@0.0.4/dist/chartjs-plugin-autocolors.min.js" integrity="sha256-OZHer5PjbZWIIkRjY0cKRP19FMjRFeLUf3QqVuM7haw=" crossorigin="anonymous"></script>
+<script>
+	function compare(a, b) {
+		if (a.Year < b.Year) {
+			return -1;
+		}
+
+		if (a.Year > b.Year) {
+			return 1;
+		}
+
+		if (a.Day < b.Day) {
+			return -1;
+		}
+
+		if (a.Day > b.Day) {
+			return 1;
+		}
+
+		return 0;
+	}
+
+	function formatMs(ms) {
+		if (ms > 1000) {
+			return (ms / 1000).toFixed(2) + "s";
+		}
+
+		if (ms < 1) {
+			return ms.toPrecision(2) + "ms";
+		}
+
+		return ms.toFixed(2) + "ms";
+	}
+
+	(function() {
+		const ctx = document.getElementById('graph').getContext('2d');
+		const autocolors = window['chartjs-plugin-autocolors'];
+
+		fetch("benchmark.json", { headers: { "Content-Type": "application/json; charset=utf-8" }})
+			.then(res => res.json())
+			.then(response => {
+				let data = {}
+
+				response.sort(compare).forEach(item => {
+					item.Parts.forEach((part, i) => {
+						if (part == null) {
+							return
+						}
+
+						data[item.Year.toString() + '.' + item.Day.toString() + ' (' + (i+1).toString() + ')'] = part.Ms
+					});
+				});
+
+				Chart.register(autocolors);
+
+				new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: Object.keys(data),
+						datasets: [{
+							label: '# ms',
+							data: Object.values(data),
+						}]
+					},
+					options: {
+						scales: {
+							y: {
+								beginAtZero: true,
+								type: 'logarithmic'
+							}
+						},
+						plugins: {
+							autocolors: {
+								mode: 'datasetdata'
+							},
+							tooltip: {
+								callbacks: {
+									label: function(context) {
+										return formatMs(context.parsed.y)
+									}
+								}
+							}
+						}
+					}
+				});
+			});
+	})();
+</script>
+</body>
+</html>
