@@ -30,6 +30,8 @@ func (tc *TestCase) Benchmark(b *testing.B) {
 
 	for j, solver := range tc.Solvers {
 		b.Run(fmt.Sprint(j), func(subtest *testing.B) {
+			subtest.ResetTimer()
+
 			for i := 0; i < subtest.N; i++ {
 				_, err := solver.Solver(tc.Input)
 				if err != nil {
@@ -45,12 +47,8 @@ func (tc *TestCase) Test(t *testing.T) {
 		t.SkipNow()
 	}
 
-	t.Parallel()
-
 	for j, solver := range tc.Solvers {
 		t.Run(fmt.Sprint(j), func(subtest *testing.T) {
-			subtest.Parallel()
-
 			actualOutput, err := solver.Solver(tc.Input)
 
 			assert.NoError(subtest, err)

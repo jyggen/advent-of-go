@@ -86,7 +86,7 @@ func traverse(connections map[string][]cave, i item, allowDuplicates bool) int {
 			}
 
 			if visited {
-				if duplicated {
+				if duplicated || !allowDuplicates {
 					continue
 				} else {
 					duplicated = true
