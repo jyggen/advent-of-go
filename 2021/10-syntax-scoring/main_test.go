@@ -27,7 +27,7 @@ var testCases = []*solver.TestCase{
 		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
-				Output: "1010181",
+				Output: "288291",
 			},
 			{
 				Solver: SolvePart2,

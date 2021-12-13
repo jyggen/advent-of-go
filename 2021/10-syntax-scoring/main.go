@@ -1,7 +1,6 @@
 package main
 
 import (
-	"container/list"
 	"fmt"
 	"os"
 	"sort"
@@ -39,23 +38,24 @@ func filterCorrupted(input string) ([][]rune, int) {
 	}
 
 	for _, runes := range lines {
-		state := list.New()
+		state := make([]rune, 0)
 		corrupted := false
 
+	Loop:
 		for _, r := range runes {
 			switch r {
 			case '(', '[', '{', '<':
-				state.PushBack(r)
+				state = append(state, r)
 			case ')', ']', '}', '>':
-				e := state.Back()
+				e := state[len(state)-1]
 
-				if pairs[e.Value.(rune)] != r {
+				if pairs[e] != r {
 					score += points[r]
 					corrupted = true
-					break
+					break Loop
 				}
 
-				state.Remove(e)
+				state = state[:len(state)-1]
 			}
 		}
 
@@ -84,24 +84,21 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	for _, runes := range incomplete {
-		state := list.New()
+		state := make([]rune, 0)
 		score := 0
 
 		for _, r := range runes {
 			switch r {
 			case '(', '[', '{', '<':
-				state.PushBack(r)
+				state = append(state, r)
 			case ')', ']', '}', '>':
-				state.Remove(state.Back())
+				state = state[:len(state)-1]
 			}
 		}
 
-		for state.Len() > 0 {
-			e := state.Back()
+		for i := len(state) - 1; i >= 0; i-- {
 			score *= 5
-			score += points[e.Value.(rune)]
-
-			state.Remove(e)
+			score += points[state[i]]
 		}
 
 		scores = append(scores, score)
