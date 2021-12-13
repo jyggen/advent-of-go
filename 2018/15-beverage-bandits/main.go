@@ -7,8 +7,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/RyanCarrier/dijkstra"
-	"github.com/beefsack/go-astar"
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
 )
@@ -228,37 +226,6 @@ GameLoop:
 	return round, elves, goblins
 }
 
-func ToGraph(battlefield []*Tile) *dijkstra.Graph {
-	graph := dijkstra.NewGraph()
-	colLen := battlefield[0].colLen
-
-	for x := 0; x < colLen; x++ {
-		for y := 0; y < battlefield[0].rowLen; y++ {
-			offset := y*colLen + x
-
-			// fmt.Println(offset)
-
-			graph.AddVertex(offset)
-
-			if battlefield[offset].occupied {
-				continue
-			}
-
-			if x != 0 && !battlefield[offset-1].occupied {
-				graph.AddArc(offset, offset-1, 1)
-				graph.AddArc(offset-1, offset, 1)
-			}
-
-			if y != 0 && !battlefield[offset-colLen].occupied {
-				graph.AddArc(offset, offset-colLen, 1)
-				graph.AddArc(offset-colLen, offset, 1)
-			}
-		}
-	}
-
-	return graph
-}
-
 func calculateDistance(from int, to int, colLen int) int {
 	if from > to {
 		to, from = from, to
@@ -332,18 +299,54 @@ func (c *Creature) IsDead() bool {
 }
 
 func (c *Creature) IsNextTo(c2 *Creature) bool {
-	for _, i := range []int{
-		c.tile.position - c.tile.colLen,
-		c.tile.position - 1,
-		c.tile.position + 1,
-		c.tile.position + c.tile.colLen,
-	} {
-		if i == c2.tile.position {
-			return true
+	return c.tile.IsNextTo(c2.tile)
+}
+
+func BFS(start *Tile, end *Tile) []int {
+	queue := []*Tile{start}
+	visited := map[*Tile]*Tile{
+		start: nil,
+	}
+
+	for len(queue) > 0 {
+		current := queue[0]
+		queue = queue[1:]
+
+		if current == end {
+			break
+		}
+
+		for _, n := range current.PathNeighbors() {
+			if _, ok := visited[n]; ok {
+				continue
+			}
+
+			if n != end && n.occupied {
+				continue
+			}
+
+			visited[n] = current
+			queue = append(queue, n)
 		}
 	}
 
-	return false
+	path := []int{end.position}
+	parent := visited[end]
+
+	if parent == nil {
+		return nil
+	}
+
+	for {
+		path = append(path, parent.position)
+		parent = visited[parent]
+
+		if parent == nil {
+			break
+		}
+	}
+
+	return path
 }
 
 func (c *Creature) Move() error {
@@ -367,13 +370,7 @@ func (c *Creature) Move() error {
 			continue
 		}
 
-		for _, et := range e.tile.PathNeighbors() {
-			// fmt.Printf("\t\tCould attack %s #%d if we get to %s!\n", e.kind, e.id, et.(*Tile).Coordinates())
-
-			for _, ct := range c.tile.PathNeighbors() {
-				possibilities = append(possibilities, []*Tile{ct.(*Tile), et.(*Tile)})
-			}
-		}
+		possibilities = append(possibilities, []*Tile{c.tile, e.tile})
 	}
 
 	if optionsLen > 0 {
@@ -388,7 +385,6 @@ func (c *Creature) Move() error {
 
 	bestPath := [2]int{0, 0}
 	bestPathDistance := int64(-1)
-	g := ToGraph(*c.tile.tiles)
 
 	// fmt.Println(g)
 
@@ -396,17 +392,17 @@ func (c *Creature) Move() error {
 		path := [2]int{0, 0}
 		distance := int64(0)
 
-		// path, distance, found := astar.Path(p[0], p[1])
-		if p[0].position == p[1].position {
+		if p[0].IsNextTo(p[1]) {
 			path = [2]int{p[0].position, p[1].position}
 		} else {
-			p, err := g.Shortest(p[0].position, p[1].position)
-			if err != nil {
+			bfs := BFS(p[0], p[1])
+
+			if bfs == nil {
 				continue
 			}
 
-			path = [2]int{p.Path[0], p.Path[len(p.Path)-1]}
-			distance = p.Distance
+			path = [2]int{bfs[len(bfs)-2], bfs[1]}
+			distance = int64(len(bfs) - 3)
 		}
 
 		/*coords := make([]string, len(path))
@@ -471,6 +467,21 @@ type Tile struct {
 	tiles    *[]*Tile
 }
 
+func (t *Tile) IsNextTo(t2 *Tile) bool {
+	for _, i := range []int{
+		t.position - t.colLen,
+		t.position - 1,
+		t.position + 1,
+		t.position + t.colLen,
+	} {
+		if i == t2.position {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (t *Tile) Coordinates() string {
 	x := t.position
 	y := 0
@@ -483,11 +494,11 @@ func (t *Tile) Coordinates() string {
 	return fmt.Sprintf("%dx%d", y, x)
 }
 
-func (t *Tile) PathNeighbors() []astar.Pather {
-	neighbors := make([]astar.Pather, 0, 4)
+func (t *Tile) PathNeighbors() []*Tile {
+	neighbors := make([]*Tile, 0, 4)
 
 	for _, i := range []int{t.position - t.colLen, t.position - 1, t.position + 1, t.position + t.colLen} {
-		if i < 0 || i >= len(*t.tiles) || (*t.tiles)[i].occupied {
+		if i < 0 || i >= len(*t.tiles) {
 			continue
 		}
 
@@ -495,14 +506,6 @@ func (t *Tile) PathNeighbors() []astar.Pather {
 	}
 
 	return neighbors
-}
-
-func (t *Tile) PathNeighborCost(to astar.Pather) float64 {
-	return 1
-}
-
-func (t *Tile) PathEstimatedCost(to astar.Pather) float64 {
-	return float64(calculateDistance(t.position, to.(*Tile).position, t.colLen))
 }
 
 func Draw(tiles []*Tile, elves []*Creature, goblins []*Creature) {
