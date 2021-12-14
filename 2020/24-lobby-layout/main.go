@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
@@ -103,9 +104,9 @@ func flip(tiles map[string]bool, coordinates string) {
 }
 
 func getNeighbours(coordinates string) [6]string {
-	var x, y int
-
-	fmt.Sscanf(coordinates, "%dx%d", &x, &y)
+	parts := strings.SplitN(coordinates, "x", 2)
+	x, _ := strconv.Atoi(parts[0])
+	y, _ := strconv.Atoi(parts[1])
 
 	return [6]string{
 		coordinatesKey(x-1, y),
