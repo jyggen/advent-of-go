@@ -1,15 +1,13 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"github.com/beefsack/go-astar"
+	"github.com/RyanCarrier/dijkstra"
 	"github.com/jyggen/advent-of-go/internal/grid"
-	"os"
-	"strconv"
-
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
+	"os"
+	"strconv"
 )
 
 func main() {
@@ -22,62 +20,70 @@ func main() {
 	fmt.Println(p2)
 }
 
-func SolvePart1(input string) (string, error) {
+func createGridAndGraph(input string, multiplier int) (grid.Grid, *dijkstra.Graph) {
 	rows := utils.ToStringSlice(input, "\n")
-	data := make([][]int, len(rows))
-
-	for i, r := range rows {
-		ints, _ := utils.ToIntegerSlice(r, "")
-		data[i] = ints
-	}
-
-	g := *grid.NewGrid(data, false)
-	start := g.CellAt(0, 0)
-	goal := g.CellAt(len(data)-1, len(data[0])-1)
-
-	_, distance, found := astar.Path(start, goal)
-
-	if !found {
-		return "", errors.New("no path found")
-	}
-
-	return strconv.Itoa(int(distance)), nil
-}
-
-func SolvePart2(input string) (string, error) {
-	rows := utils.ToStringSlice(input, "\n")
-	data := make([][]int, len(rows)*5)
+	colLength := len(rows[0])
+	rowLength := len(rows)
+	data := make([][]int, rowLength*multiplier)
+	graph := dijkstra.NewGraph()
 
 	for i, r := range rows {
 		ints, _ := utils.ToIntegerSlice(r, "")
 
-		for j := 0; j < 5; j++ {
-			index := i + (len(rows) * j)
-			for k := 0; k < 5; k++ {
-				newInts := make([]int, len(ints))
+		for j := 0; j < multiplier; j++ {
+			index := i + (rowLength * j)
+			newInts := make([]int, colLength*multiplier)
 
+			for k := 0; k < multiplier; k++ {
 				for l, v := range ints {
-					newInts[l] = v + j + k
+					intIdx := l + (colLength * k)
+					newInts[intIdx] = v + j + k
 
-					if newInts[l] > 9 {
-						newInts[l] -= 9
+					if newInts[intIdx] > 9 {
+						newInts[intIdx] -= 9
 					}
-				}
 
-				data[index] = append(data[index], newInts...)
+					graph.AddVertex(intIdx + ((rowLength * multiplier) * index))
+				}
 			}
+
+			data[index] = newInts
 		}
 	}
 
 	g := *grid.NewGrid(data, false)
-	start := g.CellAt(0, 0)
-	goal := g.CellAt(len(data)-1, len(data[0])-1)
 
-	_, distance, found := astar.Path(start, goal)
+	g.Each(func(c *grid.Cell) bool {
+		ourId := c.Y() + (c.X() * colLength * multiplier)
+		for _, n := range c.Neighbours() {
+			theirId := n.Y() + (n.X() * colLength * multiplier)
+			graph.AddArc(ourId, theirId, int64(n.Value))
+		}
 
-	if !found {
-		return "", errors.New("no path found")
+		return true
+	})
+
+	return g, graph
+}
+
+func SolvePart1(input string) (string, error) {
+	g, graph := createGridAndGraph(input, 1)
+	best, err := graph.Shortest(g.CellAtTopLeft().ID(), g.CellAtBottomRight().ID())
+
+	if err != nil {
+		return "", err
 	}
 
-	return strconv.Itoa(int(distance)), nil
+	return strconv.Itoa(int(best.Distance)), nil
+}
+
+func SolvePart2(input string) (string, error) {
+	g, graph := createGridAndGraph(input, 5)
+	best, err := graph.Shortest(g.CellAtTopLeft().ID(), g.CellAtBottomRight().ID())
+
+	if err != nil {
+		return "", err
+	}
+
+	return strconv.Itoa(int(best.Distance)), nil
 }

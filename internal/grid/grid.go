@@ -1,12 +1,9 @@
 package grid
 
-import (
-	"github.com/beefsack/go-astar"
-	"github.com/jyggen/advent-of-go/internal/utils"
-)
-
 func NewGrid(values [][]int, allowDiagonalNeighbours bool) *Grid {
 	g := &Grid{
+		colLength:               len(values[0]),
+		rowLength:               len(values),
 		cells:                   make([][]*Cell, len(values)),
 		allowDiagonalNeighbours: allowDiagonalNeighbours,
 	}
@@ -28,6 +25,8 @@ func NewGrid(values [][]int, allowDiagonalNeighbours bool) *Grid {
 }
 
 type Grid struct {
+	colLength               int
+	rowLength               int
 	cells                   [][]*Cell
 	allowDiagonalNeighbours bool
 }
@@ -42,6 +41,14 @@ func (g Grid) CellAt(x int, y int) *Cell {
 	}
 
 	return g.cells[x][y]
+}
+
+func (g Grid) CellAtTopLeft() *Cell {
+	return g.cells[0][0]
+}
+
+func (g Grid) CellAtBottomRight() *Cell {
+	return g.cells[g.rowLength-1][g.colLength-1]
 }
 
 func (g Grid) Each(callback func(c *Cell) bool) {
@@ -104,29 +111,14 @@ func (c Cell) Neighbours() []*Cell {
 	return c.neighbours
 }
 
+func (c Cell) ID() int {
+	return c.x + (c.y * c.grid.colLength)
+}
+
 func (c Cell) X() int {
 	return c.x
 }
 
 func (c Cell) Y() int {
 	return c.y
-}
-
-func (c Cell) PathNeighbors() []astar.Pather {
-	neighbours := c.Neighbours()
-	returnSlice := make([]astar.Pather, len(neighbours))
-
-	for i, n := range neighbours {
-		returnSlice[i] = n
-	}
-
-	return returnSlice
-}
-
-func (c Cell) PathNeighborCost(to astar.Pather) float64 {
-	return float64(to.(*Cell).Value)
-}
-
-func (c Cell) PathEstimatedCost(to astar.Pather) float64 {
-	return float64(utils.ManhattanDistance(c.X()+to.(*Cell).X(), c.Y()+to.(*Cell).Y()))
 }
