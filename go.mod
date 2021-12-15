@@ -3,6 +3,7 @@ module github.com/jyggen/advent-of-go
 go 1.17
 
 require (
+	github.com/beefsack/go-astar v0.0.0-20200827232313-4ecf9e304482
 	github.com/gitchander/permutation v0.0.0-20210517125447-a5d73722e1b1
 	github.com/otiai10/gosseract/v2 v2.3.1
 	github.com/stretchr/testify v1.6.1
