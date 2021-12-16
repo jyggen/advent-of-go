@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"github.com/esimov/stackblur-go"
 	"github.com/otiai10/gosseract/v2"
 	"image"
 	"image/color"
@@ -134,7 +135,9 @@ func toImage(grid [][]bool) image.Image {
 		}
 	}
 
-	return img
+	blurred, _ := stackblur.Run(img, 1)
+
+	return blurred
 }
 
 func SolvePart1(input string) (string, error) {

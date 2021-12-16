@@ -6,6 +6,8 @@ github.com/albertorestifo/dijkstra v0.0.0-20160910063646-aba76f725f72 h1:uGeGZl8
 github.com/albertorestifo/dijkstra v0.0.0-20160910063646-aba76f725f72/go.mod h1:o+JdB7VetTHjLhU0N57x18B9voDBQe0paApdEAEoEfw=
 github.com/davecgh/go-spew v1.1.0 h1:ZDRjVQ15GmhC3fiQ8ni8+OwkZQO4DARzQgrnXU1Liz8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/esimov/stackblur-go v1.0.2 h1:BPwdKQmiEiRjzwnN8oeIQ5MggrlW5inw5+elfzAHo4U=
+github.com/esimov/stackblur-go v1.0.2/go.mod h1:PWsZAbNSq8kMQZnc9Ir1XQvF6Ch8CEYoVBabVA5ipN4=
 github.com/gitchander/permutation v0.0.0-20210517125447-a5d73722e1b1 h1:FUKJibWQu771xr/AwLn2/PbVp9AsgqfkObByTf8kJnI=
 github.com/gitchander/permutation v0.0.0-20210517125447-a5d73722e1b1/go.mod h1:HMJdsfdGgnh5ncvocKE6H8ATmoIQDmBFAgjY+6u/dm0=
 github.com/mattomatic/dijkstra v0.0.0-20130617153013-6f6d134eb237 h1:acuCHBjzG7MFTugvx3buC4m5rLDLaKC9J8C9jtlraRc=
