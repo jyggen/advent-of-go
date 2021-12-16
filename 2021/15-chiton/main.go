@@ -19,7 +19,7 @@ func main() {
 	fmt.Println(p2)
 }
 
-func createGridAndGraph(input string, multiplier int) *dijkstra.Graph {
+func createGraph(input string, multiplier int) *dijkstra.Graph {
 	rows := utils.ToStringSlice(input, "\n")
 	colLength := len(rows[0])
 	rowLength := len(rows)
@@ -63,7 +63,7 @@ func createGridAndGraph(input string, multiplier int) *dijkstra.Graph {
 }
 
 func SolvePart1(input string) (string, error) {
-	graph := createGridAndGraph(input, 1)
+	graph := createGraph(input, 1)
 	best, err := graph.Shortest(0, len(graph.Verticies)-1)
 
 	if err != nil {
@@ -74,7 +74,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	graph := createGridAndGraph(input, 5)
+	graph := createGraph(input, 5)
 	best, err := graph.Shortest(0, len(graph.Verticies)-1)
 
 	if err != nil {
