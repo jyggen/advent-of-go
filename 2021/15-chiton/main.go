@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/RyanCarrier/dijkstra"
-	"github.com/jyggen/advent-of-go/internal/grid"
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
@@ -20,55 +19,52 @@ func main() {
 	fmt.Println(p2)
 }
 
-func createGridAndGraph(input string, multiplier int) (grid.Grid, *dijkstra.Graph) {
+func createGridAndGraph(input string, multiplier int) *dijkstra.Graph {
 	rows := utils.ToStringSlice(input, "\n")
 	colLength := len(rows[0])
 	rowLength := len(rows)
-	data := make([][]int, rowLength*multiplier)
+	data := make([]int64, rowLength*multiplier*colLength*multiplier)
 	graph := dijkstra.NewGraph()
+	vertexId, aboveId, leftId := 0, 0-(colLength*multiplier), -1
 
-	for i, r := range rows {
-		ints, _ := utils.ToIntegerSlice(r, "")
-
-		for j := 0; j < multiplier; j++ {
-			index := i + (rowLength * j)
-			newInts := make([]int, colLength*multiplier)
+	for j := 0; j < multiplier; j++ {
+		for i, r := range rows {
+			integers, _ := utils.ToIntegerSlice(r, "")
 
 			for k := 0; k < multiplier; k++ {
-				for l, v := range ints {
-					intIdx := l + (colLength * k)
-					newInts[intIdx] = v + j + k
+				for l, v := range integers {
+					value := int64(v + j + k)
 
-					if newInts[intIdx] > 9 {
-						newInts[intIdx] -= 9
+					if value > 9 {
+						value -= 9
 					}
 
-					graph.AddVertex(intIdx + ((rowLength * multiplier) * index))
+					data[vertexId] = value
+
+					graph.AddVertex(vertexId)
+
+					if i != 0 || (i == 0 && j != 0) {
+						graph.AddArc(vertexId, aboveId, data[aboveId])
+						graph.AddArc(aboveId, vertexId, value)
+					}
+
+					if l != 0 || (l == 0 && k != 0) {
+						graph.AddArc(vertexId, leftId, data[leftId])
+						graph.AddArc(leftId, vertexId, value)
+					}
+
+					vertexId, aboveId, leftId = vertexId+1, aboveId+1, leftId+1
 				}
 			}
-
-			data[index] = newInts
 		}
 	}
 
-	g := *grid.NewGrid(data, false)
-
-	g.Each(func(c *grid.Cell) bool {
-		ourId := c.Y() + (c.X() * colLength * multiplier)
-		for _, n := range c.Neighbours() {
-			theirId := n.Y() + (n.X() * colLength * multiplier)
-			graph.AddArc(ourId, theirId, int64(n.Value))
-		}
-
-		return true
-	})
-
-	return g, graph
+	return graph
 }
 
 func SolvePart1(input string) (string, error) {
-	g, graph := createGridAndGraph(input, 1)
-	best, err := graph.Shortest(g.CellAtTopLeft().ID(), g.CellAtBottomRight().ID())
+	graph := createGridAndGraph(input, 1)
+	best, err := graph.Shortest(0, len(graph.Verticies)-1)
 
 	if err != nil {
 		return "", err
@@ -78,8 +74,8 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	g, graph := createGridAndGraph(input, 5)
-	best, err := graph.Shortest(g.CellAtTopLeft().ID(), g.CellAtBottomRight().ID())
+	graph := createGridAndGraph(input, 5)
+	best, err := graph.Shortest(0, len(graph.Verticies)-1)
 
 	if err != nil {
 		return "", err
