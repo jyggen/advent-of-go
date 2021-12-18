@@ -111,7 +111,6 @@ func parseOperator(binary string) ([]packet, string) {
 			p, binary = parsePacket(binary)
 			subPackets = append(subPackets, p)
 		}
-
 	case '1':
 		totalPackets, _ := strconv.ParseInt(binary[1:12], 2, 64)
 		binary = binary[12:]
