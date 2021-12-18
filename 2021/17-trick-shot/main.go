@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 
@@ -39,24 +40,14 @@ func simulate(input string) (int, int) {
 	x2, _ := strconv.Atoi(xParts[1])
 	y1, _ := strconv.Atoi(yParts[0])
 	y2, _ := strconv.Atoi(yParts[1])
-	xVelInit := 0
-	xSum := 0
-
-	for xSum < x1 {
-		xVelInit++
-		xSum += xVelInit
-	}
-
-	bestY := 0
 	validInits := 0
+	bestY := 0
 
-	for xVelInit <= x2 {
-		yVelInit := y1
-
-		for yVelInit <= -y1 {
+	for xInit := int(math.Sqrt(float64(x1 * 2))); xInit <= x2; xInit++ {
+		for yInit := y1; yInit < -y1+1; yInit++ {
 			probe := [2]int{0, 0}
-			xVel := xVelInit
-			yVel := yVelInit
+			xVel := xInit
+			yVel := yInit
 			highest := 0
 
 			for probe[0] < x2 && probe[1] > y1 {
@@ -84,11 +75,7 @@ func simulate(input string) (int, int) {
 					break
 				}
 			}
-
-			yVelInit++
 		}
-
-		xVelInit++
 	}
 
 	return bestY, validInits
