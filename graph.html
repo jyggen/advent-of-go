@@ -47,16 +47,20 @@
 		return 0;
 	}
 
-	function formatMs(ms) {
-		if (ms > 1000) {
-			return (ms / 1000).toFixed(2) + "s";
+	function formatNs(ns) {
+		if (ns >= 1000000000) {
+			return (ns / 1000000000).toFixed(2) + "s";
 		}
 
-		if (ms < 1) {
-			return ms.toPrecision(2) + "ms";
+		if (ns >= 1000000) {
+			return (ns / 1000000).toFixed(2) + "ms";
 		}
 
-		return ms.toFixed(2) + "ms";
+		if (ns >= 1000) {
+			return (ns / 1000).toFixed(2) + "μs";
+		}
+
+		return ns + "ns";
 	}
 
 	(function() {
@@ -103,7 +107,7 @@
 							tooltip: {
 								callbacks: {
 									label: function(context) {
-										return formatMs(context.parsed.y)
+										return formatNs(context.parsed.y)
 									}
 								}
 							}
