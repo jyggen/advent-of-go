@@ -108,14 +108,14 @@ function formatMs(ns) {
 
     		if (typeof item.Parts[0] !== 'undefined' && item.Parts[0] != null) {
     			part1.innerText = formatNs(item.Parts[0].Ns);
-    			part1.className = performanceClass(item.Parts[0].Ms);
+    			part1.className = performanceClass(item.Parts[0].Ns);
     		} else {
     			part1.innerText = "-";
     		}
 
     		if (typeof item.Parts[1] !== 'undefined' && item.Parts[1] != null) {
-				part2.innerText = formatMs(item.Parts[1].Ms);
-				part2.className = performanceClass(item.Parts[1].Ms);
+				part2.innerText = formatMs(item.Parts[1].Ns);
+				part2.className = performanceClass(item.Parts[1].Ns);
 			} else {
 				part2.innerText = "-";
     		}
