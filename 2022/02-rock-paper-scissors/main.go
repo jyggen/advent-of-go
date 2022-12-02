@@ -30,19 +30,20 @@ func SolvePart1(input string) (string, error) {
 	score := 0
 
 	for _, round := range rounds {
-		theirs := int(round[0] - 64)
-		ours := int(round[2] - 87)
-		score += ours
+		theirs := round[0] - 64
+		ours := round[2] - 87
 
 		switch {
 		case theirs == ours:
-			score += 3
+			score += 3 + int(ours)
 		case theirs == ROCK && ours == PAPER:
-			score += 6
+			score += 6 + PAPER
 		case theirs == PAPER && ours == SCISSOR:
-			score += 6
+			score += 6 + SCISSOR
 		case theirs == SCISSOR && ours == ROCK:
-			score += 6
+			score += 6 + ROCK
+		default:
+			score += int(ours)
 		}
 	}
 
@@ -54,7 +55,7 @@ func SolvePart2(input string) (string, error) {
 	score := 0
 
 	for _, round := range rounds {
-		theirs := int(round[0] - 64)
+		theirs := round[0] - 64
 		outcome := round[2]
 
 		switch outcome {
@@ -68,7 +69,7 @@ func SolvePart2(input string) (string, error) {
 				score += PAPER
 			}
 		case 'Y':
-			score += theirs + 3
+			score += int(theirs) + 3
 		case 'Z':
 			switch theirs {
 			case ROCK:
