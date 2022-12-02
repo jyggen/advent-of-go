@@ -68,16 +68,20 @@ function performanceClass(ms) {
     return "has-text-warning-dark";
 }
 
-function formatMs(ms) {
-    if (ms > 1000) {
-        return (ms / 1000).toFixed(2) + "s";
-    }
-
-    if (ms < 1) {
-		return (ms * 1000).toFixed(2) + "μs";
+function formatMs(ns) {
+	if (ns >= 1000000000) {
+		return (ns * 1000000000).toFixed(2) + "s";
 	}
 
-    return ms.toFixed(2) + "ms";
+	if (ns >= 1000000) {
+		return (ns * 1000000).toFixed(2) + "ms";
+	}
+
+    if (ns >= 1000) {
+        return (ns / 1000).toFixed(2) + "μs";
+    }
+
+    return ns.toFixed(2) + "ns";
 }
 
 (function() {
@@ -103,7 +107,7 @@ function formatMs(ms) {
     		link.innerText = item.Name;
 
     		if (typeof item.Parts[0] !== 'undefined' && item.Parts[0] != null) {
-    			part1.innerText = formatMs(item.Parts[0].Ms);
+    			part1.innerText = formatNs(item.Parts[0].Ns);
     			part1.className = performanceClass(item.Parts[0].Ms);
     		} else {
     			part1.innerText = "-";

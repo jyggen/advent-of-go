@@ -31,7 +31,7 @@ type Day struct {
 }
 
 type Part struct {
-	Ms float64
+	Ns float64
 }
 
 var (
@@ -88,7 +88,7 @@ func main() {
 		log.Println(y, d, n, p, durr.String())
 
 		results[key].Parts[p] = &Part{
-			Ms: benchmark.NsPerOp / 1000000,
+			Ns: benchmark.NsPerOp,
 		}
 	}
 
