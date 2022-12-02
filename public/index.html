@@ -74,7 +74,7 @@ function formatMs(ms) {
     }
 
     if (ms < 1) {
-    	return ms.toPrecision(2) + "ms";
+		return (ms * 1000).toFixed(2) + "μs";
 	}
 
     return ms.toFixed(2) + "ms";
