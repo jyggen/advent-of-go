@@ -56,12 +56,12 @@ function compare(a, b) {
 	return 0;
 }
 
-function performanceClass(ms) {
-    if (ms > 15000) { // every solution completes in at most 15 seconds according to Advent of Code
+function performanceClass(ns) {
+    if (ns > 15000000000) { // every solution completes in at most 15 seconds according to Advent of Code
         return "has-text-danger-dark";
     }
 
-    if (ms <= 20) { // let's aim for 20 milliseconds or less per solution to meet the 1s/year target
+    if (ns <= 20000000) { // let's aim for 20 milliseconds or less per solution to meet the 1s/year target
     	return "has-text-success-dark";
 	}
 
@@ -70,11 +70,11 @@ function performanceClass(ms) {
 
 function formatNs(ns) {
 	if (ns >= 1000000000) {
-		return (ns * 1000000000).toFixed(2) + "s";
+		return (ns / 1000000000).toFixed(2) + "s";
 	}
 
 	if (ns >= 1000000) {
-		return (ns * 1000000).toFixed(2) + "ms";
+		return (ns / 1000000).toFixed(2) + "ms";
 	}
 
     if (ns >= 1000) {
