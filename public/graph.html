@@ -74,7 +74,7 @@
 							return
 						}
 
-						data[item.Year.toString() + '.' + item.Day.toString() + ' (' + (i+1).toString() + ')'] = part.Ms
+						data[item.Year.toString() + '.' + item.Day.toString() + ' (' + (i+1).toString() + ')'] = part.Ns
 					});
 				});
 
@@ -85,7 +85,7 @@
 					data: {
 						labels: Object.keys(data),
 						datasets: [{
-							label: '# ms',
+							label: '# ns',
 							data: Object.values(data),
 						}]
 					},
