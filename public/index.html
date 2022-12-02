@@ -68,7 +68,7 @@ function performanceClass(ms) {
     return "has-text-warning-dark";
 }
 
-function formatMs(ns) {
+function formatNs(ns) {
 	if (ns >= 1000000000) {
 		return (ns * 1000000000).toFixed(2) + "s";
 	}
@@ -114,7 +114,7 @@ function formatMs(ns) {
     		}
 
     		if (typeof item.Parts[1] !== 'undefined' && item.Parts[1] != null) {
-				part2.innerText = formatMs(item.Parts[1].Ns);
+				part2.innerText = formatNs(item.Parts[1].Ns);
 				part2.className = performanceClass(item.Parts[1].Ns);
 			} else {
 				part2.innerText = "-";
