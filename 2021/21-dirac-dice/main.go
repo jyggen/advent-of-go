@@ -47,3 +47,7 @@ func SolvePart1(input string) (string, error) {
 
 	return strconv.Itoa(utils.MinInt(player1.score, player2.score) * rolls), nil
 }
+
+func SolvePart2(input string) (string, error) {
+	return strconv.Itoa(0), nil
+}

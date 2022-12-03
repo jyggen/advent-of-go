@@ -15,6 +15,10 @@ var testCases = []*solver.TestCase{
 				Solver: SolvePart1,
 				Output: "739785",
 			},
+			/*{
+				Solver: SolvePart2,
+				Output: "5",
+			},*/
 		},
 	},
 	{
@@ -25,6 +29,10 @@ var testCases = []*solver.TestCase{
 				Solver: SolvePart1,
 				Output: "989352",
 			},
+			/*{
+				Solver: SolvePart2,
+				Output: "1567",
+			},*/
 		},
 	},
 }
