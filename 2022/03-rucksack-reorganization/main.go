@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
+	"os"
+	"sort"
+	"strconv"
+	"strings"
 )
 
 func main() {
@@ -19,28 +20,40 @@ func main() {
 	fmt.Println(p2)
 }
 
+func uniqueSorted(input []rune) []rune {
+	output := make([]rune, 0, len(input))
+	exists := make(map[rune]struct{})
+
+	for _, r := range input {
+		if _, ok := exists[r]; ok {
+			continue
+		}
+
+		output = append(output, r)
+		exists[r] = struct{}{}
+	}
+
+	sort.Slice(output, func(i, j int) bool {
+		return output[i] < output[j]
+	})
+
+	return output
+}
+
 func SolvePart1(input string) (string, error) {
-	rucksacks := utils.ToRuneSlice(input, "\n")
+	rucksacks := utils.ToStringSlice(input, "\n")
 	priorities := 0
 
 	for _, rucksack := range rucksacks {
 		first := rucksack[:len(rucksack)/2]
 		second := rucksack[len(rucksack)/2:]
+		item := first[strings.IndexAny(first, second)]
+		priorities += int(item)
 
-	Loop:
-		for _, f := range first {
-			for _, s := range second {
-				if f == s {
-					priorities += int(f)
-
-					if f >= 'a' {
-						priorities -= 96
-					} else {
-						priorities -= 38
-					}
-					break Loop
-				}
-			}
+		if item >= 'a' {
+			priorities -= 96
+		} else {
+			priorities -= 38
 		}
 	}
 
@@ -48,26 +61,34 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	rucksacks := utils.ToRuneSlice(input, "\n")
+	rucksacks := utils.ToStringSlice(input, "\n")
 	priorities := 0
 
 	for i := 0; i < len(rucksacks); i += 3 {
-	Loop:
-		for _, f := range rucksacks[i] {
-			for _, s := range rucksacks[i+1] {
-				for _, t := range rucksacks[i+2] {
-					if f == s && f == t {
-						priorities += int(f)
+		first := rucksacks[i]
+		second := rucksacks[i+1]
+		third := rucksacks[i+2]
+		idx := 0
 
-						if f >= 'a' {
-							priorities -= 96
-						} else {
-							priorities -= 38
-						}
-						break Loop
-					}
-				}
+		var item uint8
+
+		for {
+			match := strings.IndexAny(first[idx:], second)
+
+			if strings.IndexRune(third, rune(first[match+idx])) != -1 {
+				item = first[match+idx]
+				break
+			} else {
+				idx += match + 1
 			}
+		}
+
+		priorities += int(item)
+
+		if item >= 'a' {
+			priorities -= 96
+		} else {
+			priorities -= 38
 		}
 	}
 
