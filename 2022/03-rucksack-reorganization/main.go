@@ -5,7 +5,6 @@ import (
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -18,26 +17,6 @@ func main() {
 
 	fmt.Println(p1)
 	fmt.Println(p2)
-}
-
-func uniqueSorted(input []rune) []rune {
-	output := make([]rune, 0, len(input))
-	exists := make(map[rune]struct{})
-
-	for _, r := range input {
-		if _, ok := exists[r]; ok {
-			continue
-		}
-
-		output = append(output, r)
-		exists[r] = struct{}{}
-	}
-
-	sort.Slice(output, func(i, j int) bool {
-		return output[i] < output[j]
-	})
-
-	return output
 }
 
 func SolvePart1(input string) (string, error) {
