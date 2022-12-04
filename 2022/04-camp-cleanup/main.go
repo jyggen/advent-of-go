@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
@@ -19,24 +18,12 @@ func main() {
 	fmt.Println(p2)
 }
 
-func toByteArray(from int, to int) []byte {
-	output := make([]byte, 0, to-from+1)
-
-	for i := from; i <= to; i++ {
-		output = append(output, byte(i))
-	}
-
-	return output
-}
-
 func SolvePart1(input string) (string, error) {
 	integers := utils.ToOptimisticIntSlice(input)
 	overlaps := 0
 
 	for i := 0; i < len(integers); i += 4 {
-		first, second := toByteArray(integers[i], integers[i+1]), toByteArray(integers[i+2], integers[i+3])
-
-		if bytes.Contains(first, second) || bytes.Contains(second, first) {
+		if (integers[i] <= integers[i+2] && integers[i+1] >= integers[i+3]) || (integers[i+2] <= integers[i] && integers[i+3] >= integers[i+1]) {
 			overlaps++
 		}
 	}
@@ -49,9 +36,7 @@ func SolvePart2(input string) (string, error) {
 	overlaps := 0
 
 	for i := 0; i < len(integers); i += 4 {
-		first, second := toByteArray(integers[i], integers[i+1]), toByteArray(integers[i+2], integers[i+3])
-
-		if bytes.ContainsAny(first, string(second)) || bytes.ContainsAny(second, string(first)) {
+		if (integers[i] <= integers[i+2] && integers[i+1] >= integers[i+2]) || (integers[i+2] <= integers[i] && integers[i+3] >= integers[i]) {
 			overlaps++
 		}
 	}
