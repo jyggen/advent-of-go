@@ -23,6 +23,7 @@ Loop:
 		for j := 0; j < length; j++ {
 			for k := j + 1; k < length; k++ {
 				if input[i-j] == input[i-k] {
+					i = i - k + length - 1
 					continue Loop
 				}
 			}
