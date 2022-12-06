@@ -73,20 +73,20 @@ var testCases = []*solver.TestCase{
 			},
 		},
 	},
-	/*{
+	{
 		Input: solver.InputFromFile("input.txt"),
 		Short: true,
 		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
-				Output: "TQRFCBSJJ",
+				Output: "1794",
 			},
 			{
 				Solver: SolvePart2,
-				Output: "RMHFJNVFP",
+				Output: "2851",
 			},
 		},
-	},*/
+	},
 }
 
 func BenchmarkSolvers(b *testing.B) {
