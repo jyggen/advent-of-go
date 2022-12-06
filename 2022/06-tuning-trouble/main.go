@@ -18,12 +18,16 @@ func main() {
 }
 
 func solve(input string, length int) int {
+	withoutLast := length - 1
+
 Loop:
-	for i := length - 1; i < len(input); i++ {
-		for j := 0; j < length; j++ {
+	for i := withoutLast; i < len(input); {
+		for j := 0; j < withoutLast; j++ {
+			char := input[i-j]
+
 			for k := j + 1; k < length; k++ {
-				if input[i-j] == input[i-k] {
-					i = i - k + length - 1
+				if char == input[i-k] {
+					i = i - k + length
 					continue Loop
 				}
 			}
