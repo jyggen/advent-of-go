@@ -5,7 +5,7 @@ import (
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
-	"path/filepath"
+	"sort"
 	"strconv"
 )
 
@@ -29,6 +29,7 @@ type directory struct {
 	directories []*directory
 	files       []*file
 	parent      *directory
+	totalSize   int
 }
 
 func newDirectory(name string, parent *directory) *directory {
@@ -40,10 +41,11 @@ func newDirectory(name string, parent *directory) *directory {
 	}
 }
 
-func buildTree(input string) *directory {
+func buildTree(input string) (*directory, []*directory) {
 	commands := utils.ToStringSlice(input[2:], "$ ")
 	root := newDirectory("", nil)
 	current := root
+	directories := make([]*directory, 0)
 
 	for _, command := range commands {
 		rows := utils.ToStringSlice(command, "\n")
@@ -70,70 +72,50 @@ func buildTree(input string) *directory {
 				name := parts[1]
 
 				if parts[0] == "dir" {
-					current.directories = append(current.directories, newDirectory(name, current))
+					dir := newDirectory(name, current)
+					current.directories = append(current.directories, dir)
+					directories = append(directories, dir)
 				} else {
 					size, _ := strconv.Atoi(parts[0])
 					current.files = append(current.files, &file{name: name, size: size})
+
+					for i := current; i != nil; i = i.parent {
+						i.totalSize += size
+					}
 				}
 			}
 		}
 	}
 
-	return root
-}
+	sort.Slice(directories, func(i, j int) bool {
+		return directories[i].totalSize < directories[j].totalSize
+	})
 
-func calculateSizes(dir *directory, result map[string]int, path string) int {
-	path = filepath.Join(path, dir.name)
-	size := 0
-
-	for _, f := range dir.files {
-		size += f.size
-	}
-
-	for _, d := range dir.directories {
-		size += calculateSizes(d, result, path)
-	}
-
-	result[path] = size
-
-	return size
+	return root, directories
 }
 
 func SolvePart1(input string) (string, error) {
-	root := buildTree(input)
-	sizes := make(map[string]int)
-
-	calculateSizes(root, sizes, "/")
+	_, directories := buildTree(input)
+	highest := sort.Search(len(directories), func(i int) bool {
+		return directories[i].totalSize > 100000
+	})
 
 	total := 0
 
-	for _, size := range sizes {
-		if size <= 100000 {
-			total += size
-		}
+	for i := highest - 1; i >= 0; i-- {
+		total += directories[i].totalSize
 	}
 
 	return strconv.Itoa(total), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	root := buildTree(input)
-	sizes := make(map[string]int)
-
-	calculateSizes(root, sizes, "/")
-
-	left := 70000000 - sizes["/"]
+	root, directories := buildTree(input)
+	left := 70000000 - root.totalSize
 	needed := 30000000 - left
-	bestDiff := sizes["/"]
-	bestSize := 0
+	highest := sort.Search(len(directories), func(i int) bool {
+		return directories[i].totalSize > needed
+	})
 
-	for _, size := range sizes {
-		diff := size - needed
-		if diff >= 0 && diff < bestDiff {
-			bestDiff = diff
-			bestSize = size
-		}
-	}
-
-	return strconv.Itoa(bestSize), nil
+	return strconv.Itoa(directories[highest].totalSize), nil
 }
