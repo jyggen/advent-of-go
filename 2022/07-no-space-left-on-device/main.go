@@ -45,7 +45,7 @@ func buildTree(input string) (*directory, []*directory) {
 	commands := utils.ToStringSlice(input[2:], "$ ")
 	root := newDirectory("", nil)
 	current := root
-	directories := make([]*directory, 0)
+	directories := []*directory{root}
 
 	for _, command := range commands {
 		rows := utils.ToStringSlice(command, "\n")
