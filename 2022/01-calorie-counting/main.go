@@ -20,42 +20,29 @@ func main() {
 	fmt.Println(p2)
 }
 
-func SolvePart1(input string) (string, error) {
+func solve(input string) []int {
 	elves := utils.ToStringSlice(input, "\n\n")
 	sums := make([]int, len(elves))
 
 	for i, elf := range elves {
-		values, err := utils.ToIntegerSlice(elf, "\n")
-		if err != nil {
-			return "", err
-		}
-
-		for _, value := range values {
+		for _, value := range utils.ToOptimisticIntSlice(elf) {
 			sums[i] += value
 		}
 	}
 
 	sort.Ints(sums)
+
+	return sums
+}
+
+func SolvePart1(input string) (string, error) {
+	sums := solve(input)
 
 	return strconv.Itoa(sums[len(sums)-1]), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	elves := utils.ToStringSlice(input, "\n\n")
-	sums := make([]int, len(elves))
-
-	for i, elf := range elves {
-		values, err := utils.ToIntegerSlice(elf, "\n")
-		if err != nil {
-			return "", err
-		}
-
-		for _, value := range values {
-			sums[i] += value
-		}
-	}
-
-	sort.Ints(sums)
+	sums := solve(input)
 
 	return strconv.Itoa(sums[len(sums)-1] + sums[len(sums)-2] + sums[len(sums)-3]), nil
 }
