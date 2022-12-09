@@ -61,14 +61,11 @@ func applyRopePhysics(head [2]int, tail [2]int) [2]int {
 
 func simulate(input string, knotsCount int) int {
 	instructions := utils.ToStringSlice(input, "\n")
+	visited := [][2]int{{0, 0}}
 	knots := make([][2]int, knotsCount)
 
 	for k := range knots {
 		knots[k] = [2]int{0, 0}
-	}
-
-	visited := map[[2]int]struct{}{
-		[2]int{0, 0}: {},
 	}
 
 	for _, instruction := range instructions {
@@ -95,13 +92,21 @@ func simulate(input string, knotsCount int) int {
 				knots[j] = newCoords
 			}
 
-			if _, ok := visited[knots[knotsCount-1]]; !ok {
-				visited[knots[knotsCount-1]] = struct{}{}
+			if visited[len(visited)-1] != knots[knotsCount-1] {
+				visited = append(visited, knots[knotsCount-1])
 			}
 		}
 	}
 
-	return len(visited)
+	visitedMap := make(map[[2]int]struct{}, len(visited))
+
+	for _, v := range visited {
+		if _, ok := visitedMap[v]; !ok {
+			visitedMap[v] = struct{}{}
+		}
+	}
+
+	return len(visitedMap)
 }
 
 func SolvePart1(input string) (string, error) {
