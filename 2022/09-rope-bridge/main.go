@@ -22,28 +22,16 @@ func applyRopePhysics(head [2]int, tail [2]int) [2]int {
 	distanceY := head[0] - tail[0]
 	distanceX := head[1] - tail[1]
 
-	if distanceY >= 1 && distanceX > 1 {
+	if distanceY >= 1 && distanceX > 1 || distanceY > 1 && distanceX >= 1 {
 		tail[0]++
 		tail[1]++
-	} else if distanceY <= -1 && distanceX > 1 {
+	} else if distanceY <= -1 && distanceX > 1 || distanceY < -1 && distanceX >= 1 {
 		tail[0]--
 		tail[1]++
-	} else if distanceY >= 1 && distanceX < -1 {
+	} else if distanceY >= 1 && distanceX < -1 || distanceY > 1 && distanceX <= -1 {
 		tail[0]++
 		tail[1]--
-	} else if distanceY <= -1 && distanceX < -1 {
-		tail[0]--
-		tail[1]--
-	} else if distanceY > 1 && distanceX >= 1 {
-		tail[0]++
-		tail[1]++
-	} else if distanceY > 1 && distanceX <= -1 {
-		tail[0]++
-		tail[1]--
-	} else if distanceY < -1 && distanceX >= 1 {
-		tail[0]--
-		tail[1]++
-	} else if distanceY < -1 && distanceX <= -1 {
+	} else if distanceY <= -1 && distanceX < -1 || distanceY < -1 && distanceX <= -1 {
 		tail[0]--
 		tail[1]--
 	} else if distanceY > 1 && distanceX == 0 {
@@ -70,6 +58,7 @@ func simulate(input string, knotsCount int) int {
 
 	for _, instruction := range instructions {
 		times, _ := strconv.Atoi(instruction[2:])
+	Loop:
 		for i := 0; i < times; i++ {
 			switch instruction[0] {
 			case 'U':
@@ -86,15 +75,13 @@ func simulate(input string, knotsCount int) int {
 				newCoords := applyRopePhysics(knots[j-1], knots[j])
 
 				if knots[j] == newCoords {
-					break
+					continue Loop
 				}
 
 				knots[j] = newCoords
 			}
 
-			if visited[len(visited)-1] != knots[knotsCount-1] {
-				visited = append(visited, knots[knotsCount-1])
-			}
+			visited = append(visited, knots[knotsCount-1])
 		}
 	}
 
