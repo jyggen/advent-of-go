@@ -86,7 +86,13 @@ func simulate(input string, knotsCount int) int {
 			}
 
 			for j := 1; j < knotsCount; j++ {
-				knots[j] = applyRopePhysics(knots[j-1], knots[j])
+				newCoords := applyRopePhysics(knots[j-1], knots[j])
+
+				if knots[j] == newCoords {
+					break
+				}
+
+				knots[j] = newCoords
 			}
 
 			if _, ok := visited[knots[knotsCount-1]]; !ok {
