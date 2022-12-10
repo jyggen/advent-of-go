@@ -20,97 +20,70 @@ func main() {
 	fmt.Println(p2)
 }
 
-func SolvePart1(input string) (string, error) {
+func runClockCircuit(input string, maxCycles int) []int {
 	instructions := utils.ToStringSlice(input, "\n")
-	cycle := 0
-	register := 1
-	sum := 0
-	idx := 0
+	cycleLookup := make([]int, maxCycles+1)
+	cycle, register := 0, 1
 
 	for {
-		var skip int
-		var value int
+		for _, instruction := range instructions {
+			var skip int
+			var value int
 
-		switch instructions[idx][0:4] {
-		case "noop":
-			value = math.MaxInt
-			skip = 1
-		case "addx":
-			value, _ = strconv.Atoi(instructions[idx][5:])
-			skip = 2
-		}
-
-		for ; skip > 0; skip-- {
-			cycle++
-
-			if cycle%40 == 20 {
-				sum += cycle * register
+			switch instruction[0:4] {
+			case "noop":
+				value = math.MaxInt
+				skip = 1
+			case "addx":
+				value, _ = strconv.Atoi(instruction[5:])
+				skip = 2
 			}
 
-			if cycle == 220 {
-				return strconv.Itoa(sum), nil
+			for ; skip > 0; skip-- {
+				cycle++
+				cycleLookup[cycle] = register
+
+				if cycle == maxCycles {
+					return cycleLookup
+				}
+			}
+
+			if value != math.MaxInt {
+				register += value
 			}
 		}
-
-		if value != math.MaxInt {
-			register += value
-		}
-
-		idx = (idx + 1) % len(instructions)
 	}
 }
 
-func SolvePart2(input string) (string, error) {
-	instructions := utils.ToStringSlice(input, "\n")
-	cycle := 0
-	register := 1
-	idx := 0
+func SolvePart1(input string) (string, error) {
+	cycleLookup := runClockCircuit(input, 220)
+	sum := 0
 
-	var display [6][40]rune
-
-	for {
-		var skip int
-		var value int
-
-		switch instructions[idx][0:4] {
-		case "noop":
-			value = math.MaxInt
-			skip = 1
-		case "addx":
-			value, _ = strconv.Atoi(instructions[idx][5:])
-			skip = 2
-		}
-
-		for ; skip > 0; skip-- {
-			cycle++
-			x := (cycle - 1) % 40
-			y := (cycle - 1) / 40
-
-			if x >= register-1 && x <= register+1 {
-				display[y][x] = '#'
-			} else {
-				display[y][x] = '.'
-			}
-
-			if cycle == 240 {
-				var b strings.Builder
-
-				for _, rows := range display {
-					for _, column := range rows {
-						b.WriteRune(column)
-					}
-
-					b.WriteString("\n")
-				}
-
-				return b.String(), nil
-			}
-		}
-
-		if value != math.MaxInt {
-			register += value
-		}
-
-		idx = (idx + 1) % len(instructions)
+	for i := 20; i <= 220; i += 40 {
+		sum += i * cycleLookup[i]
 	}
+
+	return strconv.Itoa(sum), nil
+}
+
+func SolvePart2(input string) (string, error) {
+	cycleLookup := runClockCircuit(input, 240)
+
+	var b strings.Builder
+
+	for i := 1; i <= 240; i++ {
+		x := (i - 1) % 40
+
+		if x >= cycleLookup[i]-1 && x <= cycleLookup[i]+1 {
+			b.WriteRune('#')
+		} else {
+			b.WriteRune('.')
+		}
+
+		if x == 39 {
+			b.WriteString("\n")
+		}
+	}
+
+	return b.String(), nil
 }
