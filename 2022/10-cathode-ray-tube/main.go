@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
-	"math"
 	"os"
 	"strconv"
 	"strings"
@@ -25,34 +24,23 @@ func runClockCircuit(input string, maxCycles int) []int {
 	cycleLookup := make([]int, maxCycles+1)
 	cycle, register := 0, 1
 
-	for {
-		for _, instruction := range instructions {
-			var skip int
-			var value int
+	for _, instruction := range instructions {
+		cycle++
+		cycleLookup[cycle] = register
 
-			switch instruction[0:4] {
-			case "noop":
-				value = math.MaxInt
-				skip = 1
-			case "addx":
-				value, _ = strconv.Atoi(instruction[5:])
-				skip = 2
-			}
+		if instruction[0:4] == "addx" {
+			cycle++
+			cycleLookup[cycle] = register
+			value, _ := strconv.Atoi(instruction[5:])
+			register += value
+		}
 
-			for ; skip > 0; skip-- {
-				cycle++
-				cycleLookup[cycle] = register
-
-				if cycle == maxCycles {
-					return cycleLookup
-				}
-			}
-
-			if value != math.MaxInt {
-				register += value
-			}
+		if cycle == maxCycles {
+			return cycleLookup
 		}
 	}
+
+	return cycleLookup
 }
 
 func SolvePart1(input string) (string, error) {
