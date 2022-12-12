@@ -24,11 +24,15 @@ func SolvePart1(input string) (string, error) {
 	presents := parseInput(input)
 	paperSize := 0
 
-	for _, present := range presents {
+	for i := 0; i < len(presents); i += 3 {
+		dimensions := make([]int, 3)
+		copy(dimensions, presents[i:i+3])
+		sort.Ints(dimensions)
+
 		sides := []int{
-			present[0] * present[1],
-			present[1] * present[2],
-			present[2] * present[0],
+			dimensions[0] * dimensions[1],
+			dimensions[1] * dimensions[2],
+			dimensions[2] * dimensions[0],
 		}
 
 		paperSize += sides[0]*2 + sides[1]*2 + sides[2]*2
@@ -42,32 +46,18 @@ func SolvePart2(input string) (string, error) {
 	presents := parseInput(input)
 	ribbonSize := 0
 
-	for _, present := range presents {
-		ribbonSize += present[0]*2 + present[1]*2
-		ribbonSize += present[0] * present[1] * present[2]
+	for i := 0; i < len(presents); i += 3 {
+		dimensions := make([]int, 3)
+		copy(dimensions, presents[i:i+3])
+		sort.Ints(dimensions)
+
+		ribbonSize += dimensions[0]*2 + dimensions[1]*2
+		ribbonSize += dimensions[0] * dimensions[1] * dimensions[2]
 	}
 
 	return strconv.Itoa(ribbonSize), nil
 }
 
-func parseInput(input string) [][]int {
-	rows := utils.ToStringSlice(input, "\n")
-	presents := make([][]int, 0, len(rows))
-
-	for _, present := range rows {
-		dimensionStrings := utils.ToStringSlice(present, "x")
-		dimensions := make([]int, 0, len(dimensionStrings))
-
-		for _, value := range dimensionStrings {
-			intValue, _ := strconv.Atoi(value)
-
-			dimensions = append(dimensions, intValue)
-		}
-
-		sort.Ints(dimensions) // lazy
-
-		presents = append(presents, dimensions)
-	}
-
-	return presents
+func parseInput(input string) []int {
+	return utils.ToOptimisticIntSlice(input)
 }
