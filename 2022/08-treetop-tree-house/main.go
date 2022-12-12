@@ -32,73 +32,30 @@ func SolvePart1(input string) (string, error) {
 		grid[i] = make([]item, len(cols))
 
 		for j, col := range cols {
-			grid[i][j] = item{col, false}
+			grid[i][j] = item{value: col}
 		}
 	}
 
 	sum := 0
 
-	for i := 0; i < len(grid); i++ {
-		for j := 0; j < len(grid[i]); j++ {
-			visible := true
-
-			for k := i - 1; k >= 0; k-- {
-				if grid[i][j].value <= grid[k][j].value {
-					visible = false
-					break
+	for r := 0; r < 4; r++ {
+		for i := 0; i < len(grid); i++ {
+			highest := -1
+			for j := 0; j < len(grid[i]); j++ {
+				if grid[i][j].value <= highest {
+					continue
 				}
-			}
 
-			if visible {
-				grid[i][j].visible = true
-				sum++
-				continue
-			}
+				highest = grid[i][j].value
 
-			visible = true
-
-			for k := i + 1; k < len(grid); k++ {
-				if grid[i][j].value <= grid[k][j].value {
-					visible = false
-					break
+				if !grid[i][j].visible {
+					grid[i][j].visible = true
+					sum++
 				}
-			}
-
-			if visible {
-				grid[i][j].visible = true
-				sum++
-				continue
-			}
-
-			visible = true
-
-			for k := j - 1; k >= 0; k-- {
-				if grid[i][j].value <= grid[i][k].value {
-					visible = false
-					break
-				}
-			}
-
-			if visible {
-				grid[i][j].visible = true
-				sum++
-				continue
-			}
-
-			visible = true
-
-			for k := j + 1; k < len(grid[i]); k++ {
-				if grid[i][j].value <= grid[i][k].value {
-					visible = false
-					break
-				}
-			}
-
-			if visible {
-				grid[i][j].visible = true
-				sum++
 			}
 		}
+
+		grid = rotateMatrix(grid)
 	}
 
 	return strconv.Itoa(sum), nil
@@ -113,7 +70,7 @@ func SolvePart2(input string) (string, error) {
 		grid[i] = make([]item, len(cols))
 
 		for j, col := range cols {
-			grid[i][j] = item{col, false}
+			grid[i][j] = item{value: col, visible: false}
 		}
 	}
 
@@ -169,4 +126,20 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	return strconv.Itoa(bestScore), nil
+}
+
+func rotateMatrix(matrix [][]item) [][]item {
+
+	// reverse the matrix
+	for i, j := 0, len(matrix)-1; i < j; i, j = i+1, j-1 {
+		matrix[i], matrix[j] = matrix[j], matrix[i]
+	}
+
+	// transpose it
+	for i := 0; i < len(matrix); i++ {
+		for j := 0; j < i; j++ {
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+		}
+	}
+	return matrix
 }
