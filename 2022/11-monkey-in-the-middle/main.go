@@ -22,66 +22,101 @@ func main() {
 type monkey struct {
 	items       []int
 	inspections int
-	operation   func(int) int
-	test        func(int) int
+	operation   operation
+	test        int
+	ifTrue      int
+	ifFalse     int
 }
 
-func simulateMonkeys(input string, rounds int, manageWorry func(int) int) int {
+type operation func(i int) int
+
+type constantOp struct {
+	constant int
+}
+
+func newConstantOp(op string) constantOp {
+	constant, _ := strconv.Atoi(op)
+
+	return constantOp{constant}
+}
+
+func (c constantOp) addItemWithConstant(i int) int {
+	return i + c.constant
+}
+
+func (c constantOp) multiplyItemWithConstant(i int) int {
+	return i * c.constant
+}
+
+func addItemWithItem(i int) int {
+	return i + i
+}
+
+func multiplyItemWithItem(i int) int {
+	return i * i
+}
+
+func parseMonkeys(input string) []*monkey {
 	sections := utils.ToStringSlice(input, "\n\n")
 	monkeys := make([]*monkey, len(sections))
 
 	for i, section := range sections {
 		rows := utils.ToStringSlice(section, "\n")
 		items, _ := utils.ToIntegerSlice(rows[1][18:], ", ")
-		operation := utils.ToStringSlice(rows[2][19:], " ")
+		op := utils.ToStringSlice(rows[2][19:], " ")
 		test, _ := strconv.Atoi(rows[3][21:])
 		ifTrue, _ := strconv.Atoi(rows[4][29:])
 		ifFalse, _ := strconv.Atoi(rows[5][30:])
+
+		var opFunc operation
+
+		switch {
+		case op[0] == "old" && op[2] == "old" && op[1] == "+":
+			opFunc = addItemWithItem
+		case op[0] == "old" && op[2] == "old" && op[1] == "*":
+			opFunc = multiplyItemWithItem
+		case op[0] == "old" && op[2] != "old" && op[1] == "+":
+			opFunc = newConstantOp(op[2]).addItemWithConstant
+		case op[0] == "old" && op[2] != "old" && op[1] == "*":
+			opFunc = newConstantOp(op[2]).multiplyItemWithConstant
+		case op[0] != "old" && op[2] == "old" && op[1] == "+":
+			opFunc = newConstantOp(op[0]).addItemWithConstant
+		case op[0] != "old" && op[2] == "old" && op[1] == "*":
+			opFunc = newConstantOp(op[0]).multiplyItemWithConstant
+		default:
+			panic(fmt.Sprintf("unable to parse operation: %s", rows[2][19:]))
+		}
+
 		monkeys[i] = &monkey{
 			items:       items,
 			inspections: 0,
-			operation: func(i int) int {
-				a, b := 0, 0
-
-				if operation[0] == "old" {
-					a = i
-				} else {
-					a, _ = strconv.Atoi(operation[0])
-				}
-
-				if operation[2] == "old" {
-					b = i
-				} else {
-					b, _ = strconv.Atoi(operation[2])
-				}
-
-				if operation[1] == "+" {
-					return a + b
-				} else {
-					return a * b
-				}
-			},
-			test: func(i int) int {
-				if i%test == 0 {
-					return ifTrue
-				} else {
-					return ifFalse
-				}
-			},
+			operation:   opFunc,
+			test:        test,
+			ifTrue:      ifTrue,
+			ifFalse:     ifFalse,
 		}
 	}
 
+	return monkeys
+}
+
+func SolvePart1(input string) (string, error) {
+	monkeys := parseMonkeys(input)
+
 	var item int
 
-	for i := 1; i <= rounds; i++ {
+	for i := 1; i <= 20; i++ {
 		for _, m := range monkeys {
 			for len(m.items) > 0 {
 				item, m.items = m.items[0], m.items[1:]
-				item = m.operation(item)
-				item = manageWorry(item)
-				to := m.test(item)
+				item = m.operation(item) / 3
 
-				monkeys[to].items = append(monkeys[to].items, item)
+				if item%m.test == 0 {
+					monkeys[m.ifTrue].items = append(monkeys[m.ifTrue].items, item)
+				} else {
+					monkeys[m.ifFalse].items = append(monkeys[m.ifFalse].items, item)
+				}
+
 				m.inspections++
 			}
 		}
@@ -91,27 +126,39 @@ func simulateMonkeys(input string, rounds int, manageWorry func(int) int) int {
 		return monkeys[i].inspections > monkeys[j].inspections
 	})
 
-	return monkeys[0].inspections * monkeys[1].inspections
-}
-
-func SolvePart1(input string) (string, error) {
-	return strconv.Itoa(simulateMonkeys(input, 20, func(i int) int {
-		return i / 3
-	})), nil
+	return strconv.Itoa(monkeys[0].inspections * monkeys[1].inspections), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	sections := utils.ToStringSlice(input, "\n\n")
+	monkeys := parseMonkeys(input)
 	magicNumber := 1
 
-	for _, section := range sections {
-		rows := utils.ToStringSlice(section, "\n")
-		test, _ := strconv.Atoi(rows[3][21:])
-		magicNumber *= test
-
+	for _, m := range monkeys {
+		magicNumber *= m.test
 	}
 
-	return strconv.Itoa(simulateMonkeys(input, 10000, func(i int) int {
-		return i % magicNumber
-	})), nil
+	var item int
+
+	for i := 1; i <= 10000; i++ {
+		for _, m := range monkeys {
+			for len(m.items) > 0 {
+				item, m.items = m.items[0], m.items[1:]
+				item = m.operation(item) % magicNumber
+
+				if item%m.test == 0 {
+					monkeys[m.ifTrue].items = append(monkeys[m.ifTrue].items, item)
+				} else {
+					monkeys[m.ifFalse].items = append(monkeys[m.ifFalse].items, item)
+				}
+
+				m.inspections++
+			}
+		}
+	}
+
+	sort.Slice(monkeys, func(i, j int) bool {
+		return monkeys[i].inspections > monkeys[j].inspections
+	})
+
+	return strconv.Itoa(monkeys[0].inspections * monkeys[1].inspections), nil
 }
