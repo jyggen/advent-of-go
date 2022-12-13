@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
 	"math"
 	"os"
 	"strconv"
-
-	"github.com/jyggen/advent-of-go/internal/solver"
 )
 
 func main() {
@@ -21,8 +20,7 @@ func main() {
 }
 
 func solve(grid []rune, rowLength int, colLength int, end int, queue [][2]int) int {
-	been := make(map[int]int, 0)
-	best := math.MaxInt
+	been := make(map[int]struct{}, 0)
 
 	var current [2]int
 
@@ -30,21 +28,14 @@ func solve(grid []rune, rowLength int, colLength int, end int, queue [][2]int) i
 		current, queue = queue[0], queue[1:]
 
 		if current[0] == end {
-			if current[1] < best {
-				best = current[1]
-			}
+			return current[1]
+		}
+
+		if _, ok := been[current[0]]; ok {
 			continue
 		}
 
-		if current[1] > best {
-			continue
-		}
-
-		if v, ok := been[current[0]]; ok && v < current[1] {
-			continue
-		}
-
-		been[current[0]] = been[current[1]]
+		been[current[0]] = struct{}{}
 		x, y := utils.ToCoordinates(current[0], colLength)
 
 		for _, d := range []int{
@@ -65,7 +56,7 @@ func solve(grid []rune, rowLength int, colLength int, end int, queue [][2]int) i
 		}
 	}
 
-	return best
+	return math.MaxInt
 }
 
 func SolvePart1(input string) (string, error) {
