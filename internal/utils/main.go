@@ -164,7 +164,7 @@ func IsUpper(s string) bool {
 
 func ToOptimisticIntSlice(input string) []int {
 	fields := strings.FieldsFunc(input, func(r rune) bool {
-		return !unicode.IsDigit(r)
+		return !unicode.IsDigit(r) && r != '-'
 	})
 
 	integers := make([]int, len(fields))
@@ -174,4 +174,14 @@ func ToOptimisticIntSlice(input string) []int {
 	}
 
 	return integers
+}
+
+func In[T comparable](value T, list []T) bool {
+	for _, v := range list {
+		if v == value {
+			return true
+		}
+	}
+
+	return false
 }
