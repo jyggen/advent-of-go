@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
+	"math"
 	"os"
-	"sort"
 	"strconv"
 )
 
@@ -25,101 +25,83 @@ type rule struct {
 	Y      int
 }
 
-func compileRules(input string, max int) []rule {
+func compileRules(input string, max int) ([]rule, [][2]int) {
 	coordinates := utils.ToOptimisticIntSlice(input)
 	rules := make([]rule, 0)
-
-	//now := time.Now()
+	bounds := make([][2]int, max+1)
 
 	for i := 0; i < len(coordinates); i += 4 {
 		distance := utils.ManhattanDistance(coordinates[i]-coordinates[i+2], coordinates[i+1]-coordinates[i+3])
 
 		for k, l := distance, 0; k >= 0; k, l = k-1, l+1 {
-			rules = append(rules, rule{
-				coordinates[i] - k,
-				coordinates[i] + k,
-				coordinates[i+1] - l,
-			}, rule{
-				coordinates[i] - k,
-				coordinates[i] + k,
-				coordinates[i+1] + l,
-			})
-		}
-	}
-
-	//fmt.Println("Create Rules", time.Now().Sub(now))
-	//now = time.Now()
-
-	sort.Slice(rules, func(i, j int) bool {
-		if rules[i].Y == rules[j].Y {
-			if rules[i].lowerX == rules[j].lowerX {
-				return rules[i].upperX < rules[j].upperX
+			if coordinates[i+1]-l >= 0 && coordinates[i+1]-l <= max {
+				rules = append(rules, rule{
+					coordinates[i] - k,
+					coordinates[i] + k,
+					coordinates[i+1] - l,
+				})
 			}
-			return rules[i].lowerX < rules[j].lowerX
-		}
 
-		return rules[i].Y < rules[j].Y
-	})
-
-	//fmt.Println("Sort Rules", time.Now().Sub(now))
-	//now = time.Now()
-
-	newRules := make([]rule, 0, len(rules))
-
-	for i := 0; i < len(rules); i++ {
-		if rules[i].Y < 0 || rules[i].Y > max {
-			continue
-		}
-
-		if len(newRules) == 0 {
-			newRules = append(newRules, rules[i])
-			continue
-		}
-
-		lastRule := newRules[len(newRules)-1]
-
-		if rules[i].Y != lastRule.Y || rules[i].lowerX > lastRule.upperX+1 {
-			newRules = append(newRules, rules[i])
-		} else {
-			newRules[len(newRules)-1].lowerX = utils.MinInt(lastRule.lowerX, rules[i].lowerX)
-			newRules[len(newRules)-1].upperX = utils.MaxInt(lastRule.upperX, rules[i].upperX)
+			if coordinates[i+1]+l >= 0 && coordinates[i+1]+l <= max {
+				rules = append(rules, rule{
+					coordinates[i] - k,
+					coordinates[i] + k,
+					coordinates[i+1] + l,
+				})
+			}
 		}
 	}
 
-	//fmt.Println("Reduce Rules", time.Now().Sub(now))
+	for {
+		queue := make([]rule, 0, len(rules))
 
-	return newRules
-}
-
-func SolvePart1(input string) (string, error) {
-	rules := compileRules(input, 2000000)
-	sum := 0
-
-	for _, r := range rules {
-		if r.Y < 2000000 {
-			continue
+		for _, r := range rules {
+			if bounds[r.Y][0] == 0 && bounds[r.Y][1] == 0 {
+				bounds[r.Y][0] = r.lowerX
+				bounds[r.Y][1] = r.upperX
+			} else {
+				if bounds[r.Y][1] >= r.upperX && bounds[r.Y][0] <= r.lowerX {
+					bounds[r.Y][0] = utils.MinInt(r.lowerX, bounds[r.Y][0])
+					bounds[r.Y][1] = utils.MaxInt(r.upperX, bounds[r.Y][1])
+				} else if bounds[r.Y][1] <= r.upperX && bounds[r.Y][0] >= r.lowerX {
+					bounds[r.Y][0] = utils.MinInt(r.lowerX, bounds[r.Y][0])
+					bounds[r.Y][1] = utils.MaxInt(r.upperX, bounds[r.Y][1])
+				} else if bounds[r.Y][1]+1 >= r.lowerX && bounds[r.Y][1] < r.upperX {
+					bounds[r.Y][0] = utils.MinInt(r.lowerX, bounds[r.Y][0])
+					bounds[r.Y][1] = utils.MaxInt(r.upperX, bounds[r.Y][1])
+				} else if bounds[r.Y][0] <= r.upperX+1 && bounds[r.Y][0] > r.lowerX {
+					bounds[r.Y][0] = utils.MinInt(r.lowerX, bounds[r.Y][0])
+					bounds[r.Y][1] = utils.MaxInt(r.upperX, bounds[r.Y][1])
+				} else {
+					queue = append(queue, r)
+				}
+			}
 		}
 
-		if r.Y > 2000000 {
+		if len(rules) == len(queue) {
 			break
 		}
 
-		sum += r.upperX - r.lowerX
+		rules = queue
 	}
 
-	return strconv.Itoa(sum), nil
+	return rules, bounds
+}
+
+func SolvePart1(input string) (string, error) {
+	_, bounds := compileRules(input, 2000000)
+
+	return strconv.Itoa(bounds[2000000][1] - bounds[2000000][0]), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	rules := compileRules(input, 4000000)
+	rules, _ := compileRules(input, 4000000)
+
+	min := math.MaxInt
 
 	for _, r := range rules {
-		if r.Y < 0 || r.Y > 4000000 || (r.lowerX <= 0 && r.upperX >= 4000000) {
-			continue
-		}
-
-		return strconv.Itoa((r.upperX+1)*4000000 + r.Y), nil
+		min = utils.MinInt(min, r.lowerX)
 	}
 
-	return "-1", nil
+	return strconv.Itoa((min-1)*4000000 + rules[0].Y), nil
 }
