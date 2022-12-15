@@ -26,10 +26,10 @@ func SolvePart1(input string) (string, error) {
 		return "", err
 	}
 
-	recipes := []int{3, 7}
 	elves := []int{0, 1}
-	recipesLen := 2
 	stop := numOfRecipes + 10
+	recipes := make([]int, 0, stop)
+	recipes = append(recipes, 3, 7)
 	solutionOne := ""
 
 	for {
@@ -40,14 +40,11 @@ func SolvePart1(input string) (string, error) {
 			elves[j] += recipes[e] + 1
 		}
 
-		digits := strings.Split(strconv.Itoa(sum), "")
-
-		for _, d := range digits {
-			d, _ := strconv.Atoi(d)
+		for _, d := range strconv.Itoa(sum) {
+			d, _ := strconv.Atoi(string(d))
 			recipes = append(recipes, d)
-			recipesLen++
 
-			if recipesLen == stop {
+			if len(recipes) == stop {
 				for _, i := range recipes[numOfRecipes:] {
 					solutionOne += strconv.Itoa(i)
 				}
@@ -57,7 +54,7 @@ func SolvePart1(input string) (string, error) {
 		}
 
 		for j, e := range elves {
-			elves[j] = e % recipesLen
+			elves[j] = e % len(recipes)
 		}
 	}
 }
@@ -65,10 +62,8 @@ func SolvePart1(input string) (string, error) {
 func SolvePart2(input string) (string, error) {
 	input = strings.TrimSpace(input)
 	recipes := []int{3, 7}
-	elves := []int{0, 1}
-	recipesLen := 2
+	elves := [2]int{0, 1}
 	scoreHistory := strings.Repeat("0", len(input))
-	solutionTwo := 0
 
 	for {
 		sum := 0
@@ -78,22 +73,19 @@ func SolvePart2(input string) (string, error) {
 			elves[j] += recipes[e] + 1
 		}
 
-		digits := strings.Split(strconv.Itoa(sum), "")
+		for _, d := range strconv.Itoa(sum) {
+			scoreHistory = scoreHistory[1:] + string(d)
 
-		for _, d := range digits {
-			scoreHistory = scoreHistory[1:] + d
-
-			if solutionTwo == 0 && scoreHistory == input {
+			if scoreHistory == input {
 				return strconv.Itoa(len(recipes) - len(input) + 1), nil
 			}
 
-			d, _ := strconv.Atoi(d)
+			d, _ := strconv.Atoi(string(d))
 			recipes = append(recipes, d)
-			recipesLen++
 		}
 
 		for j, e := range elves {
-			elves[j] = e % recipesLen
+			elves[j] = e % len(recipes)
 		}
 	}
 }
