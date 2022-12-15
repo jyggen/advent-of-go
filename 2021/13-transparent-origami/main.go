@@ -33,7 +33,7 @@ type fold struct {
 
 func parseInput(input string) ([][]bool, []fold) {
 	sections := utils.ToStringSlice(input, "\n\n")
-	intSlice := utils.ToOptimisticIntSlice(sections[0])
+	intSlice := utils.ToOptimisticIntSlice(sections[0], false)
 	dots := make([][2]int, 0, len(intSlice)/2)
 	maxX, maxY := 0, 0
 

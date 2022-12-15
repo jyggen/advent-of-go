@@ -25,7 +25,7 @@ func solve(input string) []int {
 	sums := make([]int, len(elves))
 
 	for i, elf := range elves {
-		for _, value := range utils.ToOptimisticIntSlice(elf) {
+		for _, value := range utils.ToOptimisticIntSlice(elf, true) {
 			sums[i] += value
 		}
 	}

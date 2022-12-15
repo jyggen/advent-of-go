@@ -162,9 +162,9 @@ func IsUpper(s string) bool {
 	return true
 }
 
-func ToOptimisticIntSlice(input string) []int {
+func ToOptimisticIntSlice(input string, allowNegative bool) []int {
 	fields := strings.FieldsFunc(input, func(r rune) bool {
-		return !unicode.IsDigit(r) && r != '-'
+		return !unicode.IsDigit(r) && (allowNegative == false || r != '-')
 	})
 
 	integers := make([]int, len(fields))

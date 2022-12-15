@@ -26,7 +26,7 @@ type rule struct {
 }
 
 func compileRules(input string, max int) ([]rule, [][2]int) {
-	coordinates := utils.ToOptimisticIntSlice(input)
+	coordinates := utils.ToOptimisticIntSlice(input, true)
 	rules := make([]rule, 0)
 	bounds := make([][2]int, max+1)
 

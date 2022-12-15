@@ -59,5 +59,5 @@ func SolvePart2(input string) (string, error) {
 }
 
 func parseInput(input string) []int {
-	return utils.ToOptimisticIntSlice(input)
+	return utils.ToOptimisticIntSlice(input, true)
 }

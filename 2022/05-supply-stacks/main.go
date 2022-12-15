@@ -36,7 +36,7 @@ func parseInput(input string) ([][]uint8, []int) {
 		}
 	}
 
-	return columns, utils.ToOptimisticIntSlice(sections[1])
+	return columns, utils.ToOptimisticIntSlice(sections[1], true)
 }
 
 func arrangeCrates(columns [][]uint8, commands []int, stacked bool) string {

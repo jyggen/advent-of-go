@@ -113,7 +113,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func makeGrid(input string) ([][]int, []line, error) {
-	integers := utils.ToOptimisticIntSlice(input)
+	integers := utils.ToOptimisticIntSlice(input, false)
 	lines := make([]line, 0, len(integers)/4)
 	maxX := 0
 	maxY := 0

@@ -19,7 +19,7 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	integers := utils.ToOptimisticIntSlice(input)
+	integers := utils.ToOptimisticIntSlice(input, false)
 	overlaps := 0
 
 	for i := 0; i < len(integers); i += 4 {
@@ -32,7 +32,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	integers := utils.ToOptimisticIntSlice(input)
+	integers := utils.ToOptimisticIntSlice(input, false)
 	overlaps := 0
 
 	for i := 0; i < len(integers); i += 4 {

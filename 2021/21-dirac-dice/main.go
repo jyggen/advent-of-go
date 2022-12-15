@@ -26,7 +26,7 @@ type player struct {
 }
 
 func SolvePart1(input string) (string, error) {
-	integers := utils.ToOptimisticIntSlice(input)
+	integers := utils.ToOptimisticIntSlice(input, true)
 	player1, player2 := &player{position: integers[1] - 1, score: 0}, &player{position: integers[3] - 1, score: 0}
 	player1.next = player2
 	player2.next = player1
