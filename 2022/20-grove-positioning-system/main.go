@@ -22,12 +22,9 @@ func main() {
 
 func solve(input string, mixCount int, decryptionKey int) int {
 	numbers := utils.ToOptimisticIntSlice(input, true)
-
-	for i, n := range numbers {
-		numbers[i] = n * decryptionKey
-	}
-
 	r := ring.New(len(numbers))
+	offsets := make([]int, len(numbers))
+	rings := make([]*ring.Ring, len(numbers))
 	zeroIndex := 0
 
 	for i, n := range numbers {
@@ -35,34 +32,24 @@ func solve(input string, mixCount int, decryptionKey int) int {
 			zeroIndex = i
 		}
 
+		n = n * decryptionKey
+		numbers[i] = n
+		offsets[i] = n % (len(numbers) - 1)
+		rings[i] = r
 		r.Value = i
 		r = r.Next()
 	}
 
 	for i := 0; i < mixCount; i++ {
-		for j, n := range numbers {
-			for {
-				if r.Value == j {
-					break
-				}
-
-				r = r.Next()
-			}
-
-			r = r.Prev()
+		for j := range numbers {
+			r = rings[j].Prev()
 			value := r.Unlink(1)
-			r = r.Move(n % r.Len())
+			r = r.Move(offsets[j])
 			r.Link(value)
 		}
 	}
 
-	for {
-		if r.Value == zeroIndex {
-			break
-		}
-
-		r = r.Next()
-	}
+	r = rings[zeroIndex]
 
 	return numbers[r.Move(1000).Value.(int)] + numbers[r.Move(2000).Value.(int)] + numbers[r.Move(3000).Value.(int)]
 }
