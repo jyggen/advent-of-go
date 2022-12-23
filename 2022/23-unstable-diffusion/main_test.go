@@ -9,6 +9,15 @@ import (
 
 var testCases = []*solver.TestCase{
 	{
+		Input: ".....\n..##.\n..#..\n.....\n..##.\n.....",
+		Solvers: []*solver.TestCaseSolver{
+			{
+				Solver: SolvePart1,
+				Output: "25",
+			},
+		},
+	},
+	{
 		Input: "....#..\n..###.#\n#...#.#\n.#...##\n#.###..\n##.#.##\n.#..#..",
 		Solvers: []*solver.TestCaseSolver{
 			{
