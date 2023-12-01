@@ -60,6 +60,20 @@ func RotateRelativePoint(x2 int, y2 int, angle int) (int, int) {
 	return int(math.Round(x3)), int(math.Round(y3))
 }
 
+func IntPow(a, b int) int {
+	if b == 0 {
+		return 1
+	}
+
+	result := a
+
+	for i := 2; i <= b; i++ {
+		result *= a
+	}
+
+	return result
+}
+
 func AbsInt(n int) int {
 	if n < 0 {
 		return -n
