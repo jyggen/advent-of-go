@@ -2,20 +2,26 @@ package main
 
 import (
 	"fmt"
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
-
-	"github.com/jyggen/advent-of-go/internal/solver"
-	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
-var firstReplacer *strings.Replacer
-var lastReplacer *strings.Replacer
+const chars = "123456789"
 
-func init() {
-	firstReplacer = strings.NewReplacer("one", "1", "two", "2", "three", "3", "four", "4", "five", "5", "six", "6", "seven", "7", "eight", "8", "nine", "9")
-	lastReplacer = strings.NewReplacer("eno", "1", "owt", "2", "eerht", "3", "ruof", "4", "evif", "5", "xis", "6", "neves", "7", "thgie", "8", "enin", "9")
+// better replacements courtesy of /u/pred
+var replaces = map[string]string{
+	"one":   "one1one",
+	"two":   "two2two",
+	"three": "three3three",
+	"four":  "four4four",
+	"five":  "five5five",
+	"six":   "six6six",
+	"seven": "seven7seven",
+	"eight": "eight8eight",
+	"nine":  "nine9nine",
 }
 
 func main() {
@@ -28,28 +34,26 @@ func main() {
 	fmt.Println(p2)
 }
 
+func solve(r string) (int, error) {
+	var first, last uint8
+
+	first = r[strings.IndexAny(r, chars)]
+	last = r[strings.LastIndexAny(r, chars)]
+
+	return strconv.Atoi(string(first) + string(last))
+}
+
 func SolvePart1(input string) (string, error) {
-	rows := utils.ToRuneSlice(input, "\n")
+	rows := utils.ToStringSlice(input, "\n")
 	sum := 0
 
 	for _, r := range rows {
-		var first, last rune
+		number, err := solve(r)
 
-		for _, c := range r {
-			if c >= '1' && c <= '9' {
-				first = c
-				break
-			}
+		if err != nil {
+			return "", err
 		}
 
-		for i := len(r) - 1; i >= 0; i-- {
-			if r[i] >= '1' && r[i] <= '9' {
-				last = r[i]
-				break
-			}
-		}
-
-		number, _ := strconv.Atoi(string(first) + string(last))
 		sum += number
 	}
 
@@ -61,29 +65,16 @@ func SolvePart2(input string) (string, error) {
 	sum := 0
 
 	for _, r := range rows {
-		var first, last rune
-
-		for _, c := range firstReplacer.Replace(r) {
-			if c >= '1' && c <= '9' {
-				first = c
-				break
-			}
+		for from, to := range replaces {
+			r = strings.Replace(r, from, to, -1)
 		}
 
-		reversed := []rune(r)
+		number, err := solve(r)
 
-		for i, j := 0, len(reversed)-1; i < j; i, j = i+1, j-1 {
-			reversed[i], reversed[j] = reversed[j], reversed[i]
+		if err != nil {
+			return "", err
 		}
 
-		for _, c := range lastReplacer.Replace(string(reversed)) {
-			if c >= '1' && c <= '9' {
-				last = c
-				break
-			}
-		}
-
-		number, _ := strconv.Atoi(string(first) + string(last))
 		sum += number
 	}
 
