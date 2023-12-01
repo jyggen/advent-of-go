@@ -10,7 +10,7 @@ import (
 	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
-var letters = map[string]rune{
+var digitStrings = map[string]rune{
 	"one":   '1',
 	"two":   '2',
 	"three": '3',
@@ -20,6 +20,22 @@ var letters = map[string]rune{
 	"seven": '7',
 	"eight": '8',
 	"nine":  '9',
+}
+
+var digitStringsReverse map[string]rune
+
+func init() {
+	digitStringsReverse = make(map[string]rune, len(digitStrings))
+
+	for k, v := range digitStrings {
+		reversed := []rune(k)
+
+		for i, j := 0, len(reversed)-1; i < j; i, j = i+1, j-1 {
+			reversed[i], reversed[j] = reversed[j], reversed[i]
+		}
+
+		digitStringsReverse[string(reversed)] = v
+	}
 }
 
 func main() {
@@ -32,21 +48,36 @@ func main() {
 	fmt.Println(p2)
 }
 
+func containsDigitString(builder strings.Builder, digitStringsMap map[string]rune) (bool, rune) {
+	maybeDigitString := builder.String()
+
+	for letter, r := range digitStringsMap {
+		if strings.HasSuffix(maybeDigitString, letter) {
+			return true, r
+		}
+	}
+
+	return false, 0
+}
+
 func SolvePart1(input string) (string, error) {
 	rows := utils.ToRuneSlice(input, "\n")
 	sum := 0
 
 	for _, r := range rows {
-		first := rune(-1)
-		last := rune(0)
+		var first, last rune
 
 		for _, c := range r {
 			if c >= '1' && c <= '9' {
-				if first == -1 {
-					first = c
-				}
+				first = c
+				break
+			}
+		}
 
-				last = c
+		for i := len(r) - 1; i >= 0; i-- {
+			if r[i] >= '1' && r[i] <= '9' {
+				last = r[i]
+				break
 			}
 		}
 
@@ -62,47 +93,37 @@ func SolvePart2(input string) (string, error) {
 	sum := 0
 
 	for _, r := range rows {
-		first := rune(-1)
-		last := rune(0)
-		segment := strings.Builder{}
+		var first, last rune
+
+		builder := strings.Builder{}
 
 		for _, c := range r {
-			if segment.Len() != 0 {
-				maybe := segment.String()
-				for letter, k := range letters {
-					if strings.HasSuffix(maybe, letter) {
-						if first == -1 {
-							first = k
-						}
-
-						last = k
-					}
-				}
+			if ok, k := containsDigitString(builder, digitStrings); ok {
+				first = k
+				break
 			}
 
 			if c >= '1' && c <= '9' {
-				segment = strings.Builder{}
-
-				if first == -1 {
-					first = c
-				}
-
-				last = c
+				first = c
+				break
 			} else {
-				segment.WriteRune(c)
+				builder.WriteRune(c)
 			}
 		}
 
-		if segment.Len() != 0 {
-			maybe := segment.String()
-			for letter, k := range letters {
-				if strings.HasSuffix(maybe, letter) {
-					if first == -1 {
-						first = k
-					}
+		builder = strings.Builder{}
 
-					last = k
-				}
+		for i := len(r) - 1; i >= 0; i-- {
+			if ok, k := containsDigitString(builder, digitStringsReverse); ok {
+				last = k
+				break
+			}
+
+			if r[i] >= '1' && r[i] <= '9' {
+				last = r[i]
+				break
+			} else {
+				builder.WriteRune(r[i])
 			}
 		}
 
