@@ -22,6 +22,9 @@ var digitStrings = map[string]rune{
 	"nine":  '9',
 }
 
+var firstReplacer *strings.Replacer
+var lastReplacer *strings.Replacer
+
 var digitStringsReverse map[string]rune
 
 func init() {
@@ -36,6 +39,9 @@ func init() {
 
 		digitStringsReverse[string(reversed)] = v
 	}
+
+	firstReplacer = strings.NewReplacer("one", "1", "two", "2", "three", "3", "four", "4", "five", "5", "six", "6", "seven", "7", "eight", "8", "nine", "9")
+	lastReplacer = strings.NewReplacer("eno", "1", "owt", "2", "eerht", "3", "ruof", "4", "evif", "5", "xis", "6", "neves", "7", "thgie", "8", "enin", "9")
 }
 
 func main() {
@@ -89,41 +95,29 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	rows := utils.ToRuneSlice(input, "\n")
+	rows := utils.ToStringSlice(input, "\n")
 	sum := 0
 
 	for _, r := range rows {
 		var first, last rune
 
-		builder := strings.Builder{}
-
-		for _, c := range r {
-			if ok, k := containsDigitString(builder, digitStrings); ok {
-				first = k
-				break
-			}
-
+		for _, c := range firstReplacer.Replace(r) {
 			if c >= '1' && c <= '9' {
 				first = c
 				break
-			} else {
-				builder.WriteRune(c)
 			}
 		}
 
-		builder = strings.Builder{}
+		reversed := []rune(r)
 
-		for i := len(r) - 1; i >= 0; i-- {
-			if ok, k := containsDigitString(builder, digitStringsReverse); ok {
-				last = k
-				break
-			}
+		for i, j := 0, len(reversed)-1; i < j; i, j = i+1, j-1 {
+			reversed[i], reversed[j] = reversed[j], reversed[i]
+		}
 
-			if r[i] >= '1' && r[i] <= '9' {
-				last = r[i]
+		for _, c := range lastReplacer.Replace(string(reversed)) {
+			if c >= '1' && c <= '9' {
+				last = c
 				break
-			} else {
-				builder.WriteRune(r[i])
 			}
 		}
 
