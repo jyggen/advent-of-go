@@ -9,10 +9,15 @@ import (
 	"strings"
 )
 
-var cubeLimits = map[string]int{
-	"red":   12,
-	"green": 13,
-	"blue":  14,
+type round struct {
+	blue  int
+	green int
+	red   int
+}
+
+type game struct {
+	number int
+	rounds []round
 }
 
 func main() {
@@ -25,42 +30,58 @@ func main() {
 	fmt.Println(p2)
 }
 
-func SolvePart1(input string) (string, error) {
-	rows := utils.ToStringSlice(input, "\n")
-	valid := 0
+func parse(rows []string) []game {
+	games := make([]game, 0, len(rows))
 
-	for _, r := range rows {
-		parts := strings.SplitN(r, ": ", 2)
+	for _, row := range rows {
+		parts := strings.SplitN(row, ": ", 2)
 		sets := strings.Split(parts[1], "; ")
-		ok := true
+		gameNo, _ := strconv.Atoi(parts[0][5:])
+		g := game{number: gameNo, rounds: make([]round, 0, len(sets))}
 
-	GameLoop:
 		for _, s := range sets {
 			cubes := strings.Split(s, ", ")
+			r := round{}
 
 			for _, c := range cubes {
 				details := strings.SplitN(c, " ", 2)
-				count, err := strconv.Atoi(details[0])
+				count, _ := strconv.Atoi(details[0])
 
-				if err != nil {
-					return "", err
+				switch details[1] {
+				case "blue":
+					r.blue = count
+				case "green":
+					r.green = count
+				case "red":
+					r.red = count
 				}
+			}
 
-				if cubeLimits[details[1]] < count {
-					ok = false
-					break GameLoop
-				}
+			g.rounds = append(g.rounds, r)
+		}
+
+		games = append(games, g)
+	}
+
+	return games
+}
+
+func SolvePart1(input string) (string, error) {
+	rows := utils.ToStringSlice(input, "\n")
+	games := parse(rows)
+	valid := 0
+
+	for _, g := range games {
+		ok := true
+		for _, r := range g.rounds {
+			if r.blue > 14 || r.green > 13 || r.red > 12 {
+				ok = false
+				break
 			}
 		}
 
 		if ok {
-			gameNo, err := strconv.Atoi(parts[0][5:])
-
-			if err != nil {
-				return "", err
-			}
-
-			valid += gameNo
+			valid += g.number
 		}
 	}
 
@@ -69,37 +90,27 @@ func SolvePart1(input string) (string, error) {
 
 func SolvePart2(input string) (string, error) {
 	rows := utils.ToStringSlice(input, "\n")
+	games := parse(rows)
 	sum := 0
 
-	for _, r := range rows {
-		parts := strings.SplitN(r, ": ", 2)
-		sets := strings.Split(parts[1], "; ")
-		lowest := map[string]int{
-			"blue":  0,
-			"green": 0,
-			"red":   0,
-		}
+	for _, g := range games {
+		var highBlue, highGreen, highRed int
 
-		for _, s := range sets {
-			cubes := strings.Split(s, ", ")
+		for _, r := range g.rounds {
+			if highBlue < r.blue {
+				highBlue = r.blue
+			}
 
-			for _, c := range cubes {
-				details := strings.SplitN(c, " ", 2)
-				count, err := strconv.Atoi(details[0])
+			if highGreen < r.green {
+				highGreen = r.green
+			}
 
-				if err != nil {
-					return "", err
-				}
-
-				current := lowest[details[1]]
-
-				if current == 0 || current < count {
-					lowest[details[1]] = count
-				}
+			if highRed < r.red {
+				highRed = r.red
 			}
 		}
 
-		sum += lowest["blue"] * lowest["green"] * lowest["red"]
+		sum += highBlue * highGreen * highRed
 	}
 
 	return strconv.Itoa(sum), nil
