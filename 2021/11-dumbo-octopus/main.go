@@ -20,10 +20,10 @@ func main() {
 	fmt.Println(p2)
 }
 
-func simulate(g *grid.Grid, queue []*grid.Cell) int {
+func simulate(g *grid.Grid[int], queue []*grid.Cell[int]) int {
 	flashes := 0
 
-	g.Each(func(c *grid.Cell) bool {
+	g.Each(func(c *grid.Cell[int]) bool {
 		c.Value++
 
 		if c.Value > 9 {
@@ -54,7 +54,7 @@ func simulate(g *grid.Grid, queue []*grid.Cell) int {
 	return flashes
 }
 
-func makeGrid(input string) (*grid.Grid, error) {
+func makeGrid(input string) (*grid.Grid[int], error) {
 	stringSlice := utils.ToStringSlice(input, "\n")
 	values := make([][]int, len(stringSlice))
 
@@ -79,7 +79,7 @@ func SolvePart1(input string) (string, error) {
 	}
 
 	flashes := 0
-	queue := make([]*grid.Cell, 0, g.Size())
+	queue := make([]*grid.Cell[int], 0, g.Size())
 
 	for i := 0; i < 100; i++ {
 		flashes += simulate(g, queue)
@@ -95,7 +95,7 @@ func SolvePart2(input string) (string, error) {
 		return "", err
 	}
 
-	queue := make([]*grid.Cell, 0, g.Size())
+	queue := make([]*grid.Cell[int], 0, g.Size())
 
 	for i := 0; ; i++ {
 		if simulate(g, queue) == g.Size() {

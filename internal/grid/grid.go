@@ -1,18 +1,18 @@
 package grid
 
-func NewGrid(values [][]int, allowDiagonalNeighbours bool) *Grid {
-	g := &Grid{
+func NewGrid[V any](values [][]V, allowDiagonalNeighbours bool) *Grid[V] {
+	g := &Grid[V]{
 		colLength:               len(values[0]),
 		rowLength:               len(values),
-		cells:                   make([][]*Cell, len(values)),
+		cells:                   make([][]*Cell[V], len(values)),
 		allowDiagonalNeighbours: allowDiagonalNeighbours,
 	}
 
 	for x, rows := range values {
-		g.cells[x] = make([]*Cell, len(rows))
+		g.cells[x] = make([]*Cell[V], len(rows))
 
 		for y, v := range rows {
-			g.cells[x][y] = &Cell{
+			g.cells[x][y] = &Cell[V]{
 				x:     x,
 				y:     y,
 				grid:  g,
@@ -24,14 +24,14 @@ func NewGrid(values [][]int, allowDiagonalNeighbours bool) *Grid {
 	return g
 }
 
-type Grid struct {
+type Grid[V any] struct {
 	colLength               int
 	rowLength               int
-	cells                   [][]*Cell
+	cells                   [][]*Cell[V]
 	allowDiagonalNeighbours bool
 }
 
-func (g Grid) CellAt(x int, y int) *Cell {
+func (g Grid[V]) CellAt(x int, y int) *Cell[V] {
 	if x < 0 || x >= len(g.cells) {
 		return nil
 	}
@@ -43,15 +43,15 @@ func (g Grid) CellAt(x int, y int) *Cell {
 	return g.cells[x][y]
 }
 
-func (g Grid) CellAtTopLeft() *Cell {
+func (g Grid[V]) CellAtTopLeft() *Cell[V] {
 	return g.cells[0][0]
 }
 
-func (g Grid) CellAtBottomRight() *Cell {
+func (g Grid[V]) CellAtBottomRight() *Cell[V] {
 	return g.cells[g.rowLength-1][g.colLength-1]
 }
 
-func (g Grid) Each(callback func(c *Cell) bool) {
+func (g Grid[V]) Each(callback func(c *Cell[V]) bool) {
 	for _, cells := range g.cells {
 		for _, c := range cells {
 			shouldContinue := callback(c)
@@ -63,21 +63,21 @@ func (g Grid) Each(callback func(c *Cell) bool) {
 	}
 }
 
-func (g Grid) Size() int {
+func (g Grid[V]) Size() int {
 	return len(g.cells) * len(g.cells[0])
 }
 
-type Cell struct {
+type Cell[V any] struct {
 	x          int
 	y          int
-	grid       *Grid
-	neighbours []*Cell
-	Value      int
+	grid       *Grid[V]
+	neighbours []*Cell[V]
+	Value      V
 }
 
-func (c Cell) Neighbours() []*Cell {
+func (c Cell[V]) Neighbours() []*Cell[V] {
 	if c.neighbours == nil {
-		neighbours := make([]*Cell, 0, 8)
+		neighbours := make([]*Cell[V], 0, 8)
 		coordsList := make([][2]int, 0, 8)
 		coordsList = append(coordsList, [][2]int{
 			{c.x, c.y - 1}, // N
@@ -111,14 +111,14 @@ func (c Cell) Neighbours() []*Cell {
 	return c.neighbours
 }
 
-func (c Cell) ID() int {
+func (c Cell[V]) ID() int {
 	return c.x + (c.y * c.grid.colLength)
 }
 
-func (c Cell) X() int {
+func (c Cell[V]) X() int {
 	return c.x
 }
 
-func (c Cell) Y() int {
+func (c Cell[V]) Y() int {
 	return c.y
 }
