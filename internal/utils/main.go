@@ -189,13 +189,3 @@ func ToOptimisticIntSlice(input string, allowNegative bool) []int {
 
 	return integers
 }
-
-func In[T comparable](value T, list []T) bool {
-	for _, v := range list {
-		if v == value {
-			return true
-		}
-	}
-
-	return false
-}
