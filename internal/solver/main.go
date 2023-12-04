@@ -1,9 +1,11 @@
 package solver
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"runtime/pprof"
 	"strings"
 	"testing"
 
@@ -22,6 +24,8 @@ type TestCase struct {
 	Input   string
 	Solvers []*TestCaseSolver
 }
+
+var enableProfiling = flag.Bool("profile", false, "enable cpu profiling")
 
 func (tc *TestCase) Benchmark(b *testing.B) {
 	if testing.Short() && tc.Short == false {
@@ -69,6 +73,8 @@ func InputFromFile(name string) string {
 }
 
 func SolveFromFile(f *os.File, s1 Solver, s2 Solver) (string, string, error) {
+	flag.Parse()
+
 	input, err := ioutil.ReadAll(f)
 	if err != nil {
 		return "", "", err
@@ -76,12 +82,33 @@ func SolveFromFile(f *os.File, s1 Solver, s2 Solver) (string, string, error) {
 
 	inputStr := strings.Replace(string(input), "\r", "", -1)
 
-	part1, err := s1(inputStr)
+	part1, err := solvePart(inputStr, s1, "part1.prof")
+
 	if err != nil {
 		return part1, "", err
 	}
 
-	part2, err := s2(inputStr)
+	part2, err := solvePart(inputStr, s2, "part2.prof")
 
 	return part1, part2, err
+}
+
+func solvePart(input string, solver Solver, profName string) (string, error) {
+	if *enableProfiling {
+		f, err := os.Create(profName)
+		if err != nil {
+			return "", err
+		}
+
+		defer f.Close()
+
+		err = pprof.StartCPUProfile(f)
+		if err != nil {
+			return "", err
+		}
+
+		defer pprof.StopCPUProfile()
+	}
+
+	return solver(input)
 }
