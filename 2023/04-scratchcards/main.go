@@ -27,8 +27,8 @@ func main() {
 }
 
 type card struct {
-	number         int
 	winningNumbers int
+	count          int
 }
 
 func SolvePart1(input string) (string, error) {
@@ -64,12 +64,12 @@ func SolvePart2(input string) (string, error) {
 	rows := utils.ToStringSlice(input, "\n")
 	cards := make([]*card, 0, len(rows))
 
-	for i, r := range rows {
+	for _, r := range rows {
 		colonIndex := strings.Index(r, ": ")
 		pipeIndex := strings.Index(r, " | ")
 		winning := utils.ToOptimisticIntSlice(r[colonIndex+2:pipeIndex], false)
 		all := utils.ToOptimisticIntSlice(r[pipeIndex+3:], false)
-		c := &card{winningNumbers: 0, number: i}
+		c := &card{winningNumbers: 0, count: 1}
 
 		for _, w := range winning {
 			if slices.Contains(all, w) {
@@ -80,15 +80,21 @@ func SolvePart2(input string) (string, error) {
 		cards = append(cards, c)
 	}
 
-	for i := 0; i < len(cards); i++ {
-		for j := 1; j <= cards[i].winningNumbers; j++ {
+	for i, c := range cards {
+		for j := 1; j <= c.winningNumbers; j++ {
 			if i+j == len(cards) {
 				break
 			}
 
-			cards = append(cards, cards[cards[i].number+j])
+			cards[i+j].count += c.count
 		}
 	}
 
-	return strconv.Itoa(len(cards)), nil
+	sum := 0
+
+	for _, c := range cards {
+		sum += c.count
+	}
+
+	return strconv.Itoa(sum), nil
 }
