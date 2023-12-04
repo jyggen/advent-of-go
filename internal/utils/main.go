@@ -98,40 +98,6 @@ func MinInt(a int, b int) int {
 	return b
 }
 
-func MaxIntSlice(a []int) int {
-	high := 0
-
-	for _, b := range a {
-		if b > high {
-			high = b
-		}
-	}
-
-	return high
-}
-
-func MinIntSlice(a []int) int {
-	low := math.MaxInt64
-
-	for _, b := range a {
-		if b < low {
-			low = b
-		}
-	}
-
-	return low
-}
-
-func IntRange(min int, max int) []int {
-	a := make([]int, max-min+1)
-
-	for i := range a {
-		a[i] = min + i
-	}
-
-	return a
-}
-
 func ManhattanDistance(x int, y int) int {
 	return AbsInt(x) + AbsInt(y)
 }
