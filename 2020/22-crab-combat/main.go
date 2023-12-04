@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -76,8 +77,8 @@ func play(p1deck []int, p2deck []int) []int {
 
 func playRecurse(p1deck []int, p2deck []int, root bool) (int, []int) {
 	if !root {
-		p1high := utils.MaxIntSlice(p1deck)
-		p2high := utils.MaxIntSlice(p2deck)
+		p1high := slices.Max(p1deck)
+		p2high := slices.Max(p2deck)
 
 		if p1high > p2high {
 			return p1win, p1deck

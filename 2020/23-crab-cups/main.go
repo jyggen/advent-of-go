@@ -4,6 +4,7 @@ import (
 	"container/ring"
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -29,8 +30,8 @@ func main() {
 
 func SolvePart1(input string) (string, error) {
 	cups, _ := utils.ToIntegerSlice(input, "")
-	max := utils.MaxIntSlice(cups)
-	min := utils.MinIntSlice(cups)
+	max := slices.Max(cups)
+	min := slices.Min(cups)
 	r := play(cups, min, max, p1rounds)
 
 	var b strings.Builder
@@ -46,8 +47,8 @@ func SolvePart1(input string) (string, error) {
 
 func SolvePart2(input string) (string, error) {
 	cups, _ := utils.ToIntegerSlice(input, "")
-	max := utils.MaxIntSlice(cups)
-	min := utils.MinIntSlice(cups)
+	max := slices.Max(cups)
+	min := slices.Min(cups)
 	additional := make([]int, p2cups-max)
 
 	for i := 0; i < len(additional); i++ {
