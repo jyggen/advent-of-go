@@ -36,6 +36,7 @@ func SolvePart1(input string) (string, error) {
 		for _, count := range letters {
 			if count == 2 {
 				twos++
+
 				break
 			}
 		}
@@ -43,6 +44,7 @@ func SolvePart1(input string) (string, error) {
 		for _, count := range letters {
 			if count == 3 {
 				threes++
+
 				break
 			}
 		}
@@ -52,34 +54,26 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	boxes := utils.ToStringSlice(input, "\n")
-	ids := make([][]rune, len(boxes))
+	ids := utils.ToRuneSlice(input, "\n")
 
-	for i, box := range boxes {
-		ids[i] = []rune(box)
-	}
+	for i, id := range ids {
+	Outer:
+		for _, id2 := range ids[i+1:] {
+			hasDiff := false
+			index := 0
 
-	idLen := len(ids[0])
-	seen := make([][]rune, 0)
-
-	for _, id := range ids {
-		for i := range id {
-			pair := make([]rune, idLen)
-			copy(pair, id)
-			pair[i] = 0
-
-		MatchLoop:
-			for _, possibility := range seen {
-				for j := range possibility {
-					if pair[j] != possibility[j] {
-						continue MatchLoop
+			for k, v := range id {
+				if v != id2[k] {
+					if hasDiff {
+						continue Outer
 					}
-				}
 
-				return string(pair[0:i]) + string(pair[i+1:]), nil
+					hasDiff = true
+					index = k
+				}
 			}
 
-			seen = append(seen, pair)
+			return string(id[0:index]) + string(id[index+1:]), nil
 		}
 	}
 

@@ -27,7 +27,6 @@ enable = [
 	"goconst",
 	"gocritic",
 	"godot",
-	"goerr113",
 	"gofmt",
 	"gofumpt",
 	"goimports",
