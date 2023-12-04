@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"sort"
+	"slices"
 	"strconv"
 
 	"github.com/jyggen/advent-of-go/internal/solver"
@@ -25,18 +25,14 @@ func SolvePart1(input string) (string, error) {
 	paperSize := 0
 
 	for i := 0; i < len(presents); i += 3 {
-		dimensions := make([]int, 3)
-		copy(dimensions, presents[i:i+3])
-		sort.Ints(dimensions)
-
 		sides := []int{
-			dimensions[0] * dimensions[1],
-			dimensions[1] * dimensions[2],
-			dimensions[2] * dimensions[0],
+			presents[i] * presents[i+1],
+			presents[i+1] * presents[i+2],
+			presents[i+2] * presents[i],
 		}
 
 		paperSize += sides[0]*2 + sides[1]*2 + sides[2]*2
-		paperSize += sides[0]
+		paperSize += slices.Min(sides)
 	}
 
 	return strconv.Itoa(paperSize), nil
@@ -47,12 +43,8 @@ func SolvePart2(input string) (string, error) {
 	ribbonSize := 0
 
 	for i := 0; i < len(presents); i += 3 {
-		dimensions := make([]int, 3)
-		copy(dimensions, presents[i:i+3])
-		sort.Ints(dimensions)
-
-		ribbonSize += dimensions[0]*2 + dimensions[1]*2
-		ribbonSize += dimensions[0] * dimensions[1] * dimensions[2]
+		ribbonSize += (presents[i]*2 + presents[i+1]*2 + presents[i+2]*2) - (slices.Max(presents[i:i+3]) * 2)
+		ribbonSize += presents[i] * presents[i+1] * presents[i+2]
 	}
 
 	return strconv.Itoa(ribbonSize), nil
