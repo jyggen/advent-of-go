@@ -96,7 +96,7 @@ func toImage(grid []bool) image.Image {
 		}
 	}
 
-	blurred, _ := stackblur.Run(img, 1)
+	blurred, _ := stackblur.Process(img, 1)
 
 	return blurred
 }
