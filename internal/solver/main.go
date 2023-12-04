@@ -48,7 +48,9 @@ func (tc *TestCase) Test(t *testing.T) {
 	}
 
 	for j, solver := range tc.Solvers {
+		solver := solver
 		t.Run(fmt.Sprint(j), func(subtest *testing.T) {
+			subtest.Parallel()
 			actualOutput, err := solver.Solver(tc.Input)
 
 			assert.NoError(subtest, err)

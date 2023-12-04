@@ -2,16 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/internal/solver"
-	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 const chars = "123456789"
 
-// better replacements courtesy of /u/pred
+// better replacements courtesy of /u/pred.
 var replaces = map[string]string{
 	"one":   "one1one",
 	"two":   "two2two",
@@ -49,7 +50,6 @@ func SolvePart1(input string) (string, error) {
 
 	for _, r := range rows {
 		number, err := solve(r)
-
 		if err != nil {
 			return "", err
 		}
@@ -66,11 +66,10 @@ func SolvePart2(input string) (string, error) {
 
 	for _, r := range rows {
 		for from, to := range replaces {
-			r = strings.Replace(r, from, to, -1)
+			r = strings.ReplaceAll(r, from, to)
 		}
 
 		number, err := solve(r)
-
 		if err != nil {
 			return "", err
 		}

@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/internal/solver"
-	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 type game struct {
@@ -32,7 +33,7 @@ func parse(rows []string) []game {
 	for _, row := range rows {
 		colonIndex := strings.Index(row, ": ")
 		gameNo, _ := strconv.Atoi(row[5:colonIndex])
-		g := game{number: gameNo}
+		g := game{number: gameNo, highBlue: 0, highGreen: 0, highRed: 0}
 		cubes := strings.Split(row[colonIndex+2:], " ")
 
 		for i := 0; i < len(cubes); i += 2 {

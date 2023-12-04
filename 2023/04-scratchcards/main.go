@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/jyggen/advent-of-go/internal/solver"
-	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"slices"
 	"strconv"
 	"strings"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 var spaceReplacer *strings.Replacer
