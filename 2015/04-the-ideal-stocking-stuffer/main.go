@@ -30,7 +30,7 @@ func SolvePart2(input string) (string, error) {
 }
 
 func solve(key []byte, zeroes int) int {
-	iteration := int64(1)
+	iteration := int64(0)
 	numBytes := int(math.Floor(float64(zeroes) / 2))
 HashLoop:
 	for {
