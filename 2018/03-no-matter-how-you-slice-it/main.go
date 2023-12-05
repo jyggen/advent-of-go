@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"regexp"
 	"strconv"
 
 	"github.com/jyggen/advent-of-go/internal/solver"
@@ -19,8 +18,6 @@ type claim struct {
 	y2 int
 }
 
-var inputRegex = regexp.MustCompile("^#(\\d+) @ (\\d+),(\\d+): (\\d+)x(\\d+)$")
-
 func main() {
 	p1, p2, err := solver.SolveFromFile(os.Stdin, SolvePart1, SolvePart2)
 	if err != nil {
@@ -32,26 +29,32 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	claims, err := makeClaims(utils.ToStringSlice(input, "\n"))
-	if err != nil {
-		return "", err
+	claims := makeClaims(input)
+
+	var maxX, maxY int
+
+	for _, c := range claims {
+		if c.y2 > maxY {
+			maxY = c.y2
+		}
+
+		if c.x2 > maxX {
+			maxX = c.x2
+		}
 	}
 
-	seen := make(map[string]int, 0)
+	seen := make([]int, (maxX+1)*(maxY+1))
+	numOfDupes := 0
 
 	for _, c := range claims {
 		for i := c.x1; i <= c.x2; i++ {
 			for j := c.y1; j <= c.y2; j++ {
-				seen[fmt.Sprintf("%dx%d", i, j)]++
+				seen[i+(maxY*j)]++
+
+				if seen[i+(maxY*j)] == 2 {
+					numOfDupes++
+				}
 			}
-		}
-	}
-
-	numOfDupes := 0
-
-	for _, num := range seen {
-		if num > 1 {
-			numOfDupes++
 		}
 	}
 
@@ -59,10 +62,7 @@ func SolvePart1(input string) (string, error) {
 }
 
 func SolvePart2(input string) (string, error) {
-	claims, err := makeClaims(utils.ToStringSlice(input, "\n"))
-	if err != nil {
-		return "", err
-	}
+	claims := makeClaims(input)
 
 Loop:
 	for _, c1 := range claims {
@@ -97,47 +97,19 @@ Loop:
 	return "", errors.New("unable to solve with the provided input")
 }
 
-func makeClaims(input []string) ([]*claim, error) {
-	claims := make([]*claim, len(input))
+func makeClaims(input string) []*claim {
+	ints := utils.ToOptimisticIntSlice(input, false)
+	claims := make([]*claim, 0, len(ints)/5)
 
-	for i, c := range input {
-		match := inputRegex.FindStringSubmatch(c)
-		if len(match) == 0 {
-			return claims, errors.New("unable to find matches")
-		}
-		id, err := strconv.Atoi(match[1])
-		if err != nil {
-			return claims, err
-		}
-
-		left, err := strconv.Atoi(match[2])
-		if err != nil {
-			return claims, err
-		}
-
-		top, err := strconv.Atoi(match[3])
-		if err != nil {
-			return claims, err
-		}
-
-		width, err := strconv.Atoi(match[4])
-		if err != nil {
-			return claims, err
-		}
-
-		height, err := strconv.Atoi(match[5])
-		if err != nil {
-			return claims, err
-		}
-
-		claims[i] = &claim{
-			id: id,
-			x1: left,
-			y1: top,
-			x2: left + width - 1,
-			y2: top + height - 1,
-		}
+	for i := 0; i < len(ints); i += 5 {
+		claims = append(claims, &claim{
+			id: ints[i],
+			x1: ints[i+1],
+			y1: ints[i+2],
+			x2: ints[i+1] + ints[i+3] - 1,
+			y2: ints[i+2] + ints[i+4] - 1,
+		})
 	}
 
-	return claims, nil
+	return claims
 }
