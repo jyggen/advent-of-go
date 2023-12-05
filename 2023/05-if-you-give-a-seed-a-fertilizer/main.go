@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"sort"
 	"strconv"
 
 	"github.com/jyggen/advent-of-go/internal/solver"
@@ -108,22 +109,46 @@ func SolvePart1(input string) (string, error) {
 	return strconv.Itoa(lowest), nil
 }
 
+func resolveSeed(i int, seeds [][2]int, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation [][3]int) int {
+	humidity := resolvePart2(i, humidityToLocation)
+	temperature := resolvePart2(humidity, temperatureToHumidity)
+	light := resolvePart2(temperature, lightToTemperature)
+	water := resolvePart2(light, waterToLight)
+	fertilizer := resolvePart2(water, fertilizerToWater)
+	soil := resolvePart2(fertilizer, soilToFertilizer)
+	seed := resolvePart2(soil, seedToSoil)
+
+	for _, s := range seeds {
+		if seed >= s[0] && seed <= s[0]+s[1] {
+			return i
+		}
+	}
+
+	return -1
+}
+
 func SolvePart2(input string) (string, error) {
 	seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation := parsePart2(input)
+	minSeed, maxSeed := math.MaxInt, 0
 
-	for i := 0; ; i++ {
-		humidity := resolvePart2(i, humidityToLocation)
-		temperature := resolvePart2(humidity, temperatureToHumidity)
-		light := resolvePart2(temperature, lightToTemperature)
-		water := resolvePart2(light, waterToLight)
-		fertilizer := resolvePart2(water, fertilizerToWater)
-		soil := resolvePart2(fertilizer, soilToFertilizer)
-		seed := resolvePart2(soil, seedToSoil)
+	for _, s := range seeds {
+		minSeed = min(s[0], minSeed)
+		maxSeed = max(s[0]+s[1], maxSeed)
+	}
 
-		for _, s := range seeds {
-			if seed >= s[0] && seed <= s[0]+s[1] {
-				return strconv.Itoa(i), nil
-			}
+	increase := int(math.Floor(math.Sqrt(float64(maxSeed - minSeed))))
+
+	for i := 0; ; i += increase {
+		result := resolveSeed(i, seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation)
+
+		if result == -1 {
+			continue
 		}
+
+		result = sort.Search(increase, func(j int) bool {
+			return resolveSeed(i-increase+j, seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation) != -1
+		})
+
+		return strconv.Itoa(i - increase + result), nil
 	}
 }
