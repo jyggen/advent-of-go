@@ -22,22 +22,24 @@ func main() {
 }
 
 func SolvePart1(input string) (string, error) {
-	return strconv.Itoa(solve(strings.TrimSpace(input), 5)), nil
+	return strconv.Itoa(solve([]byte(strings.TrimSpace(input)), 5)), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	return strconv.Itoa(solve(strings.TrimSpace(input), 6)), nil
+	return strconv.Itoa(solve([]byte(strings.TrimSpace(input)), 6)), nil
 }
 
-func solve(key string, zeroes int) int {
-	iteration := 0
+func solve(key []byte, zeroes int) int {
+	iteration := int64(1)
 	numBytes := int(math.Floor(float64(zeroes) / 2))
-
 HashLoop:
 	for {
 		iteration++
+		hash := md5.Sum(strconv.AppendInt(key, iteration, 10))
 
-		hash := md5.Sum([]byte(key + strconv.Itoa(iteration)))
+		if zeroes%2 != 0 && hash[numBytes] > 15 {
+			continue HashLoop
+		}
 
 		for i := 0; i < numBytes; i++ {
 			if hash[i] != 0 {
@@ -45,10 +47,6 @@ HashLoop:
 			}
 		}
 
-		if zeroes%2 != 0 && hash[numBytes] > 15 {
-			continue HashLoop
-		}
-
-		return iteration
+		return int(iteration)
 	}
 }
