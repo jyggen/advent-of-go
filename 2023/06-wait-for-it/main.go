@@ -29,9 +29,9 @@ func solve(time int, distance int) int {
 
 	to := sort.Search(time, func(i int) bool {
 		return i*(time-i) <= distance
-	}) - 1
+	})
 
-	return to - from + 1
+	return to - from
 }
 
 func SolvePart1(input string) (string, error) {
