@@ -21,6 +21,17 @@ func main() {
 	fmt.Println(p2)
 }
 
+type almanac struct {
+	seeds                 [][2]int
+	seedToSoil            [][3]int
+	soilToFertilizer      [][3]int
+	fertilizerToWater     [][3]int
+	waterToLight          [][3]int
+	lightToTemperature    [][3]int
+	temperatureToHumidity [][3]int
+	humidityToLocation    [][3]int
+}
+
 func parseMap(section string) [][3]int {
 	numbers := utils.ToOptimisticIntSlice(section, false)
 	numbersMap := make([][3]int, 0, len(numbers)/3)
@@ -43,32 +54,39 @@ func parseSeedMap(section string) [][2]int {
 	return numbersMap
 }
 
-func parsePart1(input string) ([]int, [][3]int, [][3]int, [][3]int, [][3]int, [][3]int, [][3]int, [][3]int) {
-	sections := utils.ToStringSlice(input, "\n\n")
-	seeds := utils.ToOptimisticIntSlice(sections[0], false)
-	seedToSoil := parseMap(sections[1])
-	soilToFertilizer := parseMap(sections[2])
-	fertilizerToWater := parseMap(sections[3])
-	waterToLight := parseMap(sections[4])
-	lightToTemperature := parseMap(sections[5])
-	temperatureToHumidity := parseMap(sections[6])
-	humidityToLocation := parseMap(sections[7])
+func parse(sections []string) almanac {
+	a := almanac{
+		seedToSoil:            parseMap(sections[1]),
+		soilToFertilizer:      parseMap(sections[2]),
+		fertilizerToWater:     parseMap(sections[3]),
+		waterToLight:          parseMap(sections[4]),
+		lightToTemperature:    parseMap(sections[5]),
+		temperatureToHumidity: parseMap(sections[6]),
+		humidityToLocation:    parseMap(sections[7]),
+	}
 
-	return seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation
+	return a
 }
 
-func parsePart2(input string) ([][2]int, [][3]int, [][3]int, [][3]int, [][3]int, [][3]int, [][3]int, [][3]int) {
+func parsePart1(input string) almanac {
 	sections := utils.ToStringSlice(input, "\n\n")
-	seeds := parseSeedMap(sections[0])
-	seedToSoil := parseMap(sections[1])
-	soilToFertilizer := parseMap(sections[2])
-	fertilizerToWater := parseMap(sections[3])
-	waterToLight := parseMap(sections[4])
-	lightToTemperature := parseMap(sections[5])
-	temperatureToHumidity := parseMap(sections[6])
-	humidityToLocation := parseMap(sections[7])
+	a := parse(sections)
+	seeds := utils.ToOptimisticIntSlice(sections[0], false)
+	a.seeds = make([][2]int, 0, len(seeds))
 
-	return seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation
+	for _, s := range seeds {
+		a.seeds = append(a.seeds, [2]int{s, 0})
+	}
+
+	return a
+}
+
+func parsePart2(input string) almanac {
+	sections := utils.ToStringSlice(input, "\n\n")
+	a := parse(sections)
+	a.seeds = parseSeedMap(sections[0])
+
+	return a
 }
 
 func resolvePart1(source int, sourceDestinationMap [][3]int) int {
@@ -92,33 +110,33 @@ func resolvePart2(destination int, sourceDestinationMap [][3]int) int {
 }
 
 func SolvePart1(input string) (string, error) {
-	seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation := parsePart1(input)
+	a := parsePart1(input)
 	lowest := math.MaxInt
 
-	for _, seed := range seeds {
-		soil := resolvePart1(seed, seedToSoil)
-		fertilizer := resolvePart1(soil, soilToFertilizer)
-		water := resolvePart1(fertilizer, fertilizerToWater)
-		light := resolvePart1(water, waterToLight)
-		temperature := resolvePart1(light, lightToTemperature)
-		humidity := resolvePart1(temperature, temperatureToHumidity)
-		location := resolvePart1(humidity, humidityToLocation)
+	for _, seed := range a.seeds {
+		soil := resolvePart1(seed[0], a.seedToSoil)
+		fertilizer := resolvePart1(soil, a.soilToFertilizer)
+		water := resolvePart1(fertilizer, a.fertilizerToWater)
+		light := resolvePart1(water, a.waterToLight)
+		temperature := resolvePart1(light, a.lightToTemperature)
+		humidity := resolvePart1(temperature, a.temperatureToHumidity)
+		location := resolvePart1(humidity, a.humidityToLocation)
 		lowest = min(location, lowest)
 	}
 
 	return strconv.Itoa(lowest), nil
 }
 
-func resolveSeed(i int, seeds [][2]int, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation [][3]int) int {
-	humidity := resolvePart2(i, humidityToLocation)
-	temperature := resolvePart2(humidity, temperatureToHumidity)
-	light := resolvePart2(temperature, lightToTemperature)
-	water := resolvePart2(light, waterToLight)
-	fertilizer := resolvePart2(water, fertilizerToWater)
-	soil := resolvePart2(fertilizer, soilToFertilizer)
-	seed := resolvePart2(soil, seedToSoil)
+func reverse(i int, a almanac) int {
+	humidity := resolvePart2(i, a.humidityToLocation)
+	temperature := resolvePart2(humidity, a.temperatureToHumidity)
+	light := resolvePart2(temperature, a.lightToTemperature)
+	water := resolvePart2(light, a.waterToLight)
+	fertilizer := resolvePart2(water, a.fertilizerToWater)
+	soil := resolvePart2(fertilizer, a.soilToFertilizer)
+	seed := resolvePart2(soil, a.seedToSoil)
 
-	for _, s := range seeds {
+	for _, s := range a.seeds {
 		if seed >= s[0] && seed <= s[0]+s[1] {
 			return i
 		}
@@ -128,10 +146,11 @@ func resolveSeed(i int, seeds [][2]int, seedToSoil, soilToFertilizer, fertilizer
 }
 
 func SolvePart2(input string) (string, error) {
-	seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation := parsePart2(input)
+	a := parsePart2(input)
+	fmt.Println(a)
 	minSeed, maxSeed := math.MaxInt, 0
 
-	for _, s := range seeds {
+	for _, s := range a.seeds {
 		minSeed = min(s[0], minSeed)
 		maxSeed = max(s[0]+s[1], maxSeed)
 	}
@@ -139,14 +158,14 @@ func SolvePart2(input string) (string, error) {
 	increase := int(math.Floor(math.Sqrt(float64(maxSeed - minSeed))))
 
 	for i := 0; ; i += increase {
-		result := resolveSeed(i, seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation)
+		result := reverse(i, a)
 
 		if result == -1 {
 			continue
 		}
 
 		result = sort.Search(increase, func(j int) bool {
-			return resolveSeed(i-increase+j, seeds, seedToSoil, soilToFertilizer, fertilizerToWater, waterToLight, lightToTemperature, temperatureToHumidity, humidityToLocation) != -1
+			return reverse(i-increase+j, a) != -1
 		})
 
 		return strconv.Itoa(i - increase + result), nil
