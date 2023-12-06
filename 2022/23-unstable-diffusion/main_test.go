@@ -31,13 +31,12 @@ var testCases = []*solver.TestCase{
 		},
 	},
 	{
-		Input: solver.InputFromFile("input.txt"),
 		Short: true,
 		Solvers: []*solver.TestCaseSolver{
-			/*{
+			{
 				Solver: SolvePart1,
 				Output: "3923",
-			},*/
+			},
 			{
 				Solver: SolvePart2,
 				Output: "1019",

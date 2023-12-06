@@ -3,7 +3,7 @@ package solver
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"runtime/pprof"
 	"strings"
@@ -51,6 +51,15 @@ func (tc *TestCase) Test(t *testing.T) {
 		t.SkipNow()
 	}
 
+	var err error
+
+	if tc.Input == "" {
+		tc.Input, err = InputFromPath("input.txt")
+		if err != nil {
+			t.Skip("input.txt missing from disk")
+		}
+	}
+
 	for j, solver := range tc.Solvers {
 		solver := solver
 		t.Run(fmt.Sprint(j), func(subtest *testing.T) {
@@ -64,18 +73,27 @@ func (tc *TestCase) Test(t *testing.T) {
 }
 
 func InputFromFile(name string) string {
-	input, err := ioutil.ReadFile(name)
+	input, err := InputFromPath(name)
 	if err != nil {
 		panic(err)
 	}
 
-	return strings.Replace(string(input), "\r", "", -1)
+	return input
+}
+
+func InputFromPath(name string) (string, error) {
+	input, err := os.ReadFile(name)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.Replace(string(input), "\r", "", -1), nil
 }
 
 func SolveFromFile(f *os.File, s1 Solver, s2 Solver) (string, string, error) {
 	flag.Parse()
 
-	input, err := ioutil.ReadAll(f)
+	input, err := io.ReadAll(f)
 	if err != nil {
 		return "", "", err
 	}

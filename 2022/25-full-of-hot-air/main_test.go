@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
 
 	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/stretchr/testify/assert"
 )
 
 var testCases = []*solver.TestCase{
@@ -23,7 +23,7 @@ var testCases = []*solver.TestCase{
 		},
 	},
 	/*{
-		Input: solver.InputFromFile("input.txt"),
+
 		Short: true,
 		Solvers: []*solver.TestCaseSolver{
 			{

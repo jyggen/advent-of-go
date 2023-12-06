@@ -9,7 +9,6 @@ import (
 
 var testCases = []*solver.TestCase{
 	{
-		Input: solver.InputFromFile("input.txt"),
 		Short: true,
 		Solvers: []*solver.TestCaseSolver{
 			{

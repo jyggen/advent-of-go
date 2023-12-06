@@ -16,24 +16,23 @@ var testCases = []*solver.TestCase{
 				Solver: SolvePart1,
 				Output: "1651",
 			},
-			/*{
+			{
 				Solver: SolvePart2,
 				Output: "1707",
-			},*/
+			},
 		},
 	},
 	{
-		Input: solver.InputFromFile("input.txt"),
 		Short: true,
 		Solvers: []*solver.TestCaseSolver{
 			{
 				Solver: SolvePart1,
 				Output: "2250",
 			},
-			/*{
+			{
 				Solver: SolvePart2,
-				Output: "13734006908372",
-			},*/
+				Output: "3015",
+			},
 		},
 	},
 }
