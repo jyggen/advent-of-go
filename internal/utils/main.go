@@ -27,6 +27,27 @@ func Combinations(characters []rune, length int) [][]rune {
 	return result
 }
 
+// courtesy of https://go.dev/play/p/SmzvkDjYlb
+func GreatestCommonDivisor(a, b int) int {
+	for b != 0 {
+		t := b
+		b = a % b
+		a = t
+	}
+	return a
+}
+
+// courtesy of https://go.dev/play/p/SmzvkDjYlb
+func LeastCommonMultiple(a, b int, integers ...int) int {
+	result := a * b / GreatestCommonDivisor(a, b)
+
+	for i := 0; i < len(integers); i++ {
+		result = LeastCommonMultiple(result, integers[i])
+	}
+
+	return result
+}
+
 // courtesy of https://rosettacode.org/wiki/Chinese_remainder_theorem#Go
 func Crt(a []*big.Int, n []*big.Int) (*big.Int, error) {
 	p := new(big.Int).Set(n[0])
