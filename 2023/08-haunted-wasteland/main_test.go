@@ -36,8 +36,17 @@ var testCases = []*solver.TestCase{
 		},
 	},
 	{
-		Short:   true,
-		Solvers: []*solver.TestCaseSolver{},
+		Short: true,
+		Solvers: []*solver.TestCaseSolver{
+			{
+				Solver: SolvePart1,
+				Output: "16343",
+			},
+			{
+				Solver: SolvePart2,
+				Output: "15299095336639",
+			},
+		},
 	},
 }
 

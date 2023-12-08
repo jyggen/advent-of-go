@@ -22,11 +22,7 @@ func main() {
 
 type parsed struct {
 	leftRight *ring.Ring
-	network   [][2]int
-}
-
-func hashCode(a uint8, b uint8, c uint8) int {
-	return (int(c)*255+int(b))*255 + int(a)
+	network   map[[3]uint8][2][3]uint8
 }
 
 func parse(input string) parsed {
@@ -39,12 +35,12 @@ func parse(input string) parsed {
 		r = r.Next()
 	}
 
-	network := make([][2]int, hashCode(255, 255, 255)+1)
+	network := make(map[[3]uint8][2][3]uint8, len(lines[2:]))
 
 	for _, l := range lines[2:] {
-		network[hashCode(l[0], l[1], l[2])] = [2]int{
-			hashCode(l[7], l[8], l[9]),
-			hashCode(l[12], l[13], l[14]),
+		network[[3]uint8{l[0], l[1], l[2]}] = [2][3]uint8{
+			{l[7], l[8], l[9]},
+			{l[12], l[13], l[14]},
 		}
 	}
 
@@ -54,7 +50,7 @@ func parse(input string) parsed {
 	}
 }
 
-func solve(p parsed, current, endMin, endMax int) int {
+func solve(p parsed, current [3]uint8, isReached func([3]uint8) bool) int {
 	steps := 1
 
 	var val uint8
@@ -68,7 +64,7 @@ func solve(p parsed, current, endMin, endMax int) int {
 			current = p.network[current][1]
 		}
 
-		if current >= endMin && current <= endMax {
+		if isReached(current) {
 			return steps
 		}
 
@@ -80,20 +76,20 @@ func solve(p parsed, current, endMin, endMax int) int {
 func SolvePart1(input string) (string, error) {
 	p := parse(input)
 
-	return strconv.Itoa(solve(p, hashCode('A', 'A', 'A'), hashCode('Z', 'Z', 'Z'), hashCode('Z', 'Z', 'Z'))), nil
+	return strconv.Itoa(solve(p, [3]uint8{'A', 'A', 'A'}, func(current [3]uint8) bool {
+		return current == [3]uint8{'Z', 'Z', 'Z'}
+	})), nil
 }
 
 func SolvePart2(input string) (string, error) {
 	p := parse(input)
-	endMin := hashCode(0, 0, 'Z')
-	endMax := hashCode(255, 255, 'Z')
-	startMin := hashCode(0, 0, 'A')
-	startMax := hashCode(255, 255, 'A')
 	steps := 1
 
-	for k, v := range p.network {
-		if k >= startMin && k <= startMax && v[0] != 0 {
-			steps = utils.LeastCommonMultiple(steps, solve(p, k, endMin, endMax))
+	for k := range p.network {
+		if k[2] == 'A' {
+			steps = utils.LeastCommonMultiple(steps, solve(p, k, func(current [3]uint8) bool {
+				return current[2] == 'Z'
+			}))
 		}
 	}
 
