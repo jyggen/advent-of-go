@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/jyggen/advent-of-go/internal/solver"
 	"github.com/jyggen/advent-of-go/internal/utils"
@@ -19,55 +20,66 @@ func main() {
 	fmt.Println(p2)
 }
 
-func solve(input string, beginning bool) int {
-	lines := utils.ToStringSlice(input, "\n")
+func SolvePart1(input string) (string, error) {
+	count := strings.Count(input[0:strings.Index(input, "\n")], " ")
+	integers := utils.ToOptimisticIntSlice(input, true)
 	sum := 0
 
-	for _, l := range lines {
-		sequences := make([][]int, 0, 2)
-		sequences = append(sequences, utils.ToOptimisticIntSlice(l, true))
+	for k := 0; k < len(integers); k += count + 1 {
+		allZero := false
 
-		for i := 0; i < len(sequences); i++ {
-			newSequence := make([]int, len(sequences[i])-1)
-			allZero := true
+		for i := 0; !allZero; i++ {
+			allZero = true
 
-			for j := 1; j < len(sequences[i]); j++ {
-				newSequence[j-1] = sequences[i][j] - sequences[i][j-1]
+			for j := k + 1; j < k+count+1-i; j++ {
+				integers[j-1] = integers[j] - integers[j-1]
 
-				if allZero && newSequence[j-1] != 0 {
+				if allZero && integers[j-1] != 0 {
 					allZero = false
 				}
-			}
-
-			sequences = append(sequences, newSequence)
-
-			if allZero {
-				break
 			}
 		}
 
 		value := 0
 
-		if beginning {
-			for i := len(sequences) - 2; i >= 0; i-- {
-				value = sequences[i][0] - value
-			}
-		} else {
-			for i := len(sequences) - 2; i >= 0; i-- {
-				value = sequences[i][len(sequences[i])-1] + value
-			}
+		for i := k; i < k+count+1; i++ {
+			value = integers[i] + value
 		}
 
 		sum += value
 	}
 
-	return sum
-}
-
-func SolvePart1(input string) (string, error) {
-	return strconv.Itoa(solve(input, false)), nil
+	return strconv.Itoa(sum), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	return strconv.Itoa(solve(input, true)), nil
+	count := strings.Count(input[0:strings.Index(input, "\n")], " ")
+	integers := utils.ToOptimisticIntSlice(input, true)
+	sum := 0
+
+	for k := 0; k < len(integers); k += count + 1 {
+		allZero := false
+
+		for i := 0; !allZero; i++ {
+			allZero = true
+
+			for j := k + count - 1; j >= k+i; j-- {
+				integers[j+1] -= integers[j]
+
+				if allZero && integers[j+1] != 0 {
+					allZero = false
+				}
+			}
+		}
+
+		value := 0
+
+		for i := k + count; i >= k; i-- {
+			value = integers[i] - value
+		}
+
+		sum += value
+	}
+
+	return strconv.Itoa(sum), nil
 }
