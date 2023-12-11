@@ -20,94 +20,67 @@ func main() {
 }
 
 func solve(input string, increase int) int {
-	lines := utils.ToRuneSlice(input, "\n")
-	numRows := len(lines)
-	numCols := len(lines[0])
-	universe := make([]rune, numRows*numCols)
-
-	for y, l := range lines {
-		for x, r := range l {
-			universe[(y*numCols)+x] = r
-		}
-	}
-
-	emptyCols := make([]int, 0)
+	universe := utils.ToRuneSlice(input, "\n")
+	galaxies := make([][2]int, 0)
 	emptyRows := make([]int, 0)
+	emptyCols := make([]int, 0)
 
-	for x := 0; x < numCols; x++ {
+	for y, points := range universe {
 		allEmpty := true
 
-		for y := 0; y < numRows; y++ {
-			if universe[(numCols*y)+x] != '.' {
+		for x, point := range points {
+			if point == '#' {
+				galaxies = append(galaxies, [2]int{y, x})
 				allEmpty = false
-
-				break
 			}
 		}
 
-		if !allEmpty {
-			continue
+		if allEmpty {
+			emptyRows = append(emptyRows, y)
 		}
-
-		emptyCols = append(emptyCols, x)
 	}
 
-	for y := 0; y < numRows; y++ {
+	for x := range universe[0] {
 		allEmpty := true
 
-		for x := 0; x < numCols; x++ {
-			if universe[(numCols*y)+x] != '.' {
+		for _, point := range universe {
+			if point[x] == '#' {
 				allEmpty = false
 
 				break
 			}
 		}
 
-		if !allEmpty {
-			continue
+		if allEmpty {
+			emptyCols = append(emptyCols, x)
+		}
+	}
+
+	for i, g := range galaxies {
+		for j, y := range emptyRows {
+			if y+(j*increase) < g[0] {
+				g[0] += increase
+			} else {
+				break
+			}
 		}
 
-		emptyRows = append(emptyRows, y)
+		for j, x := range emptyCols {
+			if x+(j*increase) < g[1] {
+				g[1] += increase
+			} else {
+				break
+			}
+		}
+
+		galaxies[i] = g
 	}
 
 	sum := 0
 
-	for k, v := range universe {
-		if v != '#' {
-			continue
-		}
-
-		x, y := utils.ToCoordinates(k, numCols)
-
-		for k2, v2 := range universe[k+1:] {
-			if v2 != '#' {
-				continue
-			}
-
-			x1, y1 := x, y
-			x2, y2 := utils.ToCoordinates(k+1+k2, numCols)
-
-			for _, col := range emptyCols {
-				if col <= max(x, x2) && col >= min(x, x2) {
-					if x > x2 {
-						x1 += increase
-					} else {
-						x1 -= increase
-					}
-				}
-			}
-
-			for _, row := range emptyRows {
-				if row <= max(y, y2) && row >= min(y, y2) {
-					if y > y2 {
-						y1 += increase
-					} else {
-						y1 -= increase
-					}
-				}
-			}
-
-			sum += utils.ManhattanDistance(x1-x2, y1-y2)
+	for i, g := range galaxies {
+		for _, g2 := range galaxies[i+1:] {
+			sum += utils.ManhattanDistance(g[1]-g2[1], g[0]-g2[0])
 		}
 	}
 
