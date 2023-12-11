@@ -69,6 +69,10 @@ var testCases = []*solver.TestCase{
 				Solver: SolvePart1,
 				Output: "6649",
 			},
+			{
+				Solver: SolvePart2,
+				Output: "601",
+			},
 		},
 	},
 }
