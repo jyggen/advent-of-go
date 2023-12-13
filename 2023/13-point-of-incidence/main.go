@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"os"
@@ -21,48 +20,7 @@ func main() {
 	fmt.Println(p2)
 }
 
-func rotate(g [][]byte) [][]byte {
-	g2 := make([][]byte, len(g[0]))
-
-	for i := range g2 {
-		g2[i] = make([]byte, len(g))
-	}
-
-	for y := 0; y < len(g); y++ {
-		for x := 0; x < len(g[y]); x++ {
-			g2[x][len(g)-y-1] = g[y][x]
-		}
-	}
-
-	return g2
-}
-
-func findMirrors(g [][]byte) int {
-HorizontalLoop:
-	for i := 1; i < len(g); i++ {
-		if !bytes.Equal(g[i-1], g[i]) {
-			continue HorizontalLoop
-		}
-
-		limit := min(i, len(g)-i)
-
-		for j := 0; j < limit; j++ {
-			if !bytes.Equal(g[i-1-j], g[i+j]) {
-				continue HorizontalLoop
-			}
-		}
-
-		return i
-	}
-
-	return -1
-}
-
-func diff(a []byte, b []byte) int {
-	if bytes.Equal(a, b) {
-		return 0
-	}
-
+func diffHorizontal(a []byte, b []byte) int {
 	count := 0
 
 	for i := range a {
@@ -75,34 +33,61 @@ func diff(a []byte, b []byte) int {
 		}
 	}
 
-	return 1
+	return count
 }
 
-func findSmudgeMirrors(g [][]byte) int {
-HorizontalLoop:
-	for i := 1; i < len(g); i++ {
-		if diff(g[i-1], g[i]) == 2 {
-			continue HorizontalLoop
+func diffVertical(p [][]byte, a int, b int) int {
+	count := 0
+
+	for i := 0; i < len(p); i++ {
+		if p[i][a] != p[i][b] {
+			count++
 		}
 
+		if count > 1 {
+			return 2
+		}
+	}
+
+	return count
+}
+
+func findMirrors(g [][]byte, accepted int) int {
+HorizontalLoop:
+	for i := 1; i < len(g); i++ {
 		limit := min(i, len(g)-i)
-		smudge := false
+		sum := 0
 
 		for j := 0; j < limit; j++ {
-			switch diff(g[i-1-j], g[i+j]) {
-			case 1:
-				if smudge {
-					continue HorizontalLoop
-				}
+			sum += diffHorizontal(g[i-1-j], g[i+j])
 
-				smudge = true
-			case 2:
+			if sum > accepted {
 				continue HorizontalLoop
 			}
 		}
 
-		if !smudge {
+		if sum != accepted {
 			continue HorizontalLoop
+		}
+
+		return i * 100
+	}
+
+VerticalLoop:
+	for i := 1; i < len(g[0]); i++ {
+		limit := min(i, len(g[0])-i)
+		sum := 0
+
+		for j := 0; j < limit; j++ {
+			sum += diffVertical(g, i-1-j, i+j)
+
+			if sum > accepted {
+				continue VerticalLoop
+			}
+		}
+
+		if sum != accepted {
+			continue VerticalLoop
 		}
 
 		return i
@@ -117,15 +102,7 @@ func SolvePart1(input string) (string, error) {
 
 	for _, p := range patterns {
 		g := utils.ToByteSlice(p, '\n')
-		mirrorAt := findMirrors(g)
-
-		if mirrorAt != -1 {
-			sum += mirrorAt * 100
-
-			continue
-		}
-
-		mirrorAt = findMirrors(rotate(g))
+		mirrorAt := findMirrors(g, 0)
 
 		if mirrorAt == -1 {
 			return "", errors.New("unable to find mirrors")
@@ -143,15 +120,7 @@ func SolvePart2(input string) (string, error) {
 
 	for _, p := range patterns {
 		g := utils.ToByteSlice(p, '\n')
-		mirrorAt := findSmudgeMirrors(g)
-
-		if mirrorAt != -1 {
-			sum += mirrorAt * 100
-
-			continue
-		}
-
-		mirrorAt = findSmudgeMirrors(rotate(g))
+		mirrorAt := findMirrors(g, 1)
 
 		if mirrorAt == -1 {
 			return "", errors.New("unable to find mirrors")
