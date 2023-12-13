@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 	"math/big"
@@ -121,6 +122,10 @@ func MinInt(a int, b int) int {
 
 func ManhattanDistance(x int, y int) int {
 	return AbsInt(x) + AbsInt(y)
+}
+
+func ToByteSlice(input string, separator byte) [][]byte {
+	return bytes.Split([]byte(strings.TrimSpace(input)), []byte{separator})
 }
 
 func ToIntegerSlice(input string, separator string) ([]int, error) {
