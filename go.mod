@@ -6,9 +6,9 @@ require (
 	github.com/RyanCarrier/dijkstra v1.3.0
 	github.com/esimov/stackblur-go v1.1.0
 	github.com/gitchander/permutation v0.0.0-20210517125447-a5d73722e1b1
-	github.com/otiai10/gosseract/v2 v2.4.1
+	github.com/otiai10/gosseract/v2 v2.4.2-0.20231204143213-33edae17260c
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/tools v0.16.0
+	golang.org/x/tools v0.16.1
 )
 
 require (
