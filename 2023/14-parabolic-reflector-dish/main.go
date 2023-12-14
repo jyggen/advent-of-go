@@ -24,10 +24,7 @@ func main() {
 	fmt.Println(p2)
 }
 
-func north(platform [][]byte) int {
-	sum := 0
-	height := len(platform)
-
+func north(platform [][]byte) {
 	for y, row := range platform {
 		for x, column := range row {
 			if column != round {
@@ -46,15 +43,11 @@ func north(platform [][]byte) int {
 			}
 
 			y2++
-			sum += height - y2
 		}
 	}
-
-	return sum
 }
 
-func west(platform [][]byte) int {
-	sum := 0
+func west(platform [][]byte) {
 	height := len(platform)
 
 	for x := 0; x < len(platform[0]); x++ {
@@ -75,15 +68,11 @@ func west(platform [][]byte) int {
 			}
 
 			x2++
-			sum += height - y
 		}
 	}
-
-	return sum
 }
 
-func south(platform [][]byte) int {
-	sum := 0
+func south(platform [][]byte) {
 	height := len(platform)
 
 	for y := height - 1; y >= 0; y-- {
@@ -104,15 +93,11 @@ func south(platform [][]byte) int {
 			}
 
 			y2--
-			sum += height - y2
 		}
 	}
-
-	return sum
 }
 
-func east(platform [][]byte) int {
-	sum := 0
+func east(platform [][]byte) {
 	height := len(platform)
 
 	for x := len(platform[0]) - 1; x >= 0; x-- {
@@ -133,7 +118,19 @@ func east(platform [][]byte) int {
 			}
 
 			x2--
-			sum += height - y
+		}
+	}
+}
+
+func load(platform [][]byte) int {
+	sum := 0
+	height := len(platform)
+
+	for y, row := range platform {
+		for _, column := range row {
+			if column == round {
+				sum += height - y
+			}
 		}
 	}
 
@@ -143,13 +140,14 @@ func east(platform [][]byte) int {
 func SolvePart1(input string) (string, error) {
 	platform := utils.ToByteSlice(input, '\n')
 
-	return strconv.Itoa(north(platform)), nil
+	north(platform)
+
+	return strconv.Itoa(load(platform)), nil
 }
 
 func SolvePart2(input string) (string, error) {
 	platform := utils.ToByteSlice(input, '\n')
 	cycles := 1000000000
-	sum := 0
 	looped := false
 	cache := map[string]int{
 		string(bytes.Join(platform, nil)): 0,
@@ -159,8 +157,7 @@ func SolvePart2(input string) (string, error) {
 		north(platform)
 		west(platform)
 		south(platform)
-
-		sum = east(platform)
+		east(platform)
 
 		if !looped {
 			key := string(bytes.Join(platform, nil))
@@ -174,5 +171,5 @@ func SolvePart2(input string) (string, error) {
 		}
 	}
 
-	return strconv.Itoa(sum), nil
+	return strconv.Itoa(load(platform)), nil
 }
