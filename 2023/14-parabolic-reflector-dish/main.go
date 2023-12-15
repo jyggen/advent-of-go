@@ -3,13 +3,15 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/jyggen/advent-of-go/internal/solver"
-	"github.com/jyggen/advent-of-go/internal/utils"
 	"os"
 	"strconv"
+
+	"github.com/jyggen/advent-of-go/internal/solver"
+	"github.com/jyggen/advent-of-go/internal/utils"
 )
 
 const (
+	cube  = '#'
 	empty = '.'
 	round = 'O'
 )
@@ -25,99 +27,81 @@ func main() {
 }
 
 func north(platform [][]byte) {
-	for y, row := range platform {
-		for x, column := range row {
-			if column != round {
+	for x := 0; x < len(platform[0]); x++ {
+		lastObstacle := -1
+
+		for y := 0; y < len(platform); y++ {
+			switch platform[y][x] {
+			case cube:
+				lastObstacle = y
+			case empty:
 				continue
+			case round:
+				lastObstacle++
+
+				platform[y][x] = empty
+				platform[lastObstacle][x] = round
 			}
-
-			y2 := y - 1
-
-			for ; y2 >= 0; y2-- {
-				if platform[y2][x] != empty {
-					break
-				}
-
-				platform[y2][x] = round
-				platform[y2+1][x] = empty
-			}
-
-			y2++
 		}
 	}
 }
 
 func west(platform [][]byte) {
-	height := len(platform)
+	for y := 0; y < len(platform); y++ {
+		lastObstacle := -1
 
-	for x := 0; x < len(platform[0]); x++ {
-		for y := 0; y < height; y++ {
-			if platform[y][x] != round {
+		for x := 0; x < len(platform[0]); x++ {
+			switch platform[y][x] {
+			case cube:
+				lastObstacle = x
+			case empty:
 				continue
+			case round:
+				lastObstacle++
+
+				platform[y][x] = empty
+				platform[y][lastObstacle] = round
 			}
-
-			x2 := x - 1
-
-			for ; x2 >= 0; x2-- {
-				if platform[y][x2] != empty {
-					break
-				}
-
-				platform[y][x2] = round
-				platform[y][x2+1] = empty
-			}
-
-			x2++
 		}
 	}
 }
 
 func south(platform [][]byte) {
-	height := len(platform)
+	for x := 0; x < len(platform[0]); x++ {
+		lastObstacle := len(platform)
 
-	for y := height - 1; y >= 0; y-- {
-		for x, column := range platform[y] {
-			if column != round {
+		for y := len(platform) - 1; y >= 0; y-- {
+			switch platform[y][x] {
+			case cube:
+				lastObstacle = y
+			case empty:
 				continue
+			case round:
+				lastObstacle--
+
+				platform[y][x] = empty
+				platform[lastObstacle][x] = round
 			}
-
-			y2 := y + 1
-
-			for ; y2 < height; y2++ {
-				if platform[y2][x] != empty {
-					break
-				}
-
-				platform[y2][x] = round
-				platform[y2-1][x] = empty
-			}
-
-			y2--
 		}
 	}
 }
 
 func east(platform [][]byte) {
-	height := len(platform)
+	for y := 0; y < len(platform); y++ {
+		lastObstacle := len(platform[0])
 
-	for x := len(platform[0]) - 1; x >= 0; x-- {
-		for y := height - 1; y >= 0; y-- {
-			if platform[y][x] != round {
+		for x := len(platform[0]) - 1; x >= 0; x-- {
+			switch platform[y][x] {
+			case cube:
+				lastObstacle = x
+			case empty:
 				continue
+			case round:
+				lastObstacle--
+
+				platform[y][x] = empty
+				platform[y][lastObstacle] = round
 			}
-
-			x2 := x + 1
-
-			for ; x2 < len(platform[0]); x2++ {
-				if platform[y][x2] != empty {
-					break
-				}
-
-				platform[y][x2] = round
-				platform[y][x2-1] = empty
-			}
-
-			x2--
 		}
 	}
 }
@@ -149,9 +133,8 @@ func SolvePart2(input string) (string, error) {
 	platform := utils.ToByteSlice(input, '\n')
 	cycles := 1000000000
 	looped := false
-	cache := map[string]int{
-		string(bytes.Join(platform, nil)): 0,
-	}
+	cache := make(map[string]int, 100)
+	cache[string(bytes.Join(platform, nil))] = 0
 
 	for i := 1; i <= cycles; i++ {
 		north(platform)
