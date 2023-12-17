@@ -19,44 +19,80 @@ func main() {
 	fmt.Println(p2)
 }
 
-type direction int
-
 const (
-	up direction = iota
+	up = iota
 	right
 	down
 	left
 )
 
+type cell struct {
+	kind    rune
+	visited bool
+	up      bool
+	right   bool
+	down    bool
+	left    bool
+}
+
 type beam struct {
 	y         int
 	x         int
-	direction direction
+	direction int
 }
 
-func simulate(grid [][]rune, beams []*beam) int {
-	height := len(grid)
-	width := len(grid[0])
-	cache := make(map[beam]struct{})
-	visited := make(map[[2]int]struct{})
+func simulate(input [][]rune, beams []*beam) int {
+	height := len(input)
+	width := len(input[0])
+	grid := make([][]*cell, len(input))
+	visited := 0
 
-	for len(beams) > 0 {
-		for i := 0; i < len(beams); i++ {
-			b := beams[i]
+	for y, row := range input {
+		grid[y] = make([]*cell, len(row))
 
-			if _, ok := cache[*b]; ok {
-				beams = append(beams[:i], beams[i+1:]...)
+		for x, column := range row {
+			grid[y][x] = &cell{kind: column, visited: false, up: false, right: false, down: false, left: false}
+		}
+	}
 
-				continue
+	for i := 0; i < len(beams); i++ {
+		b := beams[i]
+
+	BeamLoop:
+		for {
+			if !grid[b.y][b.x].visited {
+				visited++
+				grid[b.y][b.x].visited = true
 			}
 
-			cache[*b] = struct{}{}
+			switch b.direction {
+			case up:
+				if grid[b.y][b.x].up {
+					break BeamLoop
+				}
 
-			if _, ok := visited[[2]int{b.y, b.x}]; !ok {
-				visited[[2]int{b.y, b.x}] = struct{}{}
+				grid[b.y][b.x].up = true
+			case right:
+				if grid[b.y][b.x].right {
+					break BeamLoop
+				}
+
+				grid[b.y][b.x].right = true
+			case down:
+				if grid[b.y][b.x].down {
+					break BeamLoop
+				}
+
+				grid[b.y][b.x].down = true
+			case left:
+				if grid[b.y][b.x].left {
+					break BeamLoop
+				}
+
+				grid[b.y][b.x].left = true
 			}
 
-			switch grid[b.y][b.x] {
+			switch grid[b.y][b.x].kind {
 			case '/':
 				switch b.direction {
 				case up:
@@ -103,13 +139,12 @@ func simulate(grid [][]rune, beams []*beam) int {
 			}
 
 			if b.y < 0 || b.y >= height || b.x < 0 || b.x >= width {
-				beams = append(beams[:i], beams[i+1:]...)
-				i--
+				break BeamLoop
 			}
 		}
 	}
 
-	return len(visited)
+	return visited
 }
 
 func SolvePart1(input string) (string, error) {
