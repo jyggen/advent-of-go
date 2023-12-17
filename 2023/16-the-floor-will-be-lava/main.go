@@ -41,11 +41,101 @@ type beam struct {
 	direction int
 }
 
-func simulate(input [][]rune, beams []*beam) int {
-	height := len(input)
-	width := len(input[0])
-	grid := make([][]*cell, len(input))
+func simulate(grid [][]*cell, b *beam) int {
 	visited := 0
+
+	for {
+		if !grid[b.y][b.x].visited {
+			visited++
+
+			grid[b.y][b.x].visited = true
+		}
+
+		switch b.direction {
+		case up:
+			if grid[b.y][b.x].up {
+				return visited
+			}
+
+			grid[b.y][b.x].up = true
+		case right:
+			if grid[b.y][b.x].right {
+				return visited
+			}
+
+			grid[b.y][b.x].right = true
+		case down:
+			if grid[b.y][b.x].down {
+				return visited
+			}
+
+			grid[b.y][b.x].down = true
+		case left:
+			if grid[b.y][b.x].left {
+				return visited
+			}
+
+			grid[b.y][b.x].left = true
+		}
+
+		switch grid[b.y][b.x].kind {
+		case '/':
+			switch b.direction {
+			case up:
+				b.direction = right
+			case right:
+				b.direction = up
+			case down:
+				b.direction = left
+			case left:
+				b.direction = down
+			}
+		case '\\':
+			switch b.direction {
+			case up:
+				b.direction = left
+			case right:
+				b.direction = down
+			case down:
+				b.direction = right
+			case left:
+				b.direction = up
+			}
+		case '|':
+			if b.direction == left || b.direction == right {
+				visited += simulate(grid, &beam{y: b.y, x: b.x, direction: up})
+				visited += simulate(grid, &beam{y: b.y, x: b.x, direction: down})
+
+				return visited
+			}
+		case '-':
+			if b.direction == up || b.direction == down {
+				visited += simulate(grid, &beam{y: b.y, x: b.x, direction: right})
+				visited += simulate(grid, &beam{y: b.y, x: b.x, direction: left})
+
+				return visited
+			}
+		}
+
+		switch b.direction {
+		case up:
+			b.y--
+		case right:
+			b.x++
+		case down:
+			b.y++
+		case left:
+			b.x--
+		}
+
+		if b.y < 0 || b.y >= len(grid) || b.x < 0 || b.x >= len(grid[0]) {
+			return visited
+		}
+	}
+}
+
+func asGrid(input [][]rune) [][]*cell {
+	grid := make([][]*cell, len(input))
 
 	for y, row := range input {
 		grid[y] = make([]*cell, len(row))
@@ -55,113 +145,21 @@ func simulate(input [][]rune, beams []*beam) int {
 		}
 	}
 
-	for i := 0; i < len(beams); i++ {
-		b := beams[i]
-
-	BeamLoop:
-		for {
-			if !grid[b.y][b.x].visited {
-				visited++
-				grid[b.y][b.x].visited = true
-			}
-
-			switch b.direction {
-			case up:
-				if grid[b.y][b.x].up {
-					break BeamLoop
-				}
-
-				grid[b.y][b.x].up = true
-			case right:
-				if grid[b.y][b.x].right {
-					break BeamLoop
-				}
-
-				grid[b.y][b.x].right = true
-			case down:
-				if grid[b.y][b.x].down {
-					break BeamLoop
-				}
-
-				grid[b.y][b.x].down = true
-			case left:
-				if grid[b.y][b.x].left {
-					break BeamLoop
-				}
-
-				grid[b.y][b.x].left = true
-			}
-
-			switch grid[b.y][b.x].kind {
-			case '/':
-				switch b.direction {
-				case up:
-					b.direction = right
-				case right:
-					b.direction = up
-				case down:
-					b.direction = left
-				case left:
-					b.direction = down
-				}
-			case '\\':
-				switch b.direction {
-				case up:
-					b.direction = left
-				case right:
-					b.direction = down
-				case down:
-					b.direction = right
-				case left:
-					b.direction = up
-				}
-			case '|':
-				if b.direction == left || b.direction == right {
-					b.direction = up
-					beams = append(beams, &beam{y: b.y, x: b.x, direction: down})
-				}
-			case '-':
-				if b.direction == up || b.direction == down {
-					b.direction = right
-					beams = append(beams, &beam{y: b.y, x: b.x, direction: left})
-				}
-			}
-
-			switch b.direction {
-			case up:
-				b.y--
-			case right:
-				b.x++
-			case down:
-				b.y++
-			case left:
-				b.x--
-			}
-
-			if b.y < 0 || b.y >= height || b.x < 0 || b.x >= width {
-				break BeamLoop
-			}
-		}
-	}
-
-	return visited
+	return grid
 }
 
 func SolvePart1(input string) (string, error) {
-	grid := utils.ToRuneSlice(input, "\n")
-	beams := []*beam{
-		{x: 0, y: 0, direction: right},
-	}
+	slice := utils.ToRuneSlice(input, "\n")
 
-	return strconv.Itoa(simulate(grid, beams)), nil
+	return strconv.Itoa(simulate(asGrid(slice), &beam{x: 0, y: 0, direction: right})), nil
 }
 
 func SolvePart2(input string) (string, error) {
-	grid := utils.ToRuneSlice(input, "\n")
-	height := len(grid)
-	width := len(grid[0])
+	slice := utils.ToRuneSlice(input, "\n")
+	height := len(slice)
+	width := len(slice[0])
 	best := 0
-	possibilities := make([]*beam, 0)
+	possibilities := make([]*beam, 0, (height*2)+(width*2))
 	possibilities = append(
 		possibilities,
 		&beam{y: 0, x: 0, direction: down},
@@ -183,8 +181,7 @@ func SolvePart2(input string) (string, error) {
 	}
 
 	for _, p := range possibilities {
-		beams := []*beam{p}
-		best = max(best, simulate(grid, beams))
+		best = max(best, simulate(asGrid(slice), p))
 	}
 
 	return strconv.Itoa(best), nil
